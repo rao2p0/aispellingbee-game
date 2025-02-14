@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
+import CelebrationPopup from "@/components/game/celebration-popup";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
@@ -13,6 +14,7 @@ export default function Game() {
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState(new Set<string>());
+  const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
 
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
@@ -32,6 +34,7 @@ export default function Game() {
         const points = Math.max(1, word.length - 3); // Simple scoring rule
         setScore(prev => prev + points);
         setFoundWords(prev => new Set([...prev, word]));
+        setCelebration({ word, points }); // Trigger celebration
         toast({
           title: "Correct!",
           description: `+${points} points! Keep going!`,
@@ -94,6 +97,13 @@ export default function Game() {
           </CardContent>
         </Card>
       </motion.div>
+
+      <CelebrationPopup
+        word={celebration?.word ?? ""}
+        points={celebration?.points ?? 0}
+        isVisible={celebration !== null}
+        onAnimationComplete={() => setCelebration(null)}
+      />
     </div>
   );
 }
