@@ -15,6 +15,7 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState(new Set<string>());
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
+  const [isError, setIsError] = useState(false);
 
   // Clear celebration after 2 seconds
   useEffect(() => {
@@ -25,6 +26,17 @@ export default function Game() {
       return () => clearTimeout(timer);
     }
   }, [celebration]);
+
+  // Clear error state and word after showing error animation
+  useEffect(() => {
+    if (isError) {
+      const timer = setTimeout(() => {
+        setIsError(false);
+        setCurrentWord("");
+      }, 800); // Duration matches the animation
+      return () => clearTimeout(timer);
+    }
+  }, [isError]);
 
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
@@ -41,34 +53,21 @@ export default function Game() {
     },
     onSuccess: (data, word) => {
       if (data.valid && !foundWords.has(word)) {
-        const points = Math.max(1, word.length - 3); // Simple scoring rule
+        const points = Math.max(1, word.length - 3);
         setScore(prev => prev + points);
         setFoundWords(new Set([...foundWords, word]));
-        setCelebration({ word, points }); // Trigger celebration
-        toast({
-          title: "Correct!",
-          description: `+${points} points! Keep going!`,
-          variant: "default",
-        });
-      } else if (!data.valid) {
-        toast({
-          title: "Invalid word",
-          description: "Try again!",
-          variant: "destructive",
-        });
+        setCelebration({ word, points });
+        setCurrentWord("");
       } else {
-        toast({
-          title: "Already found",
-          description: "You've already found this word!",
-          variant: "default",
-        });
+        setIsError(true);
       }
-      setCurrentWord("");
     },
   });
 
   const handleLetterClick = (letter: string) => {
-    setCurrentWord((prev) => prev + letter.toLowerCase());
+    if (!isError) {
+      setCurrentWord((prev) => prev + letter.toLowerCase());
+    }
   };
 
   if (isLoading || !puzzle) {
@@ -97,6 +96,7 @@ export default function Game() {
               onChange={setCurrentWord}
               onSubmit={(word) => validateMutation.mutate(word)}
               isSubmitting={validateMutation.isPending}
+              isError={isError}
             />
             <ScoreDisplay 
               score={score} 
