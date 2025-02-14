@@ -6,9 +6,11 @@ import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 
 export default function Game() {
   const { toast } = useToast();
+  const [currentWord, setCurrentWord] = useState("");
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
   });
@@ -36,8 +38,13 @@ export default function Game() {
           variant: "destructive",
         });
       }
+      setCurrentWord("");
     },
   });
+
+  const handleLetterClick = (letter: string) => {
+    setCurrentWord((prev) => prev + letter.toLowerCase());
+  };
 
   if (isLoading || !puzzle) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -58,8 +65,11 @@ export default function Game() {
             <HexGrid
               letters={puzzle.letters}
               centerLetter={puzzle.centerLetter}
+              onLetterClick={handleLetterClick}
             />
             <WordInput
+              value={currentWord}
+              onChange={setCurrentWord}
               onSubmit={(word) => validateMutation.mutate(word)}
               isSubmitting={validateMutation.isPending}
             />

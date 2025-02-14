@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 interface HexGridProps {
   letters: string;
   centerLetter: string;
+  onLetterClick: (letter: string) => void;
 }
 
-export default function HexGrid({ letters, centerLetter }: HexGridProps) {
+export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGridProps) {
   const size = 50;
   const width = size * 2;
   const height = Math.sqrt(3) * size;
@@ -21,6 +22,32 @@ export default function HexGrid({ letters, centerLetter }: HexGridProps) {
     [centerX - width * 0.866, centerY - height * 0.5],
   ];
 
+  const HexButton = ({ x, y, letter, isCenter = false }: { x: number; y: number; letter: string; isCenter?: boolean }) => (
+    <motion.g
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      style={{ cursor: 'pointer' }}
+      onClick={() => onLetterClick(letter)}
+    >
+      <circle
+        cx={x}
+        cy={y}
+        r={size}
+        className={`${isCenter ? 'fill-secondary stroke-primary' : 'fill-primary stroke-secondary'} transition-colors duration-200 hover:brightness-110`}
+        strokeWidth="2"
+      />
+      <text
+        x={x}
+        y={y}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        className={`text-2xl font-bold select-none ${isCenter ? 'fill-primary' : 'fill-secondary'}`}
+      >
+        {letter}
+      </text>
+    </motion.g>
+  );
+
   return (
     <div className="flex justify-center items-center">
       <svg width={width * 4} height={height * 4} viewBox={`0 0 ${width * 4} ${height * 4}`}>
@@ -31,22 +58,7 @@ export default function HexGrid({ letters, centerLetter }: HexGridProps) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.1 }}
           >
-            <circle
-              cx={point[0]}
-              cy={point[1]}
-              r={size}
-              className="fill-primary stroke-secondary"
-              strokeWidth="2"
-            />
-            <text
-              x={point[0]}
-              y={point[1]}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="text-2xl font-bold fill-secondary select-none"
-            >
-              {letters[i]}
-            </text>
+            <HexButton x={point[0]} y={point[1]} letter={letters[i]} />
           </motion.g>
         ))}
         <motion.g
@@ -54,22 +66,7 @@ export default function HexGrid({ letters, centerLetter }: HexGridProps) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <circle
-            cx={centerX}
-            cy={centerY}
-            r={size}
-            className="fill-secondary stroke-primary"
-            strokeWidth="2"
-          />
-          <text
-            x={centerX}
-            y={centerY}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            className="text-2xl font-bold fill-primary select-none"
-          >
-            {centerLetter}
-          </text>
+          <HexButton x={centerX} y={centerY} letter={centerLetter} isCenter={true} />
         </motion.g>
       </svg>
     </div>
