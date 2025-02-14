@@ -11,6 +11,9 @@ import { useState } from "react";
 export default function Game() {
   const { toast } = useToast();
   const [currentWord, setCurrentWord] = useState("");
+  const [score, setScore] = useState(0);
+  const [foundWords, setFoundWords] = useState(new Set<string>());
+
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
   });
@@ -24,18 +27,27 @@ export default function Game() {
       });
       return res.json();
     },
-    onSuccess: (data) => {
-      if (data.valid) {
+    onSuccess: (data, word) => {
+      if (data.valid && !foundWords.has(word)) {
+        const points = Math.max(1, word.length - 3); // Simple scoring rule
+        setScore(prev => prev + points);
+        setFoundWords(prev => new Set([...prev, word]));
         toast({
           title: "Correct!",
-          description: "You found a valid word!",
+          description: `+${points} points! Keep going!`,
           variant: "default",
         });
-      } else {
+      } else if (!data.valid) {
         toast({
           title: "Invalid word",
           description: "Try again!",
           variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Already found",
+          description: "You've already found this word!",
+          variant: "default",
         });
       }
       setCurrentWord("");
@@ -73,7 +85,12 @@ export default function Game() {
               onSubmit={(word) => validateMutation.mutate(word)}
               isSubmitting={validateMutation.isPending}
             />
-            <ScoreDisplay score={0} totalPossible={puzzle.points} />
+            <ScoreDisplay 
+              score={score} 
+              totalPossible={puzzle.points}
+              foundWords={foundWords.size}
+              totalWords={puzzle.validWords.length}
+            />
           </CardContent>
         </Card>
       </motion.div>
