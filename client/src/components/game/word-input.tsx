@@ -31,15 +31,17 @@ export default function WordInput({ value, onChange, onSubmit, isSubmitting, isE
     <div className="flex justify-center items-center h-12">
       <AnimatePresence mode="wait">
         <motion.div
-          key={value}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          key={`word-${value}-${isError}`}
+          animate={isError ? {
+            x: [-10, 10, -10, 10, 0],
+            transition: { duration: 0.4 }
+          } : undefined}
           className={`text-2xl font-medium tracking-wider ${
             isError ? "text-destructive" : "text-foreground"
           }`}
         >
-          {value || (
+          {value}
+          {!value && (
             <span className="inline-block w-[2px] h-6 bg-foreground animate-pulse" />
           )}
         </motion.div>
