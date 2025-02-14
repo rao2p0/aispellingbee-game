@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HexGridProps {
   letters: string;
@@ -22,31 +22,53 @@ export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGri
     [centerX - width * 0.866, centerY - height * 0.5],
   ];
 
-  const HexButton = ({ x, y, letter, isCenter = false }: { x: number; y: number; letter: string; isCenter?: boolean }) => (
-    <motion.g
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      style={{ cursor: 'pointer' }}
-      onClick={() => onLetterClick(letter)}
-    >
-      <circle
-        cx={x}
-        cy={y}
-        r={size}
-        className={`${isCenter ? 'fill-secondary stroke-primary' : 'fill-primary stroke-secondary'} transition-colors duration-200 hover:brightness-110`}
-        strokeWidth="2"
-      />
-      <text
-        x={x}
-        y={y}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        className={`text-2xl font-bold select-none ${isCenter ? 'fill-primary' : 'fill-secondary'}`}
+  const HexButton = ({ x, y, letter, isCenter = false }: { x: number; y: number; letter: string; isCenter?: boolean }) => {
+    const handleClick = () => {
+      onLetterClick(letter);
+    };
+
+    return (
+      <motion.g
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        style={{ cursor: 'pointer' }}
+        onClick={handleClick}
       >
-        {letter}
-      </text>
-    </motion.g>
-  );
+        <AnimatePresence>
+          <motion.circle
+            key={`circle-${letter}`}
+            cx={x}
+            cy={y}
+            r={size}
+            className={`${isCenter ? 'fill-secondary stroke-primary' : 'fill-primary stroke-secondary'} transition-colors duration-200`}
+            strokeWidth="2"
+          />
+          <motion.circle
+            key={`highlight-${letter}`}
+            cx={x}
+            cy={y}
+            r={size}
+            initial={{ scale: 1, opacity: 0 }}
+            animate={{ scale: 1.2, opacity: 0 }}
+            exit={{ scale: 1.4, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fill-none stroke-secondary"
+            strokeWidth="2"
+          />
+          <motion.text
+            key={`text-${letter}`}
+            x={x}
+            y={y}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className={`text-2xl font-bold select-none ${isCenter ? 'fill-primary' : 'fill-secondary'}`}
+          >
+            {letter}
+          </motion.text>
+        </AnimatePresence>
+      </motion.g>
+    );
+  };
 
   return (
     <div className="flex justify-center items-center">
