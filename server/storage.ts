@@ -36,20 +36,25 @@ export class MemStorage implements IStorage {
 
     const normalizedWord = word.toLowerCase();
 
-    // Check if the word exists in the valid words list
-    if (!puzzle.validWords.includes(normalizedWord)) {
+    // Check if word is at least 4 letters long
+    if (normalizedWord.length < 4) {
+      return false;
+    }
+
+    // Check if the word contains the center letter
+    if (!normalizedWord.includes(puzzle.centerLetter.toLowerCase())) {
       return false;
     }
 
     // Create a map of available letters and their counts
     const letterCounts = new Map<string, number>();
-    [...puzzle.letters.toLowerCase(), puzzle.centerLetter.toLowerCase()].forEach(letter => {
+    (puzzle.letters + puzzle.centerLetter).toLowerCase().split('').forEach(letter => {
       letterCounts.set(letter, (letterCounts.get(letter) || 0) + 1);
     });
 
     // Check if each letter in the word can be formed from available letters
     const wordLetterCounts = new Map<string, number>();
-    [...normalizedWord].forEach(letter => {
+    normalizedWord.split('').forEach(letter => {
       wordLetterCounts.set(letter, (wordLetterCounts.get(letter) || 0) + 1);
     });
 
@@ -61,12 +66,8 @@ export class MemStorage implements IStorage {
       }
     }
 
-    // Check if the word contains the center letter
-    if (!normalizedWord.includes(puzzle.centerLetter.toLowerCase())) {
-      return false;
-    }
-
-    return true;
+    // Check if the word exists in the valid words list
+    return puzzle.validWords.includes(normalizedWord);
   }
 }
 
