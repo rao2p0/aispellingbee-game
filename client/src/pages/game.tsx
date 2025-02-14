@@ -10,6 +10,16 @@ import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 
+//This function needs to be implemented or imported from another module
+function getTodayGameStats(): { score: number; wordsFound: string[] } | null {
+  const savedStats = localStorage.getItem('todayGameStats');
+  if(savedStats){
+    return JSON.parse(savedStats);
+  }
+  return null;
+}
+
+
 export default function Game() {
   const { toast } = useToast();
   const [currentWord, setCurrentWord] = useState("");
@@ -18,6 +28,20 @@ export default function Game() {
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
+
+  // Get puzzle data
+  const { data: puzzle, isLoading } = useQuery<Puzzle>({
+    queryKey: ["/api/puzzle"],
+  });
+
+  // Restore game state from localStorage when component mounts
+  useEffect(() => {
+    const todayStats = getTodayGameStats();
+    if (todayStats) {
+      setScore(todayStats.score);
+      setFoundWords(todayStats.wordsFound);
+    }
+  }, []);
 
   // Clear celebration after 2 seconds
   useEffect(() => {
@@ -50,10 +74,6 @@ export default function Game() {
       return () => clearTimeout(timer);
     }
   }, [alreadyFound]);
-
-  const { data: puzzle, isLoading } = useQuery<Puzzle>({
-    queryKey: ["/api/puzzle"],
-  });
 
   // Save stats whenever score or foundWords changes
   useEffect(() => {

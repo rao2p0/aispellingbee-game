@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 interface GameStats {
-  id: string;  // Add a unique ID for each game session
+  id: string;
   date: string;
   score: number;
   wordsFound: string[];
@@ -10,6 +10,13 @@ interface GameStats {
 }
 
 const STATS_KEY = 'spell-bee-stats';
+
+// Get today's game stats if it exists
+export function getTodayGameStats(): GameStats | undefined {
+  const stats = getGameStats();
+  const today = new Date().toDateString();
+  return stats.find(stat => new Date(stat.date).toDateString() === today);
+}
 
 // Save stats for the current game session
 export function saveGameStats(stats: Omit<GameStats, 'id'>) {
