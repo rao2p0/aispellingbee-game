@@ -5,20 +5,10 @@ import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
-import { saveGameStats } from "@/lib/statistics";
+import { saveGameStats, getTodayGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-
-//This function needs to be implemented or imported from another module
-function getTodayGameStats(): { score: number; wordsFound: string[] } | null {
-  const savedStats = localStorage.getItem('todayGameStats');
-  if(savedStats){
-    return JSON.parse(savedStats);
-  }
-  return null;
-}
-
 
 export default function Game() {
   const { toast } = useToast();
@@ -36,10 +26,10 @@ export default function Game() {
 
   // Restore game state from localStorage when component mounts
   useEffect(() => {
-    const todayStats = getTodayGameStats();
-    if (todayStats) {
-      setScore(todayStats.score);
-      setFoundWords(todayStats.wordsFound);
+    const savedStats = getTodayGameStats();
+    if (savedStats) {
+      setScore(savedStats.score);
+      setFoundWords(savedStats.wordsFound);
     }
   }, []);
 

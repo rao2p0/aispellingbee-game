@@ -20,11 +20,7 @@ export function getTodayGameStats(): GameStats | undefined {
 
 // Save stats for the current game session
 export function saveGameStats(stats: Omit<GameStats, 'id'>) {
-  const existingStatsJson = localStorage.getItem(STATS_KEY);
-  const existingStats: GameStats[] = existingStatsJson ? JSON.parse(existingStatsJson) : [];
-
-  // Generate a unique ID for this game session using date
-  const gameId = new Date().toISOString();
+  const existingStats = getGameStats();
 
   // Remove any existing entry for today's game
   const filteredStats = existingStats.filter(stat => 
@@ -32,10 +28,12 @@ export function saveGameStats(stats: Omit<GameStats, 'id'>) {
   );
 
   // Add new stats with unique ID
-  filteredStats.push({
+  const newStats = {
     ...stats,
-    id: gameId,
-  });
+    id: new Date().toISOString(),
+  };
+
+  filteredStats.push(newStats);
 
   // Keep only last 30 days of stats
   const thirtyDaysAgo = new Date();
@@ -44,11 +42,6 @@ export function saveGameStats(stats: Omit<GameStats, 'id'>) {
   const finalStats = filteredStats.filter(stat => 
     new Date(stat.date) >= thirtyDaysAgo
   );
-
-  console.log('Saving stats:', {
-    newGame: { ...stats, id: gameId },
-    totalGames: finalStats.length
-  });
 
   localStorage.setItem(STATS_KEY, JSON.stringify(finalStats));
 }
