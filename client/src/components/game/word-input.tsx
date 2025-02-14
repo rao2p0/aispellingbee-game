@@ -22,7 +22,7 @@ export default function WordInput({ value, onChange, onSubmit, isSubmitting }: W
         value={value}
         onChange={(e) => onChange(e.target.value.toLowerCase())}
         placeholder="Click letters or type (4+ letters)"
-        className="flex-1"
+        className="flex-1 text-foreground placeholder:text-muted-foreground"
         minLength={4}
         disabled={isSubmitting}
       />

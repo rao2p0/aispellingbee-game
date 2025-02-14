@@ -71,7 +71,7 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6 space-y-6">
-            <h1 className="text-3xl font-bold text-center text-secondary mb-8">
+            <h1 className="text-3xl font-bold text-center text-foreground mb-8">
               Spell Bee
             </h1>
             <HexGrid

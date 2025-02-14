@@ -15,9 +15,9 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <div className="flex justify-between text-sm text-secondary">
-          <span>Score: {score}</span>
-          <span>Total Possible: {totalPossible}</span>
+        <div className="flex justify-between text-sm font-medium">
+          <span className="text-foreground">Score: {score}</span>
+          <span className="text-muted-foreground">Total Possible: {totalPossible}</span>
         </div>
         <motion.div
           initial={{ scale: 0.95 }}
@@ -29,9 +29,9 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
       </div>
 
       <div className="space-y-2">
-        <div className="flex justify-between text-sm text-secondary">
-          <span>Words Found: {foundWords}</span>
-          <span>Total Words: {totalWords}</span>
+        <div className="flex justify-between text-sm font-medium">
+          <span className="text-foreground">Words Found: {foundWords}</span>
+          <span className="text-muted-foreground">Total Words: {totalWords}</span>
         </div>
         <motion.div
           initial={{ scale: 0.95 }}
@@ -40,7 +40,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
         >
           <Progress 
             value={wordsPercentage} 
-            className="h-2 bg-secondary/20"
+            className="h-2 bg-muted/20"
           />
         </motion.div>
       </div>
