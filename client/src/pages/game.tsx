@@ -7,7 +7,7 @@ import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Game() {
   const { toast } = useToast();
@@ -15,6 +15,16 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState(new Set<string>());
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
+
+  // Clear celebration after 2 seconds
+  useEffect(() => {
+    if (celebration) {
+      const timer = setTimeout(() => {
+        setCelebration(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [celebration]);
 
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
@@ -33,7 +43,7 @@ export default function Game() {
       if (data.valid && !foundWords.has(word)) {
         const points = Math.max(1, word.length - 3); // Simple scoring rule
         setScore(prev => prev + points);
-        setFoundWords(prev => new Set([...prev, word]));
+        setFoundWords(new Set([...foundWords, word]));
         setCelebration({ word, points }); // Trigger celebration
         toast({
           title: "Correct!",
