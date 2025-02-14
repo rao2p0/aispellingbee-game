@@ -7,9 +7,17 @@ interface WordInputProps {
   onSubmit: (word: string) => void;
   isSubmitting: boolean;
   isError?: boolean;
+  alreadyFound?: boolean;
 }
 
-export default function WordInput({ value, onChange, onSubmit, isSubmitting, isError }: WordInputProps) {
+export default function WordInput({ 
+  value, 
+  onChange, 
+  onSubmit, 
+  isSubmitting, 
+  isError,
+  alreadyFound 
+}: WordInputProps) {
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (isSubmitting) return;
@@ -31,13 +39,18 @@ export default function WordInput({ value, onChange, onSubmit, isSubmitting, isE
     <div className="flex justify-center items-center h-12">
       <AnimatePresence mode="wait">
         <motion.div
-          key={`word-${value}-${isError}`}
+          key={`word-${value}-${isError}-${alreadyFound}`}
           animate={isError ? {
             x: [-10, 10, -10, 10, 0],
             transition: { duration: 0.4 }
+          } : alreadyFound ? {
+            scale: [1, 1.1, 1],
+            transition: { duration: 0.4 }
           } : undefined}
           className={`text-2xl font-medium tracking-wider ${
-            isError ? "text-destructive" : "text-foreground"
+            isError ? "text-destructive" : 
+            alreadyFound ? "text-muted-foreground" : 
+            "text-foreground"
           }`}
         >
           {value}

@@ -16,6 +16,7 @@ export default function Game() {
   const [foundWords, setFoundWords] = useState(new Set<string>());
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
+  const [alreadyFound, setAlreadyFound] = useState(false);
 
   // Clear celebration after 2 seconds
   useEffect(() => {
@@ -33,10 +34,21 @@ export default function Game() {
       const timer = setTimeout(() => {
         setIsError(false);
         setCurrentWord("");
-      }, 800); // Duration matches the animation
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [isError]);
+
+  // Clear already found message and word
+  useEffect(() => {
+    if (alreadyFound) {
+      const timer = setTimeout(() => {
+        setAlreadyFound(false);
+        setCurrentWord("");
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [alreadyFound]);
 
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
@@ -52,7 +64,9 @@ export default function Game() {
       return res.json();
     },
     onSuccess: (data, word) => {
-      if (data.valid && !foundWords.has(word)) {
+      if (foundWords.has(word)) {
+        setAlreadyFound(true);
+      } else if (data.valid) {
         const points = Math.max(1, word.length - 3);
         setScore(prev => prev + points);
         setFoundWords(new Set([...foundWords, word]));
@@ -65,7 +79,7 @@ export default function Game() {
   });
 
   const handleLetterClick = (letter: string) => {
-    if (!isError) {
+    if (!isError && !alreadyFound) {
       setCurrentWord((prev) => prev + letter.toLowerCase());
     }
   };
@@ -97,6 +111,7 @@ export default function Game() {
               onSubmit={(word) => validateMutation.mutate(word)}
               isSubmitting={validateMutation.isPending}
               isError={isError}
+              alreadyFound={alreadyFound}
             />
             <ScoreDisplay 
               score={score} 
