@@ -1,8 +1,8 @@
 import { puzzles, type Puzzle } from "@shared/schema";
 
 const DICTIONARY = new Set([
-  "hello", "world", "spell", "bee", "sweet", "honey", "hive",
-  "buzz", "wing", "nectar", "pollen", "queen", "drone", "swarm"
+  "hello", "held", "hole", "hold", "wild", "whole", "world",
+  "where", "wheel", "wooed", "dowel", "lower", "were", "wore"
 ]);
 
 export interface IStorage {
