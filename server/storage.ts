@@ -35,18 +35,28 @@ export class MemStorage implements IStorage {
     if (!puzzle) return false;
 
     const normalizedWord = word.toLowerCase();
+
     // Check if the word exists in the valid words list
     if (!puzzle.validWords.includes(normalizedWord)) {
       return false;
     }
 
-    // Ensure the word uses valid letters from the puzzle
-    const puzzleLetters = new Set([...puzzle.letters.toLowerCase(), puzzle.centerLetter.toLowerCase()]);
-    const wordLetters = new Set(normalizedWord);
+    // Create a map of available letters and their counts
+    const letterCounts = new Map<string, number>();
+    [...puzzle.letters.toLowerCase(), puzzle.centerLetter.toLowerCase()].forEach(letter => {
+      letterCounts.set(letter, (letterCounts.get(letter) || 0) + 1);
+    });
 
-    // Check if all letters in the word are available in the puzzle
-    for (const letter of wordLetters) {
-      if (!puzzleLetters.has(letter)) {
+    // Check if each letter in the word can be formed from available letters
+    const wordLetterCounts = new Map<string, number>();
+    [...normalizedWord].forEach(letter => {
+      wordLetterCounts.set(letter, (wordLetterCounts.get(letter) || 0) + 1);
+    });
+
+    // Verify letter counts
+    for (const [letter, count] of wordLetterCounts) {
+      const availableCount = letterCounts.get(letter) || 0;
+      if (count > availableCount) {
         return false;
       }
     }
