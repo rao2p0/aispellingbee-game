@@ -89,7 +89,7 @@ export default function Game() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+    <div className="min-h-[calc(100vh-4rem)] bg-background flex flex-col items-center justify-center p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -97,9 +97,6 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6 space-y-6">
-            <h1 className="text-3xl font-bold text-center text-foreground mb-8">
-              Spell Bee
-            </h1>
             <HexGrid
               letters={puzzle.letters}
               centerLetter={puzzle.centerLetter}
