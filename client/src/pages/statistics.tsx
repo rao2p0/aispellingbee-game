@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { motion } from "framer-motion";
 import { Trophy, Star, BookOpen } from "lucide-react";
+import { getBestScore, getAverageScore, getTotalWordsFound, getWordLengthDistribution } from "@/lib/statistics";
 
 interface StatCard {
   title: string;
@@ -27,14 +27,10 @@ const StatisticCard = ({ title, value, icon, description }: StatCard) => (
 );
 
 export default function Statistics() {
-  // Mock data - will be replaced with real data later
-  const mockWordLengthData = [
-    { length: 4, count: 15 },
-    { length: 5, count: 12 },
-    { length: 6, count: 8 },
-    { length: 7, count: 5 },
-    { length: 8, count: 2 },
-  ];
+  const bestScore = getBestScore();
+  const averageScore = getAverageScore();
+  const totalWordsFound = getTotalWordsFound();
+  const wordLengthData = getWordLengthDistribution();
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -48,20 +44,18 @@ export default function Statistics() {
         <div className="grid gap-4 md:grid-cols-3">
           <StatisticCard
             title="Best Score"
-            value="85"
+            value={bestScore}
             icon={<Trophy className="h-4 w-4 text-muted-foreground" />}
-            description="Achieved on Feb 14, 2025"
           />
           <StatisticCard
             title="Total Words Found"
-            value="42"
+            value={totalWordsFound}
             icon={<BookOpen className="h-4 w-4 text-muted-foreground" />}
           />
           <StatisticCard
             title="Average Score"
-            value="65"
+            value={averageScore}
             icon={<Star className="h-4 w-4 text-muted-foreground" />}
-            description="Based on 5 games"
           />
         </div>
 
@@ -74,7 +68,7 @@ export default function Statistics() {
               <BarChart
                 width={800}
                 height={300}
-                data={mockWordLengthData}
+                data={wordLengthData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />

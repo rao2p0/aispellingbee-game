@@ -5,6 +5,7 @@ import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
+import { saveGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
@@ -13,7 +14,7 @@ export default function Game() {
   const { toast } = useToast();
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
-  const [foundWords, setFoundWords] = useState(new Set<string>());
+  const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
@@ -53,6 +54,19 @@ export default function Game() {
   const { data: puzzle, isLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
   });
+
+  // Save stats whenever foundWords changes
+  useEffect(() => {
+    if (puzzle && foundWords.size > 0) {
+      saveGameStats({
+        date: new Date().toISOString(),
+        score,
+        wordsFound: Array.from(foundWords),
+        totalPossibleWords: puzzle.validWords.length,
+        totalPossiblePoints: puzzle.points,
+      });
+    }
+  }, [foundWords, score, puzzle]);
 
   const validateMutation = useMutation({
     mutationFn: async (word: string) => {
