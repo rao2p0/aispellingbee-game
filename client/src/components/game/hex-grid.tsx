@@ -1,4 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { Shuffle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface HexGridProps {
   letters: string;
@@ -7,6 +10,7 @@ interface HexGridProps {
 }
 
 export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGridProps) {
+  const [shuffledLetters, setShuffledLetters] = useState(letters);
   const size = 50;
   const width = size * 2;
   const height = Math.sqrt(3) * size;
@@ -21,6 +25,15 @@ export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGri
     [centerX - width * 0.866, centerY + height * 0.5],
     [centerX - width * 0.866, centerY - height * 0.5],
   ];
+
+  const handleShuffle = () => {
+    const lettersArray = shuffledLetters.split('');
+    for (let i = lettersArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lettersArray[i], lettersArray[j]] = [lettersArray[j], lettersArray[i]];
+    }
+    setShuffledLetters(lettersArray.join(''));
+  };
 
   const HexButton = ({ x, y, letter, isCenter = false }: { x: number; y: number; letter: string; isCenter?: boolean }) => {
     const handleClick = () => {
@@ -71,26 +84,42 @@ export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGri
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <svg width={width * 4} height={height * 4} viewBox={`0 0 ${width * 4} ${height * 4}`}>
-        {hexPoints.map((point, i) => (
+    <div className="flex flex-col items-center space-y-4">
+      <div className="flex justify-center items-center">
+        <svg width={width * 4} height={height * 4} viewBox={`0 0 ${width * 4} ${height * 4}`}>
+          {hexPoints.map((point, i) => (
+            <motion.g
+              key={`${shuffledLetters[i]}-${i}`}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                delay: i * 0.1,
+                type: "spring",
+                stiffness: 200,
+                damping: 15
+              }}
+            >
+              <HexButton x={point[0]} y={point[1]} letter={shuffledLetters[i]} />
+            </motion.g>
+          ))}
           <motion.g
-            key={i}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: 0.6 }}
           >
-            <HexButton x={point[0]} y={point[1]} letter={letters[i]} />
+            <HexButton x={centerX} y={centerY} letter={centerLetter} isCenter={true} />
           </motion.g>
-        ))}
-        <motion.g
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <HexButton x={centerX} y={centerY} letter={centerLetter} isCenter={true} />
-        </motion.g>
-      </svg>
+        </svg>
+      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex items-center gap-2"
+        onClick={handleShuffle}
+      >
+        <Shuffle className="w-4 h-4" />
+        Rearrange Letters
+      </Button>
     </div>
   );
 }
