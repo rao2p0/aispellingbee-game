@@ -1,4 +1,7 @@
+import { z } from "zod";
+
 interface GameStats {
+  id: string;  // Add a unique ID for each game session
   date: string;
   score: number;
   wordsFound: string[];
@@ -8,22 +11,39 @@ interface GameStats {
 
 const STATS_KEY = 'spell-bee-stats';
 
-export function saveGameStats(stats: GameStats) {
+// Save stats for the current game session
+export function saveGameStats(stats: Omit<GameStats, 'id'>) {
   const existingStatsJson = localStorage.getItem(STATS_KEY);
   const existingStats: GameStats[] = existingStatsJson ? JSON.parse(existingStatsJson) : [];
-  
-  // Add new stats
-  existingStats.push(stats);
-  
+
+  // Generate a unique ID for this game session using date
+  const gameId = new Date().toISOString();
+
+  // Remove any existing entry for today's game
+  const filteredStats = existingStats.filter(stat => 
+    new Date(stat.date).toDateString() !== new Date().toDateString()
+  );
+
+  // Add new stats with unique ID
+  filteredStats.push({
+    ...stats,
+    id: gameId,
+  });
+
   // Keep only last 30 days of stats
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-  const filteredStats = existingStats.filter(stat => 
+
+  const finalStats = filteredStats.filter(stat => 
     new Date(stat.date) >= thirtyDaysAgo
   );
-  
-  localStorage.setItem(STATS_KEY, JSON.stringify(filteredStats));
+
+  console.log('Saving stats:', {
+    newGame: { ...stats, id: gameId },
+    totalGames: finalStats.length
+  });
+
+  localStorage.setItem(STATS_KEY, JSON.stringify(finalStats));
 }
 
 export function getGameStats(): GameStats[] {
@@ -53,16 +73,16 @@ export function getTotalWordsFound(): number {
 export function getWordLengthDistribution(): { length: number; count: number }[] {
   const stats = getGameStats();
   if (stats.length === 0) return [];
-  
+
   const distribution = new Map<number, number>();
-  
+
   stats.forEach(game => {
     game.wordsFound.forEach(word => {
       const length = word.length;
       distribution.set(length, (distribution.get(length) || 0) + 1);
     });
   });
-  
+
   return Array.from(distribution.entries())
     .map(([length, count]) => ({ length, count }))
     .sort((a, b) => a.length - b.length);

@@ -14,7 +14,7 @@ export default function Game() {
   const { toast } = useToast();
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
-  const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
+  const [foundWords, setFoundWords] = useState<string[]>([]);
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
@@ -55,13 +55,13 @@ export default function Game() {
     queryKey: ["/api/puzzle"],
   });
 
-  // Save stats whenever foundWords changes
+  // Save stats whenever score or foundWords changes
   useEffect(() => {
-    if (puzzle && foundWords.size > 0) {
+    if (puzzle && foundWords.length > 0) {
       saveGameStats({
         date: new Date().toISOString(),
         score,
-        wordsFound: Array.from(foundWords),
+        wordsFound: foundWords,
         totalPossibleWords: puzzle.validWords.length,
         totalPossiblePoints: puzzle.points,
       });
@@ -78,12 +78,12 @@ export default function Game() {
       return res.json();
     },
     onSuccess: (data, word) => {
-      if (foundWords.has(word)) {
+      if (foundWords.includes(word)) {
         setAlreadyFound(true);
       } else if (data.valid) {
         const points = Math.max(1, word.length - 3);
         setScore(prev => prev + points);
-        setFoundWords(new Set([...foundWords, word]));
+        setFoundWords(prev => [...prev, word]);
         setCelebration({ word, points });
         setCurrentWord("");
       } else {
@@ -127,7 +127,7 @@ export default function Game() {
             <ScoreDisplay 
               score={score} 
               totalPossible={puzzle.points}
-              foundWords={foundWords.size}
+              foundWords={foundWords.length}
               totalWords={puzzle.validWords.length}
             />
           </CardContent>
