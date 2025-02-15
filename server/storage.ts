@@ -57,7 +57,7 @@ class GameDictionary {
 
 // Initialize dictionary with common English words
 const DICTIONARY = new GameDictionary([
-  // 4-letter words
+  // Your existing word list...
   "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "ball", 
   "band", "bank", "base", "bath", "nude", "bean", "bear", "beat", "beer", "bell", 
   "belt", "bend", "bird", "blow", "blue", "boat", "body", "bomb", "bond", "bone",
@@ -124,6 +124,8 @@ export interface IStorage {
 export class MemStorage implements IStorage {
   private puzzles: Map<number, Puzzle>;
   private currentPuzzleId: number;
+  private lastLetters: string | null = null;
+  private lastCenterLetter: string | null = null;
 
   constructor() {
     this.puzzles = new Map();
@@ -131,62 +133,69 @@ export class MemStorage implements IStorage {
     this.generateNewPuzzle();
   }
 
-  private generateLetterSet(): string {
-    const letters: string[] = [];
+  private generateLetterSet(): { letters: string; centerLetter: string } {
+    let letters: string;
+    let centerLetter: string;
+    let attempts = 0;
+    const maxAttempts = 20;
 
-    // Add 2-3 vowels
-    const numVowels = Math.floor(Math.random() * 2) + 2;
-    const availableVowels = VOWELS.split('');
-    for (let i = 0; i < numVowels; i++) {
-      const index = Math.floor(Math.random() * availableVowels.length);
-      const vowel = availableVowels.splice(index, 1)[0];
-      letters.push(vowel);
-    }
+    do {
+      // Generate potential letters
+      const letterArray: string[] = [];
 
-    // Add consonants
-    const availableConsonants = CONSONANTS.split('');
-    while (letters.length < 6) {
-      const index = Math.floor(Math.random() * availableConsonants.length);
-      const consonant = availableConsonants.splice(index, 1)[0];
-      letters.push(consonant);
-    }
+      // Add 2-3 vowels
+      const numVowels = Math.floor(Math.random() * 2) + 2;
+      const availableVowels = VOWELS.split('');
+      for (let i = 0; i < numVowels; i++) {
+        const index = Math.floor(Math.random() * availableVowels.length);
+        const vowel = availableVowels.splice(index, 1)[0];
+        letterArray.push(vowel);
+      }
 
-    // Shuffle the array
-    return letters.sort(() => Math.random() - 0.5).join('');
+      // Add consonants
+      const availableConsonants = CONSONANTS.split('');
+      while (letterArray.length < 6) {
+        const index = Math.floor(Math.random() * availableConsonants.length);
+        const consonant = availableConsonants.splice(index, 1)[0];
+        letterArray.push(consonant);
+      }
+
+      letters = letterArray.sort(() => Math.random() - 0.5).join('');
+
+      // Generate center letter
+      const isVowel = Math.random() < 0.4; // 40% chance of vowel center
+      const letterPool = isVowel ? VOWELS : CONSONANTS;
+      centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
+
+      // Check if letters are sufficiently different from last game
+      if (this.lastLetters && this.lastCenterLetter) {
+        const commonLetters = letters.split('').filter(l => this.lastLetters!.includes(l)).length;
+        if (commonLetters > 3 || centerLetter === this.lastCenterLetter) {
+          attempts++;
+          continue;
+        }
+      }
+
+      // Verify we can make enough valid words
+      const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+      if (validWords.length >= 15) { // Ensure at least 15 possible words
+        break;
+      }
+
+      attempts++;
+    } while (attempts < maxAttempts);
+
+    return { letters, centerLetter };
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
-    // Clear all previous puzzles to ensure no overlap
+    // Clear previous puzzles to prevent stale data
     this.puzzles.clear();
 
-    let letters: string;
-    let centerLetter: string;
-    let validWords: string[];
-    let attempts = 0;
-    const maxAttempts = 10;
+    const { letters, centerLetter } = this.generateLetterSet();
 
-    // Keep generating until we get a good set of letters
-    do {
-      letters = this.generateLetterSet();
-      // Get a new center letter that's different from the letters array
-      do {
-        const isVowel = Math.random() < 0.4; // 40% chance of vowel center
-        const letterPool = isVowel ? VOWELS : CONSONANTS;
-        centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
-      } while (letters.includes(centerLetter));
-
-      // Filter valid words based on new letters
-      validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-
-      attempts++;
-      // If we've tried too many times, force a new set of letters
-      if (attempts >= maxAttempts) {
-        letters = this.generateLetterSet();
-        centerLetter = VOWELS[Math.floor(Math.random() * VOWELS.length)];
-        validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-        break;
-      }
-    } while (validWords.length < 10); // Ensure at least 10 valid words are possible
+    // Get valid words for this puzzle
+    const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
 
     // Calculate total possible points
     const points = validWords.reduce(
@@ -202,8 +211,11 @@ export class MemStorage implements IStorage {
       points,
     };
 
-    // Store the new puzzle
+    // Store the new puzzle and update last letters
     this.puzzles.set(puzzle.id, puzzle);
+    this.lastLetters = letters;
+    this.lastCenterLetter = centerLetter;
+
     return puzzle;
   }
 
