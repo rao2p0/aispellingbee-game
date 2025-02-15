@@ -19,7 +19,7 @@ function Navigation() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 no-underline">
           <img 
-            src="/attached_assets/DALL·E 2025-02-14 20.13.32 - A happy, elegant bee in yellow designed as a logo for a spelling bee game website. The bee should have a friendly and cheerful expression, smooth and .webp" 
+            src="/logo.webp" 
             alt="Spell Bee Logo" 
             className="w-8 h-8"
           />
