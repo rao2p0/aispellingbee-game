@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Footer } from "@/components/footer";
 import NotFound from "@/pages/not-found";
 import Game from "@/pages/game";
 import Statistics from "@/pages/statistics";
@@ -51,10 +52,13 @@ function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
-        <Navigation />
-        <main className="pt-16">
-          <Router />
-        </main>
+        <div className="min-h-screen flex flex-col">
+          <Navigation />
+          <main className="flex-1 pt-16">
+            <Router />
+          </main>
+          <Footer />
+        </div>
         <Toaster />
       </QueryClientProvider>
     </ThemeProvider>
