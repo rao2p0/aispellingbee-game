@@ -18,8 +18,8 @@ function Navigation() {
     <nav className="fixed top-0 left-0 right-0 bg-primary/10 backdrop-blur-sm border-b border-primary/20 p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <img src="/logo.png" alt="Spell Bee Logo" className="h-8 w-8" />
-          <h1 className="text-xl font-bold text-primary logo-font">Spell Bee</h1>
+          <img src="/logo.png" alt="Spell Bee Logo" className="h-12 w-12" />
+          <h1 className="text-3xl font-bold text-primary logo-font">Spell Bee</h1>
         </Link>
         <div className="flex items-center space-x-4">
           <Button
