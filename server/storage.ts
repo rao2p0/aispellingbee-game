@@ -57,7 +57,6 @@ class GameDictionary {
 
 // Initialize dictionary with common English words
 const DICTIONARY = new GameDictionary([
-  // Your existing word list...
   "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "ball", 
   "band", "bank", "base", "bath", "nude", "bean", "bear", "beat", "beer", "bell", 
   "belt", "bend", "bird", "blow", "blue", "boat", "body", "bomb", "bond", "bone",
@@ -137,13 +136,12 @@ export class MemStorage implements IStorage {
     let letters: string;
     let centerLetter: string;
     let attempts = 0;
-    const maxAttempts = 50; // Increased for better variety
+    const maxAttempts = 100; 
+    let validWords: string[] = [];
 
     do {
-      // Generate potential letters
       const letterArray: string[] = [];
 
-      // Add 2-3 vowels
       const numVowels = Math.floor(Math.random() * 2) + 2;
       const availableVowels = VOWELS.split('');
       for (let i = 0; i < numVowels; i++) {
@@ -152,7 +150,6 @@ export class MemStorage implements IStorage {
         letterArray.push(vowel);
       }
 
-      // Add consonants
       const availableConsonants = CONSONANTS.split('');
       while (letterArray.length < 6) {
         const index = Math.floor(Math.random() * availableConsonants.length);
@@ -162,45 +159,51 @@ export class MemStorage implements IStorage {
 
       letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      // Generate center letter (ensuring it's not in the main letters)
       do {
-        const isVowel = Math.random() < 0.4; // 40% chance of vowel center
+        const isVowel = Math.random() < 0.4; 
         const letterPool = isVowel ? VOWELS : CONSONANTS;
         centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
       } while (letters.includes(centerLetter));
 
-      // Check if letters are sufficiently different from last game
       if (this.lastLetters && this.lastCenterLetter) {
         const commonLetters = letters.split('').filter(l => this.lastLetters!.includes(l)).length;
-        // Require more letter changes (max 2 common letters allowed)
         if (commonLetters > 2 || centerLetter === this.lastCenterLetter) {
           attempts++;
           continue;
         }
       }
 
-      // Verify we can make enough valid words
-      const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-      if (validWords.length >= 15) { // Ensure at least 15 possible words
+      validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+      if (validWords.length >= 15) { 
         break;
       }
 
       attempts++;
     } while (attempts < maxAttempts);
 
+    if (validWords.length < 15) {
+      this.lastLetters = null;
+      this.lastCenterLetter = null;
+      return this.generateLetterSet();
+    }
+
     return { letters, centerLetter };
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
-    // Clear previous puzzles to prevent stale data
     this.puzzles.clear();
 
-    const { letters, centerLetter } = this.generateLetterSet();
+    let letterSet: { letters: string; centerLetter: string };
+    do {
+      letterSet = this.generateLetterSet();
+      const validWords = DICTIONARY.filterValidWords(letterSet.letters, letterSet.centerLetter);
+      if (validWords.length >= 15) {
+        break;
+      }
+    } while (true);
 
-    // Get valid words for this puzzle
-    const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+    const validWords = DICTIONARY.filterValidWords(letterSet.letters, letterSet.centerLetter);
 
-    // Calculate total possible points
     const points = validWords.reduce(
       (total, word) => total + Math.max(1, word.length - 3),
       0
@@ -208,16 +211,15 @@ export class MemStorage implements IStorage {
 
     const puzzle: Puzzle = {
       id: this.currentPuzzleId++,
-      letters,
-      centerLetter,
+      letters: letterSet.letters,
+      centerLetter: letterSet.centerLetter,
       validWords,
       points,
     };
 
-    // Store the new puzzle and update last letters
     this.puzzles.set(puzzle.id, puzzle);
-    this.lastLetters = letters;
-    this.lastCenterLetter = centerLetter;
+    this.lastLetters = letterSet.letters;
+    this.lastCenterLetter = letterSet.centerLetter;
 
     return puzzle;
   }
