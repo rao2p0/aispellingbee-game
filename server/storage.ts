@@ -174,31 +174,15 @@ export class MemStorage implements IStorage {
 
     const normalizedWord = word.toLowerCase();
 
-    // Test the specific case
-    if (normalizedWord === "wiped" && puzzle.letters === "BUEWPI" && puzzle.centerLetter === "D") {
-      console.log("\nTesting the WIPED case:");
-      DICTIONARY.testWordValidation(normalizedWord, puzzle.letters, puzzle.centerLetter);
+    // First check if the word is in our pre-computed valid words list
+    const isValid = puzzle.validWords.includes(normalizedWord);
+
+    // For debugging purposes, log rejected words
+    if (!isValid) {
+      console.log(`Word ${normalizedWord} was rejected. Valid words:`, puzzle.validWords);
     }
 
-    // First check if the word exists in our filtered dictionary
-    if (!DICTIONARY.isValidWord(normalizedWord)) {
-      console.log(`Word ${normalizedWord} is not in the dictionary`);
-      return false;
-    }
-
-    // Then check if it's possible to make with the available letters
-    const isPossible = DICTIONARY.isWordPossible(
-      normalizedWord,
-      puzzle.letters + puzzle.centerLetter,
-      puzzle.centerLetter
-    );
-
-    if (!isPossible) {
-      console.log(`Word ${normalizedWord} cannot be made with available letters`);
-      return false;
-    }
-
-    return true;
+    return isValid;
   }
 
   async getDailyPuzzle(): Promise<Puzzle> {
