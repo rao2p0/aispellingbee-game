@@ -18,17 +18,12 @@ const VOWEL_PATTERN = /[aeiou]/i;
 // Patterns that suggest non-English or uncommon words
 const INVALID_PATTERNS = [
   /[aeiou]{4,}/i,  // Too many consecutive vowels
-  /[bcdfghjklmnpqrstvwxyz]{5,}/i,  // Too many consecutive consonants
+  /[bcdfghjklmnpqrstvwxyz]{6,}/i,  // Too many consecutive consonants (increased to 6)
   /^x[aeiou]/i,  // Words starting with 'x' followed by vowel are often Greek
   /^pf/i,  // Words starting with 'pf' are often German
   /^ts/i,  // Words starting with 'ts' are often foreign
-  /^[jkqxyz]/i,  // Words starting with uncommon letters
   /q[^u]/i,  // 'q' not followed by 'u' (except 'q' at end)
-  /[qwrtpsdfghjklzxcvbnm]{3}$/i,  // Three consonants at end
   /sch|tsch/i,  // German patterns
-  /dz|cz|sz/i,  // Slavic patterns
-  /^mc|^o'/i,  // Celtic patterns
-  /gue$|que$/i,  // French patterns
   /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
 ];
 
