@@ -70,19 +70,19 @@ export class MemStorage implements IStorage {
 
     // Add 2-3 vowels
     const numVowels = Math.floor(Math.random() * 2) + 2;
+    const availableVowels = VOWELS.split('');
     for (let i = 0; i < numVowels; i++) {
-      const vowel = VOWELS[Math.floor(Math.random() * VOWELS.length)];
-      if (!letters.includes(vowel)) {
-        letters.push(vowel);
-      }
+      const index = Math.floor(Math.random() * availableVowels.length);
+      const vowel = availableVowels.splice(index, 1)[0];
+      letters.push(vowel);
     }
 
-    // Fill the rest with consonants
+    // Add consonants
+    const availableConsonants = CONSONANTS.split('');
     while (letters.length < 6) {
-      const consonant = CONSONANTS[Math.floor(Math.random() * CONSONANTS.length)];
-      if (!letters.includes(consonant)) {
-        letters.push(consonant);
-      }
+      const index = Math.floor(Math.random() * availableConsonants.length);
+      const consonant = availableConsonants.splice(index, 1)[0];
+      letters.push(consonant);
     }
 
     // Shuffle the array
@@ -134,17 +134,39 @@ export class MemStorage implements IStorage {
 
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
     const normalizedWord = word.toLowerCase();
+    const normalizedCenter = centerLetter.toLowerCase();
 
     // Word must be in dictionary
-    if (!DICTIONARY.has(normalizedWord)) return false;
+    if (!DICTIONARY.has(normalizedWord)) {
+      return false;
+    }
 
     // Word must be at least 4 letters long
-    if (normalizedWord.length < 4) return false;
+    if (normalizedWord.length < 4) {
+      return false;
+    }
 
     // Word must contain the center letter
-    if (!normalizedWord.includes(centerLetter.toLowerCase())) return false;
+    if (!normalizedWord.includes(normalizedCenter)) {
+      return false;
+    }
 
-    return this.canMakeWordFromLetters(normalizedWord, letters + centerLetter);
+    // Create letter frequency map for available letters (including center letter)
+    const availableLetters = new Map<string, number>();
+    (letters + centerLetter).toLowerCase().split('').forEach(letter => {
+      availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
+    });
+
+    // Check if we can form the word with available letters
+    for (const char of normalizedWord) {
+      const count = availableLetters.get(char) || 0;
+      if (count === 0) {
+        return false;
+      }
+      availableLetters.set(char, count - 1);
+    }
+
+    return true;
   }
 
   async getDailyPuzzle(): Promise<Puzzle> {
