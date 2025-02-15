@@ -125,7 +125,9 @@ export default function Game() {
       return res.json();
     },
     onSuccess: () => {
+      // Invalidate and refetch the puzzle query
       queryClient.invalidateQueries({ queryKey: ["/api/puzzle"] });
+      // Reset game state
       handleRestart();
     },
   });
@@ -177,8 +179,9 @@ export default function Game() {
             <button
               onClick={() => newGameMutation.mutate()}
               className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+              disabled={newGameMutation.isPending}
             >
-              New Game
+              {newGameMutation.isPending ? "Loading..." : "New Game"}
             </button>
           </CardContent>
         </Card>

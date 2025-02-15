@@ -148,6 +148,9 @@ export class MemStorage implements IStorage {
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
+    // Clear the previous puzzle to ensure we don't return it again
+    this.puzzles.clear();
+
     let letters: string;
     let centerLetter: string;
     let validWords: string[];
