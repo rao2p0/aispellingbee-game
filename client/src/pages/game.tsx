@@ -15,7 +15,7 @@ export default function Game() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // State declarations - keep these at the top and in consistent order
+  // State declarations
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState<string[]>([]);
@@ -24,23 +24,27 @@ export default function Game() {
   const [alreadyFound, setAlreadyFound] = useState(false);
 
   // Get puzzle data
-  const { data: puzzle } = useQuery<Puzzle>({
+  const { data: puzzle, isLoading: isPuzzleLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
-    staleTime: 0, // Always consider data stale
-    gcTime: 0, // Don't cache the data
+    staleTime: 0,
+    gcTime: 0,
   });
 
   // Mutations
   const newGameMutation = useMutation({
     mutationFn: async () => {
-      console.log("Starting new game");
       const res = await apiRequest("POST", "/api/puzzle/new");
       const data = await res.json();
-      console.log("New game received:", data);
       return data as Puzzle;
     },
+    onMutate: () => {
+      // Show loading toast
+      toast({
+        title: "Generating New Puzzle",
+        description: "Please wait while we create a new game...",
+      });
+    },
     onSuccess: () => {
-      console.log("New game mutation succeeded");
       // Reset the game state
       resetTodayGameStats();
       setScore(0);
@@ -52,6 +56,13 @@ export default function Game() {
       toast({
         title: "New Game Started",
         description: "Good luck with the new puzzle!",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to generate new puzzle. Please try again.",
+        variant: "destructive",
       });
     },
   });
@@ -134,8 +145,16 @@ export default function Game() {
     }
   };
 
-  if (!puzzle) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  // Loading states
+  if (isPuzzleLoading || !puzzle) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
+          <p className="text-lg">Loading puzzle...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -178,7 +197,14 @@ export default function Game() {
                 disabled={newGameMutation.isPending}
                 className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {newGameMutation.isPending ? "Loading..." : "New Game"}
+                {newGameMutation.isPending ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                    Generating...
+                  </div>
+                ) : (
+                  "New Game"
+                )}
               </button>
             </div>
           </CardContent>

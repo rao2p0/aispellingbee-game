@@ -13,72 +13,40 @@ class GameDictionary {
   }
 
   isValidWord(word: string): boolean {
-    const normalizedWord = word.toLowerCase();
-    const isValid = this.words.has(normalizedWord);
-    console.log(`Dictionary check for "${word}": ${isValid}`);
-    return isValid;
+    return this.words.has(word.toLowerCase());
   }
 
   filterValidWords(letters: string, centerLetter: string): string[] {
-    console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
-    return Array.from(this.words).filter(word =>
-      this.isWordPossible(word, letters, centerLetter)
-    );
-  }
-
-  private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
-    const normalizedWord = word.toLowerCase();
-    const normalizedCenter = centerLetter.toLowerCase();
     const normalizedLetters = letters.toLowerCase();
-
-    console.log(`\nChecking word "${word}":`);
-    console.log(`- Available letters: ${normalizedLetters} (center: ${normalizedCenter})`);
-
-    // Word must be at least 4 letters long
-    if (normalizedWord.length < 4) {
-      console.log(`- Rejected: too short (${normalizedWord.length} letters)`);
-      return false;
-    }
-
-    // Word must contain the center letter
-    if (!normalizedWord.includes(normalizedCenter)) {
-      console.log(`- Rejected: missing center letter ${normalizedCenter}`);
-      return false;
-    }
+    const normalizedCenter = centerLetter.toLowerCase();
 
     // Create letter frequency map for available letters
     const availableLetters = new Map<string, number>();
-
-    // Add regular letters
     normalizedLetters.split('').forEach(letter => {
       availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
     });
-
-    // Center letter can be used multiple times, so give it a high count
+    // Center letter can be used multiple times
     availableLetters.set(normalizedCenter, 999);
 
-    console.log('- Available letter frequencies:', Object.fromEntries(availableLetters));
+    return Array.from(this.words).filter(word => {
+      if (word.length < 4) return false;
+      if (!word.includes(normalizedCenter)) return false;
 
-    // Count required letters in the word
-    const wordFreq = new Map<string, number>();
-    for (const char of normalizedWord) {
-      wordFreq.set(char, (wordFreq.get(char) || 0) + 1);
-    }
-
-    // Check if we have enough of each letter
-    let isValid = true;
-    wordFreq.forEach((needed, char) => {
-      const available = availableLetters.get(char) || 0;
-      if (char !== normalizedCenter && needed > available) {
-        console.log(`- Rejected: needs ${needed} of "${char}" but only have ${available}`);
-        isValid = false;
+      // Check if all letters in the word are available
+      const wordFreq = new Map<string, number>();
+      for (const char of word) {
+        wordFreq.set(char, (wordFreq.get(char) || 0) + 1);
       }
-    });
 
-    if (isValid) {
-      console.log('- Word is valid!');
-    }
-    return isValid;
+      for (const [char, needed] of wordFreq.entries()) {
+        const available = availableLetters.get(char) || 0;
+        if (char !== normalizedCenter && needed > available) {
+          return false;
+        }
+      }
+
+      return true;
+    });
   }
 }
 
@@ -150,8 +118,6 @@ export interface IStorage {
 export class MemStorage implements IStorage {
   private puzzles: Map<number, Puzzle>;
   private currentPuzzleId: number;
-  private lastLetters: string | null = null;
-  private lastCenterLetter: string | null = null;
 
   constructor() {
     this.puzzles = new Map();
@@ -160,15 +126,13 @@ export class MemStorage implements IStorage {
   }
 
   private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
-    console.log("Starting letter set generation...");
+    // Try only 20 attempts max
+    const attempts = 20;
     let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
-    const attempts = 50;
 
     for (let i = 0; i < attempts; i++) {
-      // Generate letter set
-      const letterArray: string[] = [];
-
       // Add 2-3 vowels
+      const letterArray: string[] = [];
       const numVowels = Math.floor(Math.random() * 2) + 2;
       const availableVowels = VOWELS.split('');
       for (let j = 0; j < numVowels; j++) {
@@ -185,47 +149,42 @@ export class MemStorage implements IStorage {
 
       const letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      // Try each unused letter as center letter
-      const allLetters = (VOWELS + CONSONANTS).split('');
-      for (const centerLetter of allLetters) {
-        if (letters.includes(centerLetter)) continue;
+      // Try both vowels and consonants as center letters
+      for (const isVowel of [true, false]) {
+        const letterPool = isVowel ? VOWELS : CONSONANTS;
+        const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
 
-        const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-        console.log(`Attempt ${i + 1}: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
+        if (!letters.includes(centerLetter)) {
+          const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
 
-        if (!bestAttempt || validWords.length > bestAttempt.count) {
-          bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
-          if (validWords.length >= 15) {
-            console.log(`Found excellent set with ${validWords.length} words!`);
-            return bestAttempt;
+          if (!bestAttempt || validWords.length > bestAttempt.count) {
+            bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
+            // Accept any puzzle with at least 10 valid words
+            if (validWords.length >= 10) {
+              return bestAttempt;
+            }
           }
         }
       }
     }
 
-    if (!bestAttempt || bestAttempt.count === 0) {
-      console.log("No valid combinations found, using default set");
-      // Provide a guaranteed valid combination as fallback
-      const defaultSet = {
-        letters: "AEILNS",
-        centerLetter: "T",
-        validWords: DICTIONARY.filterValidWords("AEILNS", "T")
-      };
-      return defaultSet;
+    // Use the best attempt we found, or fall back to a default set
+    if (bestAttempt && bestAttempt.count > 0) {
+      return bestAttempt;
     }
 
-    console.log(`Using best attempt found with ${bestAttempt.count} words`);
-    return bestAttempt;
+    // Fallback to a guaranteed valid set
+    return {
+      letters: "AEILNS",
+      centerLetter: "T",
+      validWords: DICTIONARY.filterValidWords("AEILNS", "T")
+    };
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
-    console.log("Generating new puzzle...");
     this.puzzles.clear();
 
     const { letters, centerLetter, validWords } = this.generateLetterSet();
-    console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
-
-    // Calculate total points
     const points = validWords.reduce(
       (total, word) => total + Math.max(1, word.length - 3),
       0
@@ -240,9 +199,6 @@ export class MemStorage implements IStorage {
     };
 
     this.puzzles.set(puzzle.id, puzzle);
-    this.lastLetters = letters;
-    this.lastCenterLetter = centerLetter;
-
     return puzzle;
   }
 
