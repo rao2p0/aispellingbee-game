@@ -2,7 +2,7 @@ import { puzzles, type Puzzle } from "@shared/schema";
 
 const DICTIONARY = new Set([
   "hold", "word", "lord", "world", "whole", "droll", 
-  "howl", "door", "rode", "roll", "doll", "wore"
+  "howl", "door", "rode", "roll", "doll", "wore", "hell"
 ]);
 
 export interface IStorage {
