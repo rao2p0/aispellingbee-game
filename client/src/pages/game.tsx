@@ -117,6 +117,17 @@ export default function Game() {
     await newGameMutation.mutateAsync();
   };
 
+  const handleRestart = () => {
+    resetTodayGameStats();
+    setScore(0);
+    setFoundWords([]);
+    setCurrentWord("");
+    toast({
+      title: "Game Reset",
+      description: "Your progress has been reset. Good luck!",
+    });
+  };
+
   const handleLetterClick = (letter: string) => {
     if (!isError && !alreadyFound) {
       setCurrentWord(prev => prev + letter.toLowerCase());
@@ -155,13 +166,21 @@ export default function Game() {
               foundWords={foundWords.length}
               totalWords={puzzle.validWords.length}
             />
-            <button
-              onClick={handleNewGame}
-              disabled={newGameMutation.isPending}
-              className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {newGameMutation.isPending ? "Loading..." : "New Game"}
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={handleRestart}
+                className="w-full px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+              >
+                Reset Progress
+              </button>
+              <button
+                onClick={handleNewGame}
+                disabled={newGameMutation.isPending}
+                className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {newGameMutation.isPending ? "Loading..." : "New Game"}
+              </button>
+            </div>
           </CardContent>
         </Card>
       </motion.div>
