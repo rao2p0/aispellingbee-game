@@ -91,7 +91,7 @@ class GameDictionary {
 
     // Filter words from our dictionary that could be made with these letters
     for (const word of WORDS) {
-      if (this.isWordPossible(word, letters, centerLetter)) {
+      if (this.isWordPossible(word, allLetters, centerLetter.toLowerCase())) {
         words.push(word);
       }
     }
@@ -102,7 +102,6 @@ class GameDictionary {
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
     const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
-    const normalizedLetters = letters.toLowerCase();
 
     // Word must contain the center letter
     if (!normalizedWord.includes(normalizedCenter)) {
@@ -111,10 +110,9 @@ class GameDictionary {
 
     // Create letter frequency map for available letters
     const availableLetters = new Map<string, number>();
-    normalizedLetters.split('').forEach(letter => {
+    letters.split('').forEach(letter => {
       availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
     });
-    availableLetters.set(normalizedCenter, (availableLetters.get(normalizedCenter) || 0) + 1);
 
     // Count required letters in the word
     const wordFreq = new Map<string, number>();
@@ -123,15 +121,31 @@ class GameDictionary {
     }
 
     // Check if we have enough of each letter
-    let isValid = true;
-    wordFreq.forEach((needed, char) => {
+    for (const [char, needed] of wordFreq.entries()) {
       const available = availableLetters.get(char) || 0;
-      if (needed > available || !availableLetters.has(char)) {
-        isValid = false;
+      if (needed > available) {
+        return false;
       }
-    });
+    }
 
-    return isValid;
+    return true;
+  }
+
+  testWordValidation(word: string, letters: string, centerLetter: string): boolean {
+    console.log("\nTesting word validation:");
+    console.log(`Word: ${word}`);
+    console.log(`Letters: ${letters}`);
+    console.log(`Center letter: ${centerLetter}`);
+
+    const normalizedWord = word.toLowerCase();
+    const normalizedLetters = letters.toLowerCase();
+    const normalizedCenter = centerLetter.toLowerCase();
+    const allLetters = normalizedLetters + normalizedCenter;
+
+    console.log(`All available letters: ${allLetters}`);
+    const result = this.isWordPossible(normalizedWord, allLetters, normalizedCenter);
+    console.log(`Validation result: ${result}`);
+    return result;
   }
 }
 
@@ -152,6 +166,71 @@ export class MemStorage implements IStorage {
     this.puzzles = new Map();
     this.currentPuzzleId = 1;
     this.generateNewPuzzle(); // Initialize with first puzzle
+  }
+
+  async validateWord(word: string, puzzleId: number): Promise<boolean> {
+    const puzzle = this.puzzles.get(puzzleId);
+    if (!puzzle) return false;
+
+    const normalizedWord = word.toLowerCase();
+
+    // Test the specific case
+    if (normalizedWord === "wiped" && puzzle.letters === "BUEWPI" && puzzle.centerLetter === "D") {
+      console.log("\nTesting the WIPED case:");
+      DICTIONARY.testWordValidation(normalizedWord, puzzle.letters, puzzle.centerLetter);
+    }
+
+    // First check if the word exists in our filtered dictionary
+    if (!DICTIONARY.isValidWord(normalizedWord)) {
+      console.log(`Word ${normalizedWord} is not in the dictionary`);
+      return false;
+    }
+
+    // Then check if it's possible to make with the available letters
+    const isPossible = DICTIONARY.isWordPossible(
+      normalizedWord,
+      puzzle.letters + puzzle.centerLetter,
+      puzzle.centerLetter
+    );
+
+    if (!isPossible) {
+      console.log(`Word ${normalizedWord} cannot be made with available letters`);
+      return false;
+    }
+
+    return true;
+  }
+
+  async getDailyPuzzle(): Promise<Puzzle> {
+    const puzzle = this.puzzles.get(this.currentPuzzleId - 1);
+    if (!puzzle) {
+      return this.generateNewPuzzle();
+    }
+    return puzzle;
+  }
+
+  async generateNewPuzzle(): Promise<Puzzle> {
+    console.log("Generating new puzzle...");
+    this.puzzles.clear();
+
+    const { letters, centerLetter, validWords } = this.generateLetterSet();
+    console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
+
+    const points = validWords.reduce(
+      (total, word) => total + Math.max(1, word.length - 3),
+      0
+    );
+
+    const puzzle: Puzzle = {
+      id: this.currentPuzzleId++,
+      letters,
+      centerLetter,
+      validWords,
+      points,
+    };
+
+    this.puzzles.set(puzzle.id, puzzle);
+    return puzzle;
   }
 
   private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
@@ -190,46 +269,6 @@ export class MemStorage implements IStorage {
     }
 
     return { letters, centerLetter, validWords };
-  }
-
-  async generateNewPuzzle(): Promise<Puzzle> {
-    console.log("Generating new puzzle...");
-    this.puzzles.clear();
-
-    const { letters, centerLetter, validWords } = this.generateLetterSet();
-    console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
-
-    const points = validWords.reduce(
-      (total, word) => total + Math.max(1, word.length - 3),
-      0
-    );
-
-    const puzzle: Puzzle = {
-      id: this.currentPuzzleId++,
-      letters,
-      centerLetter,
-      validWords,
-      points,
-    };
-
-    this.puzzles.set(puzzle.id, puzzle);
-    return puzzle;
-  }
-
-  async getDailyPuzzle(): Promise<Puzzle> {
-    const puzzle = this.puzzles.get(this.currentPuzzleId - 1);
-    if (!puzzle) {
-      return this.generateNewPuzzle();
-    }
-    return puzzle;
-  }
-
-  async validateWord(word: string, puzzleId: number): Promise<boolean> {
-    const puzzle = this.puzzles.get(puzzleId);
-    if (!puzzle) return false;
-
-    const normalizedWord = word.toLowerCase();
-    return puzzle.validWords.includes(normalizedWord);
   }
 }
 
