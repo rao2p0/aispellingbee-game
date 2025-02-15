@@ -137,7 +137,7 @@ export class MemStorage implements IStorage {
     let letters: string;
     let centerLetter: string;
     let attempts = 0;
-    const maxAttempts = 20;
+    const maxAttempts = 50; // Increased for better variety
 
     do {
       // Generate potential letters
@@ -162,15 +162,18 @@ export class MemStorage implements IStorage {
 
       letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      // Generate center letter
-      const isVowel = Math.random() < 0.4; // 40% chance of vowel center
-      const letterPool = isVowel ? VOWELS : CONSONANTS;
-      centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
+      // Generate center letter (ensuring it's not in the main letters)
+      do {
+        const isVowel = Math.random() < 0.4; // 40% chance of vowel center
+        const letterPool = isVowel ? VOWELS : CONSONANTS;
+        centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
+      } while (letters.includes(centerLetter));
 
       // Check if letters are sufficiently different from last game
       if (this.lastLetters && this.lastCenterLetter) {
         const commonLetters = letters.split('').filter(l => this.lastLetters!.includes(l)).length;
-        if (commonLetters > 3 || centerLetter === this.lastCenterLetter) {
+        // Require more letter changes (max 2 common letters allowed)
+        if (commonLetters > 2 || centerLetter === this.lastCenterLetter) {
           attempts++;
           continue;
         }
