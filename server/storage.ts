@@ -1,8 +1,7 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import wordList from "word-list";
-import fs from "fs";
-import path from "path";
+import words from "an-array-of-english-words";
 import { fileURLToPath } from 'url';
+import path from "path";
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
@@ -33,40 +32,37 @@ const INVALID_PATTERNS = [
   /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
 ];
 
-// Load the word list once at startup
+// Load and filter the word list once at startup
 const WORDS = new Set(
-  fs.readFileSync(path.resolve(__dirname, wordList), 'utf8')
-    .split('\n')
-    .map(word => word.toLowerCase())
-    .filter(word => {
-      // Basic length and character validation
-      if (word.length < MIN_WORD_LENGTH || 
-          word.length > MAX_WORD_LENGTH || 
-          !/^[a-z]+$/.test(word)) {
+  words.filter(word => {
+    // Basic length and character validation
+    if (word.length < MIN_WORD_LENGTH || 
+        word.length > MAX_WORD_LENGTH || 
+        !/^[a-z]+$/.test(word)) {
+      return false;
+    }
+
+    // Must contain at least one vowel
+    if (!VOWEL_PATTERN.test(word)) {
+      return false;
+    }
+
+    // Check for invalid patterns
+    for (const pattern of INVALID_PATTERNS) {
+      if (pattern.test(word)) {
         return false;
       }
+    }
 
-      // Must contain at least one vowel
-      if (!VOWEL_PATTERN.test(word)) {
-        return false;
-      }
+    // Check vowel-consonant ratio (English words typically don't have too many consonants in a row)
+    const vowelCount = (word.match(/[aeiou]/gi) || []).length;
+    const consonantCount = word.length - vowelCount;
+    if (consonantCount > vowelCount * 2.5) { // More than 2.5x consonants to vowels
+      return false;
+    }
 
-      // Check for invalid patterns
-      for (const pattern of INVALID_PATTERNS) {
-        if (pattern.test(word)) {
-          return false;
-        }
-      }
-
-      // Check vowel-consonant ratio (English words typically don't have too many consonants in a row)
-      const vowelCount = (word.match(/[aeiou]/gi) || []).length;
-      const consonantCount = word.length - vowelCount;
-      if (consonantCount > vowelCount * 2.5) { // More than 2.5x consonants to vowels
-        return false;
-      }
-
-      return true;
-    })
+    return true;
+  })
 );
 
 class GameDictionary {
