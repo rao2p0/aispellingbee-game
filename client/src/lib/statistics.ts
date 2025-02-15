@@ -76,6 +76,15 @@ export function getTotalWordsFound(): number {
   return stats.reduce((acc, curr) => acc + curr.wordsFound.length, 0);
 }
 
+export function resetTodayGameStats() {
+  const stats = getGameStats();
+  const today = getDateString(new Date());
+  const filteredStats = stats.filter(stat => 
+    getDateString(new Date(stat.date)) !== today
+  );
+  localStorage.setItem(STATS_KEY, JSON.stringify(filteredStats));
+}
+
 export function getWordLengthDistribution(): { length: number; count: number }[] {
   const stats = getGameStats();
   if (stats.length === 0) return [];

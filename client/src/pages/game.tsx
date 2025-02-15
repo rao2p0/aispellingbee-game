@@ -15,6 +15,17 @@ export default function Game() {
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState<string[]>([]);
+
+  const handleRestart = () => {
+    resetTodayGameStats();
+    setScore(0);
+    setFoundWords([]);
+    setCurrentWord("");
+    toast({
+      title: "Game Reset",
+      description: "Your progress has been reset. Good luck!",
+    });
+  };
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
@@ -144,6 +155,12 @@ export default function Game() {
               foundWords={foundWords.length}
               totalWords={puzzle.validWords.length}
             />
+            <button
+              onClick={handleRestart}
+              className="w-full mt-4 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+            >
+              Restart Game
+            </button>
           </CardContent>
         </Card>
       </motion.div>
