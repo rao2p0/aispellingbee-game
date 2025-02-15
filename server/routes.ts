@@ -14,6 +14,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(puzzle);
   });
 
+  // Debug endpoint to show valid words
+  app.get("/api/puzzle/words", async (_req, res) => {
+    const puzzle = await storage.getDailyPuzzle();
+    res.json({
+      letters: puzzle.letters,
+      centerLetter: puzzle.centerLetter,
+      validWords: puzzle.validWords.sort(),
+      totalWords: puzzle.validWords.length,
+      points: puzzle.points
+    });
+  });
+
   app.post("/api/validate", async (req, res) => {
     const result = wordSubmissionSchema.safeParse(req.body);
     if (!result.success) {
