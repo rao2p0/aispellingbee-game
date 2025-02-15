@@ -16,17 +16,56 @@ const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
 const VOWEL_PATTERN = /[aeiou]/i;
 
+// Patterns that suggest non-English or uncommon words
+const INVALID_PATTERNS = [
+  /[aeiou]{4,}/i,  // Too many consecutive vowels
+  /[bcdfghjklmnpqrstvwxyz]{5,}/i,  // Too many consecutive consonants
+  /^x[aeiou]/i,  // Words starting with 'x' followed by vowel are often Greek
+  /^pf/i,  // Words starting with 'pf' are often German
+  /^ts/i,  // Words starting with 'ts' are often foreign
+  /^[jkqxyz]/i,  // Words starting with uncommon letters
+  /q[^u]/i,  // 'q' not followed by 'u' (except 'q' at end)
+  /[qwrtpsdfghjklzxcvbnm]{3}$/i,  // Three consonants at end
+  /sch|tsch/i,  // German patterns
+  /dz|cz|sz/i,  // Slavic patterns
+  /^mc|^o'/i,  // Celtic patterns
+  /gue$|que$/i,  // French patterns
+  /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
+];
+
 // Load the word list once at startup
 const WORDS = new Set(
   fs.readFileSync(path.resolve(__dirname, wordList), 'utf8')
     .split('\n')
     .map(word => word.toLowerCase())
     .filter(word => {
-      // Filter out words that don't meet our criteria
-      return word.length >= MIN_WORD_LENGTH && 
-             word.length <= MAX_WORD_LENGTH &&
-             VOWEL_PATTERN.test(word) &&
-             /^[a-z]+$/.test(word);
+      // Basic length and character validation
+      if (word.length < MIN_WORD_LENGTH || 
+          word.length > MAX_WORD_LENGTH || 
+          !/^[a-z]+$/.test(word)) {
+        return false;
+      }
+
+      // Must contain at least one vowel
+      if (!VOWEL_PATTERN.test(word)) {
+        return false;
+      }
+
+      // Check for invalid patterns
+      for (const pattern of INVALID_PATTERNS) {
+        if (pattern.test(word)) {
+          return false;
+        }
+      }
+
+      // Check vowel-consonant ratio (English words typically don't have too many consonants in a row)
+      const vowelCount = (word.match(/[aeiou]/gi) || []).length;
+      const consonantCount = word.length - vowelCount;
+      if (consonantCount > vowelCount * 2.5) { // More than 2.5x consonants to vowels
+        return false;
+      }
+
+      return true;
     })
 );
 
