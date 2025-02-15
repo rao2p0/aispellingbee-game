@@ -1,24 +1,32 @@
 import { puzzles, type Puzzle } from "@shared/schema";
+import wordList from "word-list";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from 'url';
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
 const VOWELS = 'EAIOU';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load the word list once at startup
+const WORDS = new Set(
+  fs.readFileSync(path.resolve(__dirname, wordList), 'utf8')
+    .split('\n')
+    .map(word => word.toLowerCase())
+);
+
 class GameDictionary {
   constructor() {
-    console.log('Dictionary initialized with simple validation');
+    console.log(`Dictionary initialized with ${WORDS.size} words`);
   }
 
   isValidWord(word: string): boolean {
-    // Basic validation rules:
-    // 1. Must be at least 4 letters
-    // 2. Must contain only letters
-    // 3. Must be a reasonable length (under 15 letters)
     const normalizedWord = word.toLowerCase();
-    if (normalizedWord.length < 4 || normalizedWord.length > 15) {
-      return false;
-    }
-    return /^[a-z]+$/.test(normalizedWord);
+    // Must be at least 4 letters and exist in the word list
+    return normalizedWord.length >= 4 && WORDS.has(normalizedWord);
   }
 
   filterValidWords(letters: string, centerLetter: string): string[] {
@@ -31,33 +39,15 @@ class GameDictionary {
     const allLetters = (letters + centerLetter).toLowerCase();
     const words: string[] = [];
 
-    // Generate all possible 4-letter combinations
-    for (let i = 0; i < letters.length; i++) {
-      for (let j = 0; j < letters.length; j++) {
-        for (let k = 0; k < letters.length; k++) {
-          const word = centerLetter + letters[i] + letters[j] + letters[k];
-          if (this.isWordPossible(word, letters, centerLetter)) {
-            words.push(word);
-          }
-        }
+    // Instead of generating all possible combinations,
+    // we'll filter the word list based on our letters
+    for (const word of WORDS) {
+      if (this.isWordPossible(word, letters, centerLetter)) {
+        words.push(word);
       }
     }
 
-    // Generate 5-letter combinations
-    for (let i = 0; i < letters.length; i++) {
-      for (let j = 0; j < letters.length; j++) {
-        for (let k = 0; k < letters.length; k++) {
-          for (let l = 0; l < letters.length; l++) {
-            const word = centerLetter + letters[i] + letters[j] + letters[k] + letters[l];
-            if (this.isWordPossible(word, letters, centerLetter)) {
-              words.push(word);
-            }
-          }
-        }
-      }
-    }
-
-    return Array.from(new Set(words)); // Remove duplicates
+    return words;
   }
 
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
@@ -101,7 +91,7 @@ class GameDictionary {
   }
 }
 
-// Initialize dictionary with simple validation
+// Initialize dictionary with word list
 const DICTIONARY = new GameDictionary();
 
 export interface IStorage {
