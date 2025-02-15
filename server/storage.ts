@@ -11,36 +11,50 @@ const VOWELS = 'EAIOU';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Additional validation rules
+const MIN_WORD_LENGTH = 4;
+const MAX_WORD_LENGTH = 15;
+const VOWEL_PATTERN = /[aeiou]/i;
+
 // Load the word list once at startup
 const WORDS = new Set(
   fs.readFileSync(path.resolve(__dirname, wordList), 'utf8')
     .split('\n')
     .map(word => word.toLowerCase())
+    .filter(word => {
+      // Filter out words that don't meet our criteria
+      return word.length >= MIN_WORD_LENGTH && 
+             word.length <= MAX_WORD_LENGTH &&
+             VOWEL_PATTERN.test(word) &&
+             /^[a-z]+$/.test(word);
+    })
 );
 
 class GameDictionary {
   constructor() {
-    console.log(`Dictionary initialized with ${WORDS.size} words`);
+    console.log(`Dictionary initialized with ${WORDS.size} filtered words`);
   }
 
   isValidWord(word: string): boolean {
     const normalizedWord = word.toLowerCase();
-    // Must be at least 4 letters and exist in the word list
-    return normalizedWord.length >= 4 && WORDS.has(normalizedWord);
+    // Must be at least 4 letters and exist in our filtered word list
+    return normalizedWord.length >= MIN_WORD_LENGTH && WORDS.has(normalizedWord);
   }
 
   filterValidWords(letters: string, centerLetter: string): string[] {
     console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
     const possibleWords = this.generatePossibleWords(letters, centerLetter);
-    return possibleWords.filter(word => this.isValidWord(word));
+    console.log(`Found ${possibleWords.length} possible words before filtering`);
+    const validWords = possibleWords.filter(word => this.isValidWord(word));
+    console.log(`Found ${validWords.length} valid words after filtering`);
+    return validWords;
   }
 
   private generatePossibleWords(letters: string, centerLetter: string): string[] {
     const allLetters = (letters + centerLetter).toLowerCase();
     const words: string[] = [];
 
-    // Instead of generating all possible combinations,
-    // we'll filter the word list based on our letters
+    // Filter words from our dictionary that could be made with these letters
     for (const word of WORDS) {
       if (this.isWordPossible(word, letters, centerLetter)) {
         words.push(word);
@@ -54,11 +68,6 @@ class GameDictionary {
     const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
     const normalizedLetters = letters.toLowerCase();
-
-    // Word must be at least 4 letters long
-    if (normalizedWord.length < 4) {
-      return false;
-    }
 
     // Word must contain the center letter
     if (!normalizedWord.includes(normalizedCenter)) {
@@ -82,7 +91,7 @@ class GameDictionary {
     let isValid = true;
     wordFreq.forEach((needed, char) => {
       const available = availableLetters.get(char) || 0;
-      if (needed > available) {
+      if (needed > available || !availableLetters.has(char)) {
         isValid = false;
       }
     });
@@ -138,6 +147,12 @@ export class MemStorage implements IStorage {
 
     // Generate valid words
     const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+
+    // Retry if we don't have enough valid words
+    if (validWords.length < 5) {
+      console.log(`Not enough valid words (${validWords.length}), retrying...`);
+      return this.generateLetterSet();
+    }
 
     return { letters, centerLetter, validWords };
   }
