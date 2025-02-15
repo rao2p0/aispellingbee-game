@@ -20,29 +20,25 @@ class GameDictionary {
     const normalizedLetters = letters.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
 
-    // Create letter frequency map for available letters
-    const availableLetters = new Map<string, number>();
-    normalizedLetters.split('').forEach(letter => {
-      availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
-    });
-    // Center letter can be used multiple times
-    availableLetters.set(normalizedCenter, 999);
-
     return Array.from(this.words).filter(word => {
+      // Word must be at least 4 letters long and contain the center letter
       if (word.length < 4) return false;
       if (!word.includes(normalizedCenter)) return false;
 
-      // Check if all letters in the word are available
-      const wordFreq = new Map<string, number>();
-      for (const char of word) {
-        wordFreq.set(char, (wordFreq.get(char) || 0) + 1);
+      // Create letter frequency map for the word
+      const letterCount = new Map<string, number>();
+      for (const letter of word) {
+        letterCount.set(letter, (letterCount.get(letter) || 0) + 1);
       }
 
-      for (const [char, needed] of wordFreq.entries()) {
-        const available = availableLetters.get(char) || 0;
-        if (char !== normalizedCenter && needed > available) {
-          return false;
-        }
+      // Check if each letter in the word can be formed using available letters
+      for (const [letter, count] of letterCount.entries()) {
+        if (letter === normalizedCenter) continue; // Center letter can be used multiple times
+        if (!normalizedLetters.includes(letter)) return false;
+
+        // Count occurrences of the letter in available letters
+        const availableCount = normalizedLetters.split('').filter(l => l === letter).length;
+        if (count > availableCount) return false;
       }
 
       return true;
@@ -215,6 +211,10 @@ export class MemStorage implements IStorage {
     if (!puzzle) return false;
 
     const normalizedWord = word.toLowerCase();
+    const normalizedPuzzleLetters = puzzle.letters.toLowerCase();
+    const normalizedCenterLetter = puzzle.centerLetter.toLowerCase();
+
+    // Check if the word is in the valid words list
     return puzzle.validWords.includes(normalizedWord);
   }
 }
