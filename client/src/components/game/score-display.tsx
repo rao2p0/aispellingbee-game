@@ -24,7 +24,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
           animate={{ scale: 1 }}
           transition={{ duration: 0.2 }}
         >
-          <Progress value={scorePercentage} className="h-2" />
+          <Progress value={scorePercentage} className="h-2 bg-muted dark:bg-muted/20" />
         </motion.div>
       </div>
 
@@ -40,7 +40,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
         >
           <Progress 
             value={wordsPercentage} 
-            className="h-2 bg-muted/20"
+            className="h-2 bg-muted dark:bg-muted/20"
           />
         </motion.div>
       </div>

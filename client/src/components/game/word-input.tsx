@@ -68,12 +68,12 @@ export default function WordInput({
             className={`text-2xl font-medium tracking-wider ${
               isError ? "text-destructive" : 
               alreadyFound ? "text-muted-foreground" : 
-              "text-foreground"
+              "text-primary dark:text-primary-foreground"
             }`}
           >
             {value}
             {!value && (
-              <span className="inline-block w-[2px] h-6 bg-foreground animate-pulse" />
+              <span className="inline-block w-[2px] h-6 bg-primary dark:bg-primary-foreground animate-pulse" />
             )}
           </motion.div>
         </AnimatePresence>
