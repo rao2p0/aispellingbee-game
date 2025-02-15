@@ -31,7 +31,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
       <div className="space-y-2">
         <div className="flex justify-between text-sm font-medium">
           <span className="text-foreground">Words Found: {foundWords}</span>
-          <span className="text-muted-foreground">Total Words: {totalWords}</span>
+          <span className="text-muted-foreground">Max Words: {totalWords}</span>
         </div>
         <motion.div
           initial={{ scale: 0.95 }}
