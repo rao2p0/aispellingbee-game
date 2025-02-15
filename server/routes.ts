@@ -14,7 +14,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(puzzle);
   });
 
-  // Debug endpoint to show valid words
   app.get("/api/puzzle/words", async (_req, res) => {
     const puzzle = await storage.getDailyPuzzle();
     res.json({
@@ -32,8 +31,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(400).json({ error: "Invalid word" });
     }
 
-    const isValid = await storage.validateWord(result.data.word, result.data.puzzleId);
-    res.json({ valid: isValid });
+    try {
+      const isValid = await storage.validateWord(result.data.word, result.data.puzzleId);
+      res.json({ valid: isValid });
+    } catch (error) {
+      console.error('Error validating word:', error);
+      res.status(500).json({ error: "Error validating word" });
+    }
   });
 
   const httpServer = createServer(app);
