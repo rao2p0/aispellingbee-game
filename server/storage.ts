@@ -81,11 +81,16 @@ export class MemStorage implements IStorage {
   }
 
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
+    const normalizedWord = word.toLowerCase();
+
+    // Word must be in dictionary
+    if (!DICTIONARY.has(normalizedWord)) return false;
+
     // Word must be at least 4 letters long
-    if (word.length < 4) return false;
+    if (normalizedWord.length < 4) return false;
 
     // Word must contain the center letter
-    if (!word.includes(centerLetter.toLowerCase())) return false;
+    if (!normalizedWord.includes(centerLetter.toLowerCase())) return false;
 
     // Count available letters
     const letterCounts = new Map<string, number>();
@@ -94,7 +99,7 @@ export class MemStorage implements IStorage {
     });
 
     // Check if word can be formed from available letters
-    const wordLetters = word.toLowerCase().split('');
+    const wordLetters = normalizedWord.split('');
     for (const letter of wordLetters) {
       const count = letterCounts.get(letter) || 0;
       if (count === 0) return false;
@@ -105,11 +110,8 @@ export class MemStorage implements IStorage {
   }
 
   async getDailyPuzzle(): Promise<Puzzle> {
-    // Generate a new puzzle if one doesn't exist
-    if (!this.puzzles.has(this.currentPuzzleId - 1)) {
-      return this.generateNewPuzzle();
-    }
-    return this.puzzles.get(this.currentPuzzleId - 1)!;
+    // Always generate a new puzzle when requested
+    return this.generateNewPuzzle();
   }
 
   async validateWord(word: string, puzzleId: number): Promise<boolean> {
@@ -117,33 +119,6 @@ export class MemStorage implements IStorage {
     if (!puzzle) return false;
 
     const normalizedWord = word.toLowerCase();
-
-    // Check if word is at least 4 letters long
-    if (normalizedWord.length < 4) {
-      return false;
-    }
-
-    // Check if the word contains the center letter
-    if (!normalizedWord.includes(puzzle.centerLetter.toLowerCase())) {
-      return false;
-    }
-
-    // Create a map of available letters and their counts from the puzzle
-    const letterCounts = new Map<string, number>();
-    (puzzle.letters + puzzle.centerLetter).toLowerCase().split('').forEach(letter => {
-      letterCounts.set(letter, (letterCounts.get(letter) || 0) + 1);
-    });
-
-    // Check if each letter in the word can be formed from available letters
-    for (const letter of normalizedWord) {
-      const availableCount = letterCounts.get(letter) || 0;
-      if (availableCount === 0) {
-        return false;
-      }
-      letterCounts.set(letter, availableCount - 1);
-    }
-
-    // Check if the word exists in the valid words list
     return puzzle.validWords.includes(normalizedWord);
   }
 }
