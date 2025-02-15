@@ -77,10 +77,11 @@ export default function Statistics() {
                   />
                   <YAxis 
                     label={{ value: "Number of Words", angle: -90, position: "insideLeft", offset: 10 }}
-                    tickFormatter={(value) => Math.round(value)}
+                    tickFormatter={(value) => String(Math.floor(value))}
+                    allowDecimals={false}
                   />
                   <Tooltip 
-                    formatter={(value) => [Math.round(Number(value)), "Words"]}
+                    formatter={(value) => [String(Math.floor(Number(value))), "Words"]}
                   />
                   <Bar dataKey="count" fill="hsl(var(--primary))" />
                 </BarChart>
