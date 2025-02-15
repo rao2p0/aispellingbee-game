@@ -1,16 +1,18 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
-import { saveGameStats, getTodayGameStats } from "@/lib/statistics";
+import { saveGameStats, getTodayGameStats, resetTodayGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
+import { apiRequest } from "@/lib/api";
 
 export default function Game() {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
@@ -117,6 +119,17 @@ export default function Game() {
     },
   });
 
+  const newGameMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/puzzle/new");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/puzzle"] });
+      handleRestart();
+    },
+  });
+
   const handleLetterClick = (letter: string) => {
     if (!isError && !alreadyFound) {
       setCurrentWord((prev) => prev + letter.toLowerCase());
@@ -160,6 +173,12 @@ export default function Game() {
               className="w-full mt-4 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
             >
               Restart Game
+            </button>
+            <button
+              onClick={() => newGameMutation.mutate()}
+              className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              New Game
             </button>
           </CardContent>
         </Card>

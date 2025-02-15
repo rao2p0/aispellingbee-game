@@ -9,6 +9,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(puzzle);
   });
 
+  app.post("/api/puzzle/new", async (_req, res) => {
+    const puzzle = await storage.getDailyPuzzle(); 
+    res.json(puzzle);
+  });
+
   app.post("/api/validate", async (req, res) => {
     const result = wordSubmissionSchema.safeParse(req.body);
     if (!result.success) {
