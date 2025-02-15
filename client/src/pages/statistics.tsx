@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 import { Trophy, Star, BookOpen } from "lucide-react";
 import { getBestScore, getAverageScore, getTotalWordsFound, getWordLengthDistribution } from "@/lib/statistics";
@@ -27,13 +27,13 @@ const StatisticCard = ({ title, value, icon, description }: StatCard) => (
 );
 
 export default function Statistics() {
-  const bestScore = getBestScore();
-  const averageScore = getAverageScore();
+  const bestScore = Math.round(getBestScore());
+  const averageScore = Math.round(getAverageScore());
   const totalWordsFound = getTotalWordsFound();
   const wordLengthData = getWordLengthDistribution();
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -64,19 +64,27 @@ export default function Statistics() {
             <CardTitle>Word Length Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px] w-full">
-              <BarChart
-                width={800}
-                height={300}
-                data={wordLengthData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="length" label={{ value: "Word Length", position: "bottom" }} />
-                <YAxis label={{ value: "Number of Words", angle: -90, position: "left" }} />
-                <Tooltip />
-                <Bar dataKey="count" fill="hsl(var(--primary))" />
-              </BarChart>
+            <div className="w-full" style={{ height: '300px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={wordLengthData}
+                  margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="length" 
+                    label={{ value: "Word Length", position: "bottom", offset: 0 }}
+                  />
+                  <YAxis 
+                    label={{ value: "Number of Words", angle: -90, position: "insideLeft", offset: 10 }}
+                    tickFormatter={(value) => Math.round(value)}
+                  />
+                  <Tooltip 
+                    formatter={(value) => [Math.round(Number(value)), "Words"]}
+                  />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
