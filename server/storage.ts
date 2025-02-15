@@ -2,7 +2,7 @@ import { puzzles, type Puzzle } from "@shared/schema";
 
 const DICTIONARY = new Set([
   "hold", "word", "lord", "world", "whole", "droll", 
-  "howl", "door", "rode", "roll", "doll", "wore", "hell"
+  "howl", "door", "rode", "roll", "doll", "wore"
 ]);
 
 export interface IStorage {
@@ -21,7 +21,7 @@ export class MemStorage implements IStorage {
       letters: "HLOWRDE",
       centerLetter: "L",
       validWords: Array.from(DICTIONARY),
-      points: 100,
+      points: Array.from(DICTIONARY).reduce((total, word) => total + Math.max(1, word.length - 3), 0),
     };
     this.puzzles.set(1, samplePuzzle);
   }
@@ -46,24 +46,19 @@ export class MemStorage implements IStorage {
       return false;
     }
 
-    // Create a map of available letters and their counts
+    // Create a map of available letters and their counts from the puzzle
     const letterCounts = new Map<string, number>();
     (puzzle.letters + puzzle.centerLetter).toLowerCase().split('').forEach(letter => {
       letterCounts.set(letter, (letterCounts.get(letter) || 0) + 1);
     });
 
     // Check if each letter in the word can be formed from available letters
-    const wordLetterCounts = new Map<string, number>();
-    normalizedWord.split('').forEach(letter => {
-      wordLetterCounts.set(letter, (wordLetterCounts.get(letter) || 0) + 1);
-    });
-
-    // Verify letter counts
-    for (const [letter, count] of wordLetterCounts) {
+    for (const letter of normalizedWord) {
       const availableCount = letterCounts.get(letter) || 0;
-      if (count > availableCount) {
+      if (availableCount === 0) {
         return false;
       }
+      letterCounts.set(letter, availableCount - 1);
     }
 
     // Check if the word exists in the valid words list
