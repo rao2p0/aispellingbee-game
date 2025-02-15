@@ -23,10 +23,13 @@ export default function WordInput({
       if (isSubmitting) return;
 
       if (e.key === "Enter" && value.length >= 4) {
+        e.preventDefault(); // Prevent the event from bubbling up
         onSubmit(value);
       } else if (e.key === "Backspace") {
+        e.preventDefault(); // Prevent the event from bubbling up
         onChange(value.slice(0, -1));
       } else if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
+        e.preventDefault(); // Prevent the event from bubbling up
         onChange(value + e.key.toLowerCase());
       }
     };
