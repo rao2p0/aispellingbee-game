@@ -131,28 +131,19 @@ export default function Game() {
       const res = await apiRequest("POST", "/api/puzzle/new");
       return res.json();
     },
-    onMutate: async () => {
-      setIsNewGameLoading(true);
-      // Cancel any outgoing refetches so they don't overwrite our optimistic update
-      await queryClient.cancelQueries({ queryKey: ["/api/puzzle"] });
-    },
-    onSuccess: async (newPuzzle) => {
-      // Invalidate the cache first
-      await queryClient.invalidateQueries({ queryKey: ["/api/puzzle"] });
-      // Then set the new data
-      queryClient.setQueryData(["/api/puzzle"], newPuzzle);
-      // Reset game state
+    onSuccess: async () => {
       handleRestart();
-      // Force a refetch to ensure we have the latest data
-      await refetch();
-    },
-    onSettled: () => {
-      setIsNewGameLoading(false);
-    },
+      // Invalidate and refetch in a single step
+      await queryClient.invalidateQueries({ 
+        queryKey: ["/api/puzzle"],
+        refetchType: "active",
+        exact: true
+      });
+    }
   });
 
   const handleNewGame = async () => {
-    if (isNewGameLoading) return;
+    if (newGameMutation.isPending) return;
     await newGameMutation.mutateAsync();
   };
 
@@ -202,10 +193,10 @@ export default function Game() {
             </button>
             <button
               onClick={handleNewGame}
-              disabled={isNewGameLoading || newGameMutation.isPending}
+              disabled={newGameMutation.isPending}
               className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isNewGameLoading || newGameMutation.isPending ? "Loading..." : "New Game"}
+              {newGameMutation.isPending ? "Loading..." : "New Game"}
             </button>
           </CardContent>
         </Card>
