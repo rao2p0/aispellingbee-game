@@ -15,19 +15,21 @@ function Navigation() {
   const [location] = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-background border-b p-4 z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-primary/10 backdrop-blur-sm border-b border-primary/20 p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Spell Bee</h1>
+        <h1 className="text-xl font-bold text-primary">Spell Bee</h1>
         <div className="flex items-center space-x-4">
           <Button
             variant={location === "/" ? "default" : "ghost"}
             asChild
+            className={location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"}
           >
             <Link href="/">Game</Link>
           </Button>
           <Button
             variant={location === "/statistics" ? "default" : "ghost"}
             asChild
+            className={location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"}
           >
             <Link href="/statistics">Statistics</Link>
           </Button>
