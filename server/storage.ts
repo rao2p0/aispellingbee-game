@@ -93,7 +93,7 @@ const DICTIONARY = new GameDictionary([
   "plan", "play", "plot", "plus", "port", "post", "pull", "pure", "push", "race",
   "rail", "rain", "rank", "rare", "rate", "read", "real", "rear", "rest", "rice",
   "rich", "ride", "ring", "rise", "risk", "road", "rock", "role", "roll", "roof",
-  "room", "root", "rose", "rule", "rush", "safe", "said", "sake", "sale", "salt",
+  "room", "root", "rose", "rule", "rush", "safe", "sage", "said", "sake", "sale", "salt",
   "same", "sand", "save", "seat", "seed", "seek", "seem", "seen", "self", "sell",
   "send", "sent", "sept", "ship", "shop", "shot", "show", "shut", "sick", "side",
   "sign", "site", "size", "skin", "slip", "slow", "snow", "soft", "soil", "sold",
