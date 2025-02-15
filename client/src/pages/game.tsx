@@ -97,10 +97,15 @@ export default function Game() {
 
   const validateMutation = useMutation({
     mutationFn: async (word: string) => {
+      if (!puzzle) throw new Error("No puzzle loaded");
+
       const res = await fetch("/api/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ word }),
+        body: JSON.stringify({ 
+          word,
+          puzzleId: puzzle.id 
+        }),
       });
       return res.json();
     },

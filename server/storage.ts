@@ -205,6 +205,7 @@ export class MemStorage implements IStorage {
       points,
     };
 
+    // Store the new puzzle with its ID
     this.puzzles.set(puzzle.id, puzzle);
     return puzzle;
   }

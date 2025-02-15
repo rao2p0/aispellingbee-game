@@ -16,6 +16,7 @@ export type Puzzle = typeof puzzles.$inferSelect;
 
 export const wordSubmissionSchema = z.object({
   word: z.string().min(4),
+  puzzleId: z.number(),
 });
 
 export type WordSubmission = z.infer<typeof wordSubmissionSchema>;

@@ -10,7 +10,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/puzzle/new", async (_req, res) => {
-    const puzzle = await storage.generateNewPuzzle(); // Call specific method for new puzzle
+    const puzzle = await storage.generateNewPuzzle();
     res.json(puzzle);
   });
 
@@ -20,7 +20,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(400).json({ error: "Invalid word" });
     }
 
-    const isValid = await storage.validateWord(result.data.word, 1);
+    const isValid = await storage.validateWord(result.data.word, result.data.puzzleId);
     res.json({ valid: isValid });
   });
 
