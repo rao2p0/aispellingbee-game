@@ -2,6 +2,8 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 import NotFound from "@/pages/not-found";
 import Game from "@/pages/game";
 import Statistics from "@/pages/statistics";
@@ -15,7 +17,7 @@ function Navigation() {
     <nav className="fixed top-0 left-0 right-0 bg-background border-b p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">Spell Bee</h1>
-        <div className="space-x-4">
+        <div className="flex items-center space-x-4">
           <Button
             variant={location === "/" ? "default" : "ghost"}
             asChild
@@ -28,6 +30,7 @@ function Navigation() {
           >
             <Link href="/statistics">Statistics</Link>
           </Button>
+          <ThemeToggle />
         </div>
       </div>
     </nav>
@@ -46,13 +49,15 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Navigation />
-      <main className="pt-16">
-        <Router />
-      </main>
-      <Toaster />
-    </QueryClientProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <QueryClientProvider client={queryClient}>
+        <Navigation />
+        <main className="pt-16">
+          <Router />
+        </main>
+        <Toaster />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
