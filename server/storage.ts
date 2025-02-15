@@ -78,7 +78,7 @@ export class MemStorage implements IStorage {
     }
 
     // Fill the rest with consonants
-    while (letters.length < 7) {
+    while (letters.length < 6) {
       const consonant = CONSONANTS[Math.floor(Math.random() * CONSONANTS.length)];
       if (!letters.includes(consonant)) {
         letters.push(consonant);
@@ -93,16 +93,24 @@ export class MemStorage implements IStorage {
     let bestLetter = letters[0];
     let maxWords = 0;
 
-    for (const letter of letters) {
+    // Try each letter as the center letter
+    const allLetters = letters.split('');
+    for (const letter of allLetters) {
       const wordCount = Array.from(DICTIONARY).filter(word =>
         word.toLowerCase().includes(letter.toLowerCase()) &&
-        this.canMakeWordFromLetters(word, letters)
+        this.canMakeWordFromLetters(word, letters + letter)
       ).length;
 
       if (wordCount > maxWords) {
         maxWords = wordCount;
         bestLetter = letter;
       }
+    }
+
+    // If no good center letter found among existing letters, generate a new one
+    if (maxWords < 5) {
+      const newLetter = CONSONANTS[Math.floor(Math.random() * CONSONANTS.length)];
+      return newLetter;
     }
 
     return bestLetter;
@@ -148,21 +156,39 @@ export class MemStorage implements IStorage {
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
-    // Clear the previous puzzle to ensure we don't return it again
+    // Clear all previous puzzles
     this.puzzles.clear();
 
     let letters: string;
     let centerLetter: string;
     let validWords: string[];
+    let attempts = 0;
+    const maxAttempts = 10;
 
     // Keep generating until we get a good set of letters
     do {
       letters = this.generateLetterSet();
-      // Pick a letter that appears in many words as the center letter
       centerLetter = this.findBestCenterLetter(letters);
+
+      // Ensure center letter is not in the main letters
+      if (letters.includes(centerLetter)) {
+        letters = letters.replace(centerLetter, '');
+      }
+
       validWords = Array.from(DICTIONARY).filter(word =>
         this.isWordPossible(word, letters, centerLetter)
       );
+
+      attempts++;
+      // If we've tried too many times, force a new set of letters
+      if (attempts >= maxAttempts) {
+        letters = this.generateLetterSet();
+        centerLetter = VOWELS[Math.floor(Math.random() * VOWELS.length)];
+        validWords = Array.from(DICTIONARY).filter(word =>
+          this.isWordPossible(word, letters, centerLetter)
+        );
+        break;
+      }
     } while (validWords.length < 10); // Ensure at least 10 valid words are possible
 
     // Calculate total possible points
