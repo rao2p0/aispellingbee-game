@@ -61,86 +61,34 @@ const WORDS = new Set(
 );
 
 class GameDictionary {
-  constructor() {
-    console.log(`Dictionary initialized with ${WORDS.size} filtered words`);
-  }
-
-  isValidWord(word: string): boolean {
-    const normalizedWord = word.toLowerCase();
-    // Must be at least 4 letters and exist in our filtered word list
-    return normalizedWord.length >= MIN_WORD_LENGTH && WORDS.has(normalizedWord);
-  }
-
   filterValidWords(letters: string, centerLetter: string): string[] {
-    console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
-    const possibleWords = this.generatePossibleWords(letters, centerLetter);
-    console.log(`Found ${possibleWords.length} possible words before filtering`);
-    const validWords = possibleWords.filter(word => this.isValidWord(word));
-    console.log(`Found ${validWords.length} valid words after filtering`);
-    return validWords;
-  }
-
-  private generatePossibleWords(letters: string, centerLetter: string): string[] {
     const allLetters = (letters + centerLetter).toLowerCase();
-    const words: string[] = [];
-
-    // Filter words from our dictionary that could be made with these letters
-    for (const word of WORDS) {
-      if (this.isWordPossible(word, allLetters, centerLetter.toLowerCase())) {
-        words.push(word);
-      }
-    }
-
-    return words;
+    const centerLetterLower = centerLetter.toLowerCase();
+    
+    return Array.from(WORDS).filter(word => 
+      word.length >= MIN_WORD_LENGTH &&
+      word.includes(centerLetterLower) &&
+      this.canMakeWord(word, allLetters)
+    );
   }
 
-  private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
-    const normalizedWord = word.toLowerCase();
-    const normalizedCenter = centerLetter.toLowerCase();
-
-    // Word must contain the center letter
-    if (!normalizedWord.includes(normalizedCenter)) {
-      return false;
+  private canMakeWord(word: string, letters: string): boolean {
+    const letterFreq = new Map<string, number>();
+    for (const letter of letters) {
+      letterFreq.set(letter, (letterFreq.get(letter) || 0) + 1);
     }
 
-    // Create letter frequency map for available letters
-    const availableLetters = new Map<string, number>();
-    letters.split('').forEach(letter => {
-      availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
-    });
-
-    // Count required letters in the word
-    const wordFreq = new Map<string, number>();
-    for (const char of normalizedWord) {
-      wordFreq.set(char, (wordFreq.get(char) || 0) + 1);
+    for (const char of word) {
+      const available = letterFreq.get(char) || 0;
+      if (available === 0) return false;
+      letterFreq.set(char, available - 1);
     }
-
-    // Check if we have enough of each letter
-    for (const [char, needed] of wordFreq.entries()) {
-      const available = availableLetters.get(char) || 0;
-      if (needed > available) {
-        return false;
-      }
-    }
-
+    
     return true;
   }
 
-  testWordValidation(word: string, letters: string, centerLetter: string): boolean {
-    console.log("\nTesting word validation:");
-    console.log(`Word: ${word}`);
-    console.log(`Letters: ${letters}`);
-    console.log(`Center letter: ${centerLetter}`);
-
-    const normalizedWord = word.toLowerCase();
-    const normalizedLetters = letters.toLowerCase();
-    const normalizedCenter = centerLetter.toLowerCase();
-    const allLetters = normalizedLetters + normalizedCenter;
-
-    console.log(`All available letters: ${allLetters}`);
-    const result = this.isWordPossible(normalizedWord, allLetters, normalizedCenter);
-    console.log(`Validation result: ${result}`);
-    return result;
+  validateWord(word: string, letters: string, centerLetter: string): boolean {
+    return this.filterValidWords(letters, centerLetter).includes(word.toLowerCase());
   }
 }
 
