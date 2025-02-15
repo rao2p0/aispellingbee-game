@@ -24,16 +24,33 @@ export default function Game() {
     queryKey: ["/api/puzzle"],
   });
 
-  // Restore game state from localStorage when component mounts
+  // On component mount, restore today's progress if it exists
   useEffect(() => {
     const savedStats = getTodayGameStats();
     if (savedStats) {
       setScore(savedStats.score);
       setFoundWords(savedStats.wordsFound);
+    } else {
+      // Reset score and found words if no saved progress for today
+      setScore(0);
+      setFoundWords([]);
     }
   }, []);
 
-  // Clear celebration after 2 seconds
+  // Save stats whenever score or foundWords changes
+  useEffect(() => {
+    if (puzzle && score > 0) {  // Only save if there's a score to save
+      saveGameStats({
+        date: new Date().toISOString(),
+        score,
+        wordsFound: foundWords,
+        totalPossibleWords: puzzle.validWords.length,
+        totalPossiblePoints: puzzle.points,
+      });
+    }
+  }, [score, foundWords, puzzle]);
+
+  // Clear celebration after animation
   useEffect(() => {
     if (celebration) {
       const timer = setTimeout(() => {
@@ -43,7 +60,7 @@ export default function Game() {
     }
   }, [celebration]);
 
-  // Clear error state and word after showing error animation
+  // Clear error state after animation
   useEffect(() => {
     if (isError) {
       const timer = setTimeout(() => {
@@ -54,7 +71,7 @@ export default function Game() {
     }
   }, [isError]);
 
-  // Clear already found message and word
+  // Clear already found message
   useEffect(() => {
     if (alreadyFound) {
       const timer = setTimeout(() => {
@@ -64,19 +81,6 @@ export default function Game() {
       return () => clearTimeout(timer);
     }
   }, [alreadyFound]);
-
-  // Save stats whenever score or foundWords changes
-  useEffect(() => {
-    if (puzzle && foundWords.length > 0) {
-      saveGameStats({
-        date: new Date().toISOString(),
-        score,
-        wordsFound: foundWords,
-        totalPossibleWords: puzzle.validWords.length,
-        totalPossiblePoints: puzzle.points,
-      });
-    }
-  }, [foundWords, score, puzzle]);
 
   const validateMutation = useMutation({
     mutationFn: async (word: string) => {

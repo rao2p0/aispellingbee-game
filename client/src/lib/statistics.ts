@@ -11,11 +11,16 @@ interface GameStats {
 
 const STATS_KEY = 'spell-bee-stats';
 
+// Helper function to get date string without time
+function getDateString(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
 // Get today's game stats if it exists
 export function getTodayGameStats(): GameStats | undefined {
   const stats = getGameStats();
-  const today = new Date().toDateString();
-  return stats.find(stat => new Date(stat.date).toDateString() === today);
+  const today = getDateString(new Date());
+  return stats.find(stat => getDateString(new Date(stat.date)) === today);
 }
 
 // Save stats for the current game session
@@ -23,8 +28,9 @@ export function saveGameStats(stats: Omit<GameStats, 'id'>) {
   const existingStats = getGameStats();
 
   // Remove any existing entry for today's game
+  const today = getDateString(new Date());
   const filteredStats = existingStats.filter(stat => 
-    new Date(stat.date).toDateString() !== new Date().toDateString()
+    getDateString(new Date(stat.date)) !== today
   );
 
   // Add new stats with unique ID
