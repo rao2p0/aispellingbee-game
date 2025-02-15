@@ -17,6 +17,7 @@ export default function Game() {
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [isNewGameLoading, setIsNewGameLoading] = useState(false);
 
   const handleRestart = () => {
     resetTodayGameStats();
@@ -28,6 +29,7 @@ export default function Game() {
       description: "Your progress has been reset. Good luck!",
     });
   };
+
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
@@ -127,21 +129,31 @@ export default function Game() {
   const newGameMutation = useMutation({
     mutationFn: async () => {
       const res = await apiRequest("POST", "/api/puzzle/new");
-      const data = await res.json();
-      return data;
+      return res.json();
+    },
+    onMutate: async () => {
+      setIsNewGameLoading(true);
+      // Cancel any outgoing refetches so they don't overwrite our optimistic update
+      await queryClient.cancelQueries({ queryKey: ["/api/puzzle"] });
     },
     onSuccess: async (newPuzzle) => {
-      // Manually update the cache with the new puzzle
+      // Invalidate the cache first
+      await queryClient.invalidateQueries({ queryKey: ["/api/puzzle"] });
+      // Then set the new data
       queryClient.setQueryData(["/api/puzzle"], newPuzzle);
       // Reset game state
       handleRestart();
+      // Force a refetch to ensure we have the latest data
+      await refetch();
+    },
+    onSettled: () => {
+      setIsNewGameLoading(false);
     },
   });
 
   const handleNewGame = async () => {
+    if (isNewGameLoading) return;
     await newGameMutation.mutateAsync();
-    // Force a refetch after mutation
-    await refetch();
   };
 
   const handleLetterClick = (letter: string) => {
@@ -190,10 +202,10 @@ export default function Game() {
             </button>
             <button
               onClick={handleNewGame}
-              className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-              disabled={newGameMutation.isPending}
+              disabled={isNewGameLoading || newGameMutation.isPending}
+              className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {newGameMutation.isPending ? "Loading..." : "New Game"}
+              {isNewGameLoading || newGameMutation.isPending ? "Loading..." : "New Game"}
             </button>
           </CardContent>
         </Card>
