@@ -17,7 +17,14 @@ function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-primary/10 backdrop-blur-sm border-b border-primary/20 p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold text-primary">Spell Bee</h1>
+        <Link href="/" className="flex items-center gap-2 no-underline">
+          <img 
+            src="/attached_assets/DALL·E 2025-02-14 20.13.32 - A happy, elegant bee in yellow designed as a logo for a spelling bee game website. The bee should have a friendly and cheerful expression, smooth and .webp" 
+            alt="Spell Bee Logo" 
+            className="w-8 h-8"
+          />
+          <h1 className="text-xl font-bold text-primary logo-font">Spell Bee</h1>
+        </Link>
         <div className="flex items-center space-x-4">
           <Button
             variant={location === "/" ? "default" : "ghost"}
