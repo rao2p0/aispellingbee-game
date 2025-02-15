@@ -21,7 +21,7 @@ class GameDictionary {
 
   filterValidWords(letters: string, centerLetter: string): string[] {
     console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
-    return Array.from(this.words).filter(word => 
+    return Array.from(this.words).filter(word =>
       this.isWordPossible(word, letters, centerLetter)
     );
   }
@@ -66,23 +66,26 @@ class GameDictionary {
     }
 
     // Check if we have enough of each letter
-    for (const [char, needed] of wordFreq.entries()) {
+    let isValid = true;
+    wordFreq.forEach((needed, char) => {
       const available = availableLetters.get(char) || 0;
       if (char !== normalizedCenter && needed > available) {
         console.log(`- Rejected: needs ${needed} of "${char}" but only have ${available}`);
-        return false;
+        isValid = false;
       }
-    }
+    });
 
-    console.log('- Word is valid!');
-    return true;
+    if (isValid) {
+      console.log('- Word is valid!');
+    }
+    return isValid;
   }
 }
 
 // Initialize dictionary with common English words
 const DICTIONARY = new GameDictionary([
-  "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "ball", 
-  "band", "bank", "base", "bath", "nude", "bean", "bear", "beat", "beer", "bell", 
+  "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "ball",
+  "band", "bank", "base", "bath", "nude", "bean", "bear", "beat", "beer", "bell",
   "belt", "bend", "bird", "blow", "blue", "boat", "body", "bomb", "bond", "bone",
   "book", "born", "both", "bowl", "bulk", "burn", "bush", "busy", "cake", "call",
   "calm", "came", "camp", "card", "care", "cart", "case", "cash", "cast", "cell",
@@ -156,16 +159,17 @@ export class MemStorage implements IStorage {
     this.generateNewPuzzle();
   }
 
-  private generateLetterSet(): { letters: string; centerLetter: string } {
+  private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
     let letters: string;
     let centerLetter: string;
     let attempts = 0;
-    const maxAttempts = 100; 
+    const maxAttempts = 100;
     let validWords: string[] = [];
 
     do {
       const letterArray: string[] = [];
 
+      // Ensure we have 2-3 vowels
       const numVowels = Math.floor(Math.random() * 2) + 2;
       const availableVowels = VOWELS.split('');
       for (let i = 0; i < numVowels; i++) {
@@ -174,6 +178,7 @@ export class MemStorage implements IStorage {
         letterArray.push(vowel);
       }
 
+      // Fill the rest with consonants
       const availableConsonants = CONSONANTS.split('');
       while (letterArray.length < 6) {
         const index = Math.floor(Math.random() * availableConsonants.length);
@@ -183,51 +188,33 @@ export class MemStorage implements IStorage {
 
       letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      do {
-        const isVowel = Math.random() < 0.4; 
-        const letterPool = isVowel ? VOWELS : CONSONANTS;
-        centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
-      } while (letters.includes(centerLetter));
-
-      if (this.lastLetters && this.lastCenterLetter) {
-        const commonLetters = letters.split('').filter(l => this.lastLetters!.includes(l)).length;
-        if (commonLetters > 2 || centerLetter === this.lastCenterLetter) {
-          attempts++;
-          continue;
+      // Try both vowels and consonants as center letter
+      for (let tryVowel of [true, false]) {
+        const letterPool = tryVowel ? VOWELS : CONSONANTS;
+        for (let i = 0; i < letterPool.length; i++) {
+          centerLetter = letterPool[i];
+          if (!letters.includes(centerLetter)) {
+            validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+            if (validWords.length >= 15) {
+              return { letters, centerLetter, validWords };
+            }
+          }
         }
-      }
-
-      validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-      if (validWords.length >= 15) { 
-        break;
       }
 
       attempts++;
     } while (attempts < maxAttempts);
 
-    if (validWords.length < 15) {
-      this.lastLetters = null;
-      this.lastCenterLetter = null;
-      return this.generateLetterSet();
-    }
-
-    return { letters, centerLetter };
+    // If we can't find a good set after max attempts, try again with fresh letters
+    return this.generateLetterSet();
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
     this.puzzles.clear();
 
-    let letterSet: { letters: string; centerLetter: string };
-    do {
-      letterSet = this.generateLetterSet();
-      const validWords = DICTIONARY.filterValidWords(letterSet.letters, letterSet.centerLetter);
-      if (validWords.length >= 15) {
-        break;
-      }
-    } while (true);
+    const { letters, centerLetter, validWords } = this.generateLetterSet();
 
-    const validWords = DICTIONARY.filterValidWords(letterSet.letters, letterSet.centerLetter);
-
+    // Calculate total points
     const points = validWords.reduce(
       (total, word) => total + Math.max(1, word.length - 3),
       0
@@ -235,15 +222,15 @@ export class MemStorage implements IStorage {
 
     const puzzle: Puzzle = {
       id: this.currentPuzzleId++,
-      letters: letterSet.letters,
-      centerLetter: letterSet.centerLetter,
+      letters,
+      centerLetter,
       validWords,
       points,
     };
 
     this.puzzles.set(puzzle.id, puzzle);
-    this.lastLetters = letterSet.letters;
-    this.lastCenterLetter = letterSet.centerLetter;
+    this.lastLetters = letters;
+    this.lastCenterLetter = centerLetter;
 
     return puzzle;
   }

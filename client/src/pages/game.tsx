@@ -24,10 +24,10 @@ export default function Game() {
   const [alreadyFound, setAlreadyFound] = useState(false);
 
   // Get puzzle data
-  const { data: puzzle, isLoading } = useQuery<Puzzle>({
+  const { data: puzzle } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
     staleTime: 0, // Always consider data stale
-    cacheTime: 0, // Don't cache the data
+    gcTime: 0, // Don't cache the data
   });
 
   // Mutations
@@ -37,7 +37,7 @@ export default function Game() {
       const res = await apiRequest("POST", "/api/puzzle/new");
       const data = await res.json();
       console.log("New game received:", data);
-      return data;
+      return data as Puzzle;
     },
     onSuccess: () => {
       console.log("New game mutation succeeded");
@@ -64,7 +64,7 @@ export default function Game() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ word, puzzleId: puzzle.id }),
       });
-      return res.json();
+      return res.json() as Promise<{ valid: boolean }>;
     },
     onSuccess: (data, word) => {
       if (foundWords.includes(word)) {
@@ -134,7 +134,7 @@ export default function Game() {
     }
   };
 
-  if (isLoading || !puzzle) {
+  if (!puzzle) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
