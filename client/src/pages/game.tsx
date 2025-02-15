@@ -33,7 +33,7 @@ export default function Game() {
   const [alreadyFound, setAlreadyFound] = useState(false);
 
   // Get puzzle data
-  const { data: puzzle, isLoading } = useQuery<Puzzle>({
+  const { data: puzzle, isLoading, refetch } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
   });
 
@@ -122,15 +122,22 @@ export default function Game() {
   const newGameMutation = useMutation({
     mutationFn: async () => {
       const res = await apiRequest("POST", "/api/puzzle/new");
-      return res.json();
+      const data = await res.json();
+      return data;
     },
-    onSuccess: () => {
-      // Invalidate and refetch the puzzle query
-      queryClient.invalidateQueries({ queryKey: ["/api/puzzle"] });
+    onSuccess: async (newPuzzle) => {
+      // Manually update the cache with the new puzzle
+      queryClient.setQueryData(["/api/puzzle"], newPuzzle);
       // Reset game state
       handleRestart();
     },
   });
+
+  const handleNewGame = async () => {
+    await newGameMutation.mutateAsync();
+    // Force a refetch after mutation
+    await refetch();
+  };
 
   const handleLetterClick = (letter: string) => {
     if (!isError && !alreadyFound) {
@@ -177,7 +184,7 @@ export default function Game() {
               Restart Game
             </button>
             <button
-              onClick={() => newGameMutation.mutate()}
+              onClick={handleNewGame}
               className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
               disabled={newGameMutation.isPending}
             >
