@@ -8,6 +8,7 @@ const VOWELS = 'EAIOU';
 const DICTIONARY = new Set([
   // Common 4-letter words
   "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "ball", "band", "bank", "base", "bath",
+  "nude", 
   "bean", "bear", "beat", "beer", "bell", "belt", "bend", "bird", "blow", "blue", "boat", "body", "bomb", "bond",
   "bone", "book", "born", "both", "bowl", "bulk", "burn", "bush", "busy", "cake", "call", "calm", "came", "camp",
   "card", "care", "cart", "case", "cash", "cast", "cell", "chat", "chip", "city", "club", "coal", "coat", "code",
