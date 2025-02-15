@@ -160,75 +160,62 @@ export class MemStorage implements IStorage {
   }
 
   private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
-    let letters: string;
-    let centerLetter: string;
-    let attempts = 0;
-    const maxAttempts = 50; // Reduced from 100 to prevent long loops
-    let validWords: string[] = [];
-    let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
-
     console.log("Starting letter set generation...");
+    let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
+    const attempts = 50;
 
-    while (attempts < maxAttempts) {
+    for (let i = 0; i < attempts; i++) {
+      // Generate letter set
       const letterArray: string[] = [];
 
-      // Ensure we have 2-3 vowels
+      // Add 2-3 vowels
       const numVowels = Math.floor(Math.random() * 2) + 2;
       const availableVowels = VOWELS.split('');
-      for (let i = 0; i < numVowels; i++) {
+      for (let j = 0; j < numVowels; j++) {
         const index = Math.floor(Math.random() * availableVowels.length);
-        const vowel = availableVowels.splice(index, 1)[0];
-        letterArray.push(vowel);
+        letterArray.push(availableVowels.splice(index, 1)[0]);
       }
 
-      // Fill the rest with consonants
+      // Fill rest with consonants
       const availableConsonants = CONSONANTS.split('');
       while (letterArray.length < 6) {
         const index = Math.floor(Math.random() * availableConsonants.length);
-        const consonant = availableConsonants.splice(index, 1)[0];
-        letterArray.push(consonant);
+        letterArray.push(availableConsonants.splice(index, 1)[0]);
       }
 
-      letters = letterArray.sort(() => Math.random() - 0.5).join('');
+      const letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      // Try center letters from both vowels and consonants
-      for (const tryVowel of [true, false]) {
-        const letterPool = tryVowel ? VOWELS : CONSONANTS;
-        for (let i = 0; i < letterPool.length; i++) {
-          centerLetter = letterPool[i];
-          if (!letters.includes(centerLetter)) {
-            validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-            console.log(`Attempt ${attempts + 1}: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
+      // Try each unused letter as center letter
+      const allLetters = (VOWELS + CONSONANTS).split('');
+      for (const centerLetter of allLetters) {
+        if (letters.includes(centerLetter)) continue;
 
-            // Keep track of the best attempt
-            if (!bestAttempt || validWords.length > bestAttempt.count) {
-              bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
-            }
+        const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+        console.log(`Attempt ${i + 1}: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
-            if (validWords.length >= 15) {
-              console.log(`Found valid set with ${validWords.length} words!`);
-              return { letters, centerLetter, validWords };
-            }
+        if (!bestAttempt || validWords.length > bestAttempt.count) {
+          bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
+          if (validWords.length >= 15) {
+            console.log(`Found excellent set with ${validWords.length} words!`);
+            return bestAttempt;
           }
         }
       }
-
-      attempts++;
     }
 
-    // If we couldn't find an ideal set, use the best attempt we found
-    if (bestAttempt && bestAttempt.count > 0) {
-      console.log(`Using best attempt with ${bestAttempt.count} words after ${attempts} attempts`);
-      return {
-        letters: bestAttempt.letters,
-        centerLetter: bestAttempt.centerLetter,
-        validWords: bestAttempt.validWords
+    if (!bestAttempt || bestAttempt.count === 0) {
+      console.log("No valid combinations found, using default set");
+      // Provide a guaranteed valid combination as fallback
+      const defaultSet = {
+        letters: "AEILNS",
+        centerLetter: "T",
+        validWords: DICTIONARY.filterValidWords("AEILNS", "T")
       };
+      return defaultSet;
     }
 
-    // This should rarely happen, but if it does, retry with fresh random letters
-    console.log("Failed to generate valid letter set, retrying...");
-    return this.generateLetterSet();
+    console.log(`Using best attempt found with ${bestAttempt.count} words`);
+    return bestAttempt;
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
