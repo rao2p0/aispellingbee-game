@@ -1,38 +1,30 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import { dictionaryService } from "./services/dictionary";
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
 const VOWELS = 'EAIOU';
 
-// Dictionary class to handle word management
 class GameDictionary {
   constructor() {
-    console.log('Dictionary initialized with API validation');
+    console.log('Dictionary initialized with simple validation');
   }
 
-  async isValidWord(word: string): Promise<boolean> {
+  isValidWord(word: string): boolean {
+    // Basic validation rules:
+    // 1. Must be at least 4 letters
+    // 2. Must contain only letters
+    // 3. Must be a reasonable length (under 15 letters)
     const normalizedWord = word.toLowerCase();
-    const isValid = await dictionaryService.isValidWord(normalizedWord);
-    console.log(`Dictionary API check for "${word}": ${isValid}`);
-    return isValid;
+    if (normalizedWord.length < 4 || normalizedWord.length > 15) {
+      return false;
+    }
+    return /^[a-z]+$/.test(normalizedWord);
   }
 
-  async filterValidWords(letters: string, centerLetter: string): Promise<string[]> {
+  filterValidWords(letters: string, centerLetter: string): string[] {
     console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
-
-    // Generate possible words from letters (basic validation)
     const possibleWords = this.generatePossibleWords(letters, centerLetter);
-
-    // Validate each word with the dictionary API
-    const validWords = await Promise.all(
-      possibleWords.map(async (word) => {
-        const isValid = await this.isValidWord(word);
-        return isValid ? word : null;
-      })
-    );
-
-    return validWords.filter((word): word is string => word !== null);
+    return possibleWords.filter(word => this.isValidWord(word));
   }
 
   private generatePossibleWords(letters: string, centerLetter: string): string[] {
@@ -65,7 +57,7 @@ class GameDictionary {
       }
     }
 
-    return [...new Set(words)]; // Remove duplicates
+    return Array.from(new Set(words)); // Remove duplicates
   }
 
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
@@ -88,7 +80,7 @@ class GameDictionary {
     normalizedLetters.split('').forEach(letter => {
       availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
     });
-    availableLetters.set(normalizedCenter, 999);
+    availableLetters.set(normalizedCenter, (availableLetters.get(normalizedCenter) || 0) + 1);
 
     // Count required letters in the word
     const wordFreq = new Map<string, number>();
@@ -109,7 +101,7 @@ class GameDictionary {
   }
 }
 
-// Initialize dictionary with API validation
+// Initialize dictionary with simple validation
 const DICTIONARY = new GameDictionary();
 
 export interface IStorage {
@@ -128,73 +120,43 @@ export class MemStorage implements IStorage {
     this.generateNewPuzzle(); // Initialize with first puzzle
   }
 
-  private async generateLetterSet(): Promise<{ letters: string; centerLetter: string; validWords: string[] }> {
+  private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
     console.log("Generating new letter set...");
-    // Try only 10 attempts max to avoid too many API calls
-    const attempts = 10;
-    let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
 
-    for (let i = 0; i < attempts; i++) {
-      // Add 2-3 vowels
-      const letterArray: string[] = [];
-      const numVowels = Math.floor(Math.random() * 2) + 2;
-      const availableVowels = VOWELS.split('');
-      for (let j = 0; j < numVowels; j++) {
-        const index = Math.floor(Math.random() * availableVowels.length);
-        letterArray.push(availableVowels.splice(index, 1)[0]);
-      }
-
-      // Fill rest with consonants
-      const availableConsonants = CONSONANTS.split('');
-      while (letterArray.length < 6) {
-        const index = Math.floor(Math.random() * availableConsonants.length);
-        letterArray.push(availableConsonants.splice(index, 1)[0]);
-      }
-
-      const letters = letterArray.sort(() => Math.random() - 0.5).join('');
-
-      // Try both vowels and consonants as center letters
-      for (const isVowel of [true, false]) {
-        const letterPool = isVowel ? VOWELS : CONSONANTS;
-        const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
-
-        if (!letters.includes(centerLetter)) {
-          const validWords = await DICTIONARY.filterValidWords(letters, centerLetter);
-          console.log(`Attempt ${i + 1}: Letters=${letters}, Center=${centerLetter}, Valid words=${validWords.length}`);
-
-          if (!bestAttempt || validWords.length > bestAttempt.count) {
-            bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
-            // Accept any puzzle with at least 5 valid words
-            if (validWords.length >= 5) {
-              console.log(`Found good puzzle with ${validWords.length} words`);
-              return bestAttempt;
-            }
-          }
-        }
-      }
+    // Add 2-3 vowels
+    const letterArray: string[] = [];
+    const numVowels = Math.floor(Math.random() * 2) + 2;
+    const availableVowels = VOWELS.split('');
+    for (let j = 0; j < numVowels; j++) {
+      const index = Math.floor(Math.random() * availableVowels.length);
+      letterArray.push(availableVowels.splice(index, 1)[0]);
     }
 
-    // Use the best attempt we found, or fall back to a default set
-    if (bestAttempt && bestAttempt.count > 0) {
-      console.log(`Using best attempt found with ${bestAttempt.count} words`);
-      return bestAttempt;
+    // Fill rest with consonants
+    const availableConsonants = CONSONANTS.split('');
+    while (letterArray.length < 6) {
+      const index = Math.floor(Math.random() * availableConsonants.length);
+      letterArray.push(availableConsonants.splice(index, 1)[0]);
     }
 
-    // Fallback to a guaranteed valid set
-    console.log('Using fallback puzzle set');
-    const validWords = await DICTIONARY.filterValidWords("AEILNS", "T");
-    return {
-      letters: "AEILNS",
-      centerLetter: "T",
-      validWords
-    };
+    const letters = letterArray.sort(() => Math.random() - 0.5).join('');
+
+    // Select center letter (randomly choose between vowel and consonant)
+    const isVowel = Math.random() < 0.5;
+    const letterPool = isVowel ? VOWELS : CONSONANTS;
+    const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
+
+    // Generate valid words
+    const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+
+    return { letters, centerLetter, validWords };
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
     console.log("Generating new puzzle...");
     this.puzzles.clear();
 
-    const { letters, centerLetter, validWords } = await this.generateLetterSet();
+    const { letters, centerLetter, validWords } = this.generateLetterSet();
     console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
     const points = validWords.reduce(
@@ -227,20 +189,7 @@ export class MemStorage implements IStorage {
     if (!puzzle) return false;
 
     const normalizedWord = word.toLowerCase();
-
-    // First check if the word follows game rules
-    const isValid = new GameDictionary().isWordPossible(
-      normalizedWord,
-      puzzle.letters,
-      puzzle.centerLetter
-    );
-
-    if (!isValid) {
-      return false;
-    }
-
-    // Then check if it's a valid English word
-    return await DICTIONARY.isValidWord(normalizedWord);
+    return puzzle.validWords.includes(normalizedWord);
   }
 }
 
