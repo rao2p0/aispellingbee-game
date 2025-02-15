@@ -8,6 +8,7 @@ import CelebrationPopup from "@/components/game/celebration-popup";
 import { saveGameStats, getTodayGameStats, resetTodayGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
+import { Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/api";
 
@@ -15,7 +16,6 @@ export default function Game() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // State declarations
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
   const [foundWords, setFoundWords] = useState<string[]>([]);
@@ -23,14 +23,12 @@ export default function Game() {
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
 
-  // Get puzzle data
   const { data: puzzle, isLoading: isPuzzleLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
     staleTime: 0,
     gcTime: 0,
   });
 
-  // Mutations
   const newGameMutation = useMutation({
     mutationFn: async () => {
       const res = await apiRequest("POST", "/api/puzzle/new");
@@ -38,19 +36,16 @@ export default function Game() {
       return data as Puzzle;
     },
     onMutate: () => {
-      // Show loading toast
       toast({
         title: "Generating New Puzzle",
         description: "Please wait while we create a new game...",
       });
     },
     onSuccess: () => {
-      // Reset the game state
       resetTodayGameStats();
       setScore(0);
       setFoundWords([]);
       setCurrentWord("");
-      // Force a fresh fetch of the puzzle
       queryClient.resetQueries({ queryKey: ["/api/puzzle"] });
 
       toast({
@@ -101,7 +96,6 @@ export default function Game() {
     },
   });
 
-  // Effects
   useEffect(() => {
     const savedStats = getTodayGameStats();
     if (savedStats) {
@@ -122,7 +116,6 @@ export default function Game() {
     }
   }, [score, foundWords, puzzle]);
 
-  // Event handlers
   const handleNewGame = async () => {
     if (newGameMutation.isPending) return;
     await newGameMutation.mutateAsync();
@@ -145,7 +138,52 @@ export default function Game() {
     }
   };
 
-  // Loading states
+  const handleShare = async () => {
+    const scorePercentage = Math.round((score / puzzle.points) * 100);
+    const wordsPercentage = Math.round((foundWords.length / puzzle.validWords.length) * 100);
+    const today = new Date().toLocaleDateString();
+
+    const shareText = `🐝 Spell Bee ${today}\n\n` +
+      `Score: ${score}/${puzzle.points} (${scorePercentage}%)\n` +
+      `Words: ${foundWords.length}/${puzzle.validWords.length} (${wordsPercentage}%)\n\n` +
+      `Play at: ${window.location.origin}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Spell Bee Score',
+          text: shareText,
+        });
+        toast({
+          title: "Shared successfully!",
+          description: "Your score has been shared.",
+        });
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          copyToClipboard(shareText);
+        }
+      }
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied to clipboard!",
+        description: "Share your score with friends.",
+      });
+    }).catch(() => {
+      toast({
+        title: "Failed to copy",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    });
+  };
+
+
   if (isPuzzleLoading || !puzzle) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -185,28 +223,35 @@ export default function Game() {
               foundWords={foundWords.length}
               totalWords={puzzle.validWords.length}
             />
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleRestart}
-                className="w-full px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
               >
                 Reset Progress
               </button>
               <button
-                onClick={handleNewGame}
-                disabled={newGameMutation.isPending}
-                className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleShare}
+                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
               >
-                {newGameMutation.isPending ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                    Generating...
-                  </div>
-                ) : (
-                  "New Game"
-                )}
+                <Share2 className="w-4 h-4" />
+                Share Score
               </button>
             </div>
+            <button
+              onClick={handleNewGame}
+              disabled={newGameMutation.isPending}
+              className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {newGameMutation.isPending ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Generating...
+                </div>
+              ) : (
+                "New Game"
+              )}
+            </button>
           </CardContent>
         </Card>
       </motion.div>
