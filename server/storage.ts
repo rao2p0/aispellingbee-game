@@ -51,6 +51,7 @@ const DICTIONARY = new Set([
 
 export interface IStorage {
   getDailyPuzzle(): Promise<Puzzle>;
+  generateNewPuzzle(): Promise<Puzzle>;
   validateWord(word: string, puzzleId: number): Promise<boolean>;
 }
 
@@ -62,39 +63,6 @@ export class MemStorage implements IStorage {
     this.puzzles = new Map();
     this.currentPuzzleId = 1;
     this.generateNewPuzzle();
-  }
-
-  private generateNewPuzzle(): Puzzle {
-    let letters: string;
-    let centerLetter: string;
-    let validWords: string[];
-
-    // Keep generating until we get a good set of letters
-    do {
-      letters = this.generateLetterSet();
-      // Pick a letter that appears in many words as the center letter
-      centerLetter = this.findBestCenterLetter(letters);
-      validWords = Array.from(DICTIONARY).filter(word => 
-        this.isWordPossible(word, letters, centerLetter)
-      );
-    } while (validWords.length < 10); // Ensure at least 10 valid words are possible
-
-    // Calculate total possible points
-    const points = validWords.reduce(
-      (total, word) => total + Math.max(1, word.length - 3),
-      0
-    );
-
-    const puzzle: Puzzle = {
-      id: this.currentPuzzleId++,
-      letters,
-      centerLetter,
-      validWords,
-      points,
-    };
-
-    this.puzzles.set(puzzle.id, puzzle);
-    return puzzle;
   }
 
   private generateLetterSet(): string {
@@ -172,8 +140,44 @@ export class MemStorage implements IStorage {
   }
 
   async getDailyPuzzle(): Promise<Puzzle> {
-    // Always generate a new puzzle when requested
-    return this.generateNewPuzzle();
+    const puzzle = this.puzzles.get(this.currentPuzzleId - 1);
+    if (!puzzle) {
+      return this.generateNewPuzzle();
+    }
+    return puzzle;
+  }
+
+  async generateNewPuzzle(): Promise<Puzzle> {
+    let letters: string;
+    let centerLetter: string;
+    let validWords: string[];
+
+    // Keep generating until we get a good set of letters
+    do {
+      letters = this.generateLetterSet();
+      // Pick a letter that appears in many words as the center letter
+      centerLetter = this.findBestCenterLetter(letters);
+      validWords = Array.from(DICTIONARY).filter(word =>
+        this.isWordPossible(word, letters, centerLetter)
+      );
+    } while (validWords.length < 10); // Ensure at least 10 valid words are possible
+
+    // Calculate total possible points
+    const points = validWords.reduce(
+      (total, word) => total + Math.max(1, word.length - 3),
+      0
+    );
+
+    const puzzle: Puzzle = {
+      id: this.currentPuzzleId++,
+      letters,
+      centerLetter,
+      validWords,
+      points,
+    };
+
+    this.puzzles.set(puzzle.id, puzzle);
+    return puzzle;
   }
 
   async validateWord(word: string, puzzleId: number): Promise<boolean> {

@@ -10,7 +10,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/puzzle/new", async (_req, res) => {
-    const puzzle = await storage.getDailyPuzzle(); 
+    const puzzle = await storage.generateNewPuzzle(); // Call specific method for new puzzle
     res.json(puzzle);
   });
 
