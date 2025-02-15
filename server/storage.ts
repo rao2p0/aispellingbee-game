@@ -36,20 +36,36 @@ class GameDictionary {
   }
 
   private generatePossibleWords(letters: string, centerLetter: string): string[] {
-    // This is a simplified version that generates basic combinations
-    // You might want to implement a more sophisticated algorithm
     const allLetters = (letters + centerLetter).toLowerCase();
     const words: string[] = [];
 
-    // For now, we'll just return some basic combinations
-    // In a real implementation, you'd want to generate all possible combinations
-    words.push(centerLetter + letters.substring(0, 3));
-    words.push(letters.substring(0, 2) + centerLetter + letters.substring(2));
-    words.push(letters + centerLetter);
+    // Generate all possible 4-letter combinations
+    for (let i = 0; i < letters.length; i++) {
+      for (let j = 0; j < letters.length; j++) {
+        for (let k = 0; k < letters.length; k++) {
+          const word = centerLetter + letters[i] + letters[j] + letters[k];
+          if (this.isWordPossible(word, letters, centerLetter)) {
+            words.push(word);
+          }
+        }
+      }
+    }
 
-    return words.filter(word => 
-      this.isWordPossible(word, letters, centerLetter)
-    );
+    // Generate 5-letter combinations
+    for (let i = 0; i < letters.length; i++) {
+      for (let j = 0; j < letters.length; j++) {
+        for (let k = 0; k < letters.length; k++) {
+          for (let l = 0; l < letters.length; l++) {
+            const word = centerLetter + letters[i] + letters[j] + letters[k] + letters[l];
+            if (this.isWordPossible(word, letters, centerLetter)) {
+              words.push(word);
+            }
+          }
+        }
+      }
+    }
+
+    return [...new Set(words)]; // Remove duplicates
   }
 
   private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
@@ -93,9 +109,8 @@ class GameDictionary {
   }
 }
 
-// Initialize dictionary with API validation (no longer uses a local word list)
+// Initialize dictionary with API validation
 const DICTIONARY = new GameDictionary();
-
 
 export interface IStorage {
   getDailyPuzzle(): Promise<Puzzle>;
@@ -110,13 +125,13 @@ export class MemStorage implements IStorage {
   constructor() {
     this.puzzles = new Map();
     this.currentPuzzleId = 1;
-    this.generateNewPuzzle();
+    this.generateNewPuzzle(); // Initialize with first puzzle
   }
 
-  private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
+  private async generateLetterSet(): Promise<{ letters: string; centerLetter: string; validWords: string[] }> {
     console.log("Generating new letter set...");
-    // Try only 20 attempts max
-    const attempts = 20;
+    // Try only 10 attempts max to avoid too many API calls
+    const attempts = 10;
     let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
 
     for (let i = 0; i < attempts; i++) {
@@ -144,18 +159,17 @@ export class MemStorage implements IStorage {
         const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
 
         if (!letters.includes(centerLetter)) {
-          const validWordsPromise = DICTIONARY.filterValidWords(letters, centerLetter);
-          validWordsPromise.then(validWords => {
-            console.log(`Attempt ${i + 1}: Letters=${letters}, Center=${centerLetter}, Valid words=${validWords.length}`);
+          const validWords = await DICTIONARY.filterValidWords(letters, centerLetter);
+          console.log(`Attempt ${i + 1}: Letters=${letters}, Center=${centerLetter}, Valid words=${validWords.length}`);
 
-            if (!bestAttempt || validWords.length > bestAttempt.count) {
-              bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
-              // Accept any puzzle with at least 10 valid words
-              if (validWords.length >= 10) {
-                console.log(`Found good puzzle with ${validWords.length} words`);
-              }
+          if (!bestAttempt || validWords.length > bestAttempt.count) {
+            bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
+            // Accept any puzzle with at least 5 valid words
+            if (validWords.length >= 5) {
+              console.log(`Found good puzzle with ${validWords.length} words`);
+              return bestAttempt;
             }
-          });
+          }
         }
       }
     }
@@ -168,10 +182,11 @@ export class MemStorage implements IStorage {
 
     // Fallback to a guaranteed valid set
     console.log('Using fallback puzzle set');
+    const validWords = await DICTIONARY.filterValidWords("AEILNS", "T");
     return {
       letters: "AEILNS",
       centerLetter: "T",
-      validWords: [] //DICTIONARY.filterValidWords("AEILNS", "T")
+      validWords
     };
   }
 
@@ -179,7 +194,7 @@ export class MemStorage implements IStorage {
     console.log("Generating new puzzle...");
     this.puzzles.clear();
 
-    const { letters, centerLetter, validWords } = this.generateLetterSet();
+    const { letters, centerLetter, validWords } = await this.generateLetterSet();
     console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
     const points = validWords.reduce(
@@ -212,11 +227,20 @@ export class MemStorage implements IStorage {
     if (!puzzle) return false;
 
     const normalizedWord = word.toLowerCase();
-    const normalizedPuzzleLetters = puzzle.letters.toLowerCase();
-    const normalizedCenterLetter = puzzle.centerLetter.toLowerCase();
 
-    // Check if the word is in the valid words list
-    return puzzle.validWords.includes(normalizedWord);
+    // First check if the word follows game rules
+    const isValid = new GameDictionary().isWordPossible(
+      normalizedWord,
+      puzzle.letters,
+      puzzle.centerLetter
+    );
+
+    if (!isValid) {
+      return false;
+    }
+
+    // Then check if it's a valid English word
+    return await DICTIONARY.isValidWord(normalizedWord);
   }
 }
 
