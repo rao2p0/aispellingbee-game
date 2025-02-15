@@ -1,5 +1,5 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import words from "an-array-of-english-words";
+import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import { fileURLToPath } from 'url';
 import path from "path";
 
