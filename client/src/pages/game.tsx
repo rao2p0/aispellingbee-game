@@ -5,6 +5,7 @@ import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
+import WordListDialog from "@/components/game/word-list-dialog";
 import { saveGameStats, getTodayGameStats, resetTodayGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
@@ -238,6 +239,12 @@ export default function Game() {
                 Share Score
               </button>
             </div>
+            <WordListDialog 
+              foundWords={foundWords}
+              allWords={puzzle.validWords}
+              totalPoints={puzzle.points}
+              userPoints={score}
+            />
             <button
               onClick={handleNewGame}
               disabled={newGameMutation.isPending}
