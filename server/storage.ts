@@ -52,7 +52,7 @@ const WORDS = new Set(
     // Check vowel-consonant ratio (English words typically don't have too many consonants in a row)
     const vowelCount = (word.match(/[aeiou]/gi) || []).length;
     const consonantCount = word.length - vowelCount;
-    if (consonantCount > vowelCount * 2.5) { // More than 2.5x consonants to vowels
+    if (consonantCount > vowelCount * 3.5) { // Allow more consonants for valid English words to vowels
       return false;
     }
 
