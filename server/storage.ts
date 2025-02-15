@@ -10,39 +10,76 @@ class GameDictionary {
 
   constructor(wordList: string[]) {
     this.words = new Set(wordList.map(word => word.toLowerCase()));
+    console.log(`Dictionary initialized with ${this.words.size} words`);
   }
 
   isValidWord(word: string): boolean {
-    return this.words.has(word.toLowerCase());
+    const normalizedWord = word.toLowerCase();
+    const isValid = this.words.has(normalizedWord);
+    console.log(`Dictionary check for "${word}": ${isValid}`);
+    return isValid;
   }
 
   filterValidWords(letters: string, centerLetter: string): string[] {
-    const normalizedLetters = letters.toLowerCase();
+    console.log(`Filtering valid words for letters: ${letters}, center: ${centerLetter}`);
+    return Array.from(this.words).filter(word =>
+      this.isWordPossible(word, letters, centerLetter)
+    );
+  }
+
+  private isWordPossible(word: string, letters: string, centerLetter: string): boolean {
+    const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
+    const normalizedLetters = letters.toLowerCase();
 
-    return Array.from(this.words).filter(word => {
-      // Word must be at least 4 letters long and contain the center letter
-      if (word.length < 4) return false;
-      if (!word.includes(normalizedCenter)) return false;
+    console.log(`\nChecking word "${word}":`);
+    console.log(`- Available letters: ${normalizedLetters} (center: ${normalizedCenter})`);
 
-      // Create letter frequency map for the word
-      const letterCount = new Map<string, number>();
-      for (const letter of word) {
-        letterCount.set(letter, (letterCount.get(letter) || 0) + 1);
-      }
+    // Word must be at least 4 letters long
+    if (normalizedWord.length < 4) {
+      console.log(`- Rejected: too short (${normalizedWord.length} letters)`);
+      return false;
+    }
 
-      // Check if each letter in the word can be formed using available letters
-      for (const [letter, count] of letterCount.entries()) {
-        if (letter === normalizedCenter) continue; // Center letter can be used multiple times
-        if (!normalizedLetters.includes(letter)) return false;
+    // Word must contain the center letter
+    if (!normalizedWord.includes(normalizedCenter)) {
+      console.log(`- Rejected: missing center letter ${normalizedCenter}`);
+      return false;
+    }
 
-        // Count occurrences of the letter in available letters
-        const availableCount = normalizedLetters.split('').filter(l => l === letter).length;
-        if (count > availableCount) return false;
-      }
+    // Create letter frequency map for available letters
+    const availableLetters = new Map<string, number>();
 
-      return true;
+    // Add regular letters
+    normalizedLetters.split('').forEach(letter => {
+      availableLetters.set(letter, (availableLetters.get(letter) || 0) + 1);
     });
+
+    // Center letter can be used multiple times, so give it a high count
+    availableLetters.set(normalizedCenter, 999);
+
+    console.log('- Available letter frequencies:', Object.fromEntries(availableLetters));
+
+    // Count required letters in the word
+    const wordFreq = new Map<string, number>();
+    for (const char of normalizedWord) {
+      wordFreq.set(char, (wordFreq.get(char) || 0) + 1);
+    }
+
+    // Check if we have enough of each letter
+    let isValid = true;
+    wordFreq.forEach((needed, char) => {
+      const available = availableLetters.get(char) || 0;
+      if (char !== normalizedCenter && needed > available) {
+        console.log(`- Rejected: needs ${needed} of "${char}" but only have ${available}`);
+        isValid = false;
+      }
+    });
+
+    if (isValid) {
+      console.log('- Word is valid!');
+    }
+    return isValid;
   }
 }
 
