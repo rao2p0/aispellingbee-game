@@ -163,10 +163,13 @@ export class MemStorage implements IStorage {
     let letters: string;
     let centerLetter: string;
     let attempts = 0;
-    const maxAttempts = 100;
+    const maxAttempts = 50; // Reduced from 100 to prevent long loops
     let validWords: string[] = [];
+    let bestAttempt: { letters: string; centerLetter: string; validWords: string[]; count: number } | null = null;
 
-    do {
+    console.log("Starting letter set generation...");
+
+    while (attempts < maxAttempts) {
       const letterArray: string[] = [];
 
       // Ensure we have 2-3 vowels
@@ -188,14 +191,22 @@ export class MemStorage implements IStorage {
 
       letters = letterArray.sort(() => Math.random() - 0.5).join('');
 
-      // Try both vowels and consonants as center letter
-      for (let tryVowel of [true, false]) {
+      // Try center letters from both vowels and consonants
+      for (const tryVowel of [true, false]) {
         const letterPool = tryVowel ? VOWELS : CONSONANTS;
         for (let i = 0; i < letterPool.length; i++) {
           centerLetter = letterPool[i];
           if (!letters.includes(centerLetter)) {
             validWords = DICTIONARY.filterValidWords(letters, centerLetter);
+            console.log(`Attempt ${attempts + 1}: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
+
+            // Keep track of the best attempt
+            if (!bestAttempt || validWords.length > bestAttempt.count) {
+              bestAttempt = { letters, centerLetter, validWords, count: validWords.length };
+            }
+
             if (validWords.length >= 15) {
+              console.log(`Found valid set with ${validWords.length} words!`);
               return { letters, centerLetter, validWords };
             }
           }
@@ -203,16 +214,29 @@ export class MemStorage implements IStorage {
       }
 
       attempts++;
-    } while (attempts < maxAttempts);
+    }
 
-    // If we can't find a good set after max attempts, try again with fresh letters
+    // If we couldn't find an ideal set, use the best attempt we found
+    if (bestAttempt && bestAttempt.count > 0) {
+      console.log(`Using best attempt with ${bestAttempt.count} words after ${attempts} attempts`);
+      return {
+        letters: bestAttempt.letters,
+        centerLetter: bestAttempt.centerLetter,
+        validWords: bestAttempt.validWords
+      };
+    }
+
+    // This should rarely happen, but if it does, retry with fresh random letters
+    console.log("Failed to generate valid letter set, retrying...");
     return this.generateLetterSet();
   }
 
   async generateNewPuzzle(): Promise<Puzzle> {
+    console.log("Generating new puzzle...");
     this.puzzles.clear();
 
     const { letters, centerLetter, validWords } = this.generateLetterSet();
+    console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
     // Calculate total points
     const points = validWords.reduce(
