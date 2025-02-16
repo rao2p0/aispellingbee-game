@@ -61,25 +61,15 @@ const WORDS = new Set(
 );
 
 class GameDictionary {
-  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
+  filterValidWords(letters: string, centerLetter: string): string[] {
     const allLetters = (letters + centerLetter).toLowerCase();
     const centerLetterLower = centerLetter.toLowerCase();
     
-    return Array.from(WORDS).filter(word => {
-      // Basic validation
-      const meetsLengthRequirement = word.length >= MIN_WORD_LENGTH;
-      const containsCenterLetter = word.includes(centerLetterLower);
-      const canBeMade = this.canMakeWord(word, allLetters);
-      
-      // In easy mode, we only include simpler words
-      if (isEasyMode) {
-        const isSimpleWord = !INVALID_PATTERNS.some(pattern => pattern.test(word));
-        const isReasonableLength = word.length <= 8; // Cap word length in easy mode
-        return meetsLengthRequirement && containsCenterLetter && canBeMade && isSimpleWord && isReasonableLength;
-      }
-      
-      return meetsLengthRequirement && containsCenterLetter && canBeMade;
-    });
+    return Array.from(WORDS).filter(word => 
+      word.length >= MIN_WORD_LENGTH &&
+      word.includes(centerLetterLower) &&
+      this.canMakeWord(word, allLetters)
+    );
   }
 
   private canMakeWord(word: string, letters: string): boolean {
