@@ -244,8 +244,12 @@ export class MemStorage implements IStorage {
 
     // If we couldn't generate a valid set after 10 attempts, try without frequency check
     console.log("Falling back to basic generation...");
-    const result = await generateAndCheck();
-    return result || { letters: "AEIOUS", centerLetter: "T", validWords: ["test"] };
+    let result = await generateAndCheck();
+    if (!result) {
+      console.log("Using fallback puzzle");
+      result = { letters: "AEIOUS", centerLetter: "T", validWords: ["test"] };
+    }
+    return result;
   }
 }
 
