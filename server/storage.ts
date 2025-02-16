@@ -172,43 +172,77 @@ export class MemStorage implements IStorage {
     return puzzle;
   }
 
-  private generateLetterSet(isEasyMode: boolean = false): { letters: string; centerLetter: string; validWords: string[] } {
+  private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string; centerLetter: string; validWords: string[] }> {
     console.log(`Generating new ${isEasyMode ? 'easy' : 'challenge'} letter set...`);
 
-    // Add more vowels for easy mode
-    const letterArray: string[] = [];
-    const numVowels = isEasyMode ? 3 : Math.floor(Math.random() * 2) + 2;
-    const availableVowels = VOWELS.split('');
-    for (let j = 0; j < numVowels; j++) {
-      const index = Math.floor(Math.random() * availableVowels.length);
-      letterArray.push(availableVowels.splice(index, 1)[0]);
+    const generateAndCheck = async () => {
+      // Add more vowels for easy mode
+      const letterArray: string[] = [];
+      const numVowels = isEasyMode ? 3 : Math.floor(Math.random() * 2) + 2;
+      const availableVowels = VOWELS.split('');
+      for (let j = 0; j < numVowels; j++) {
+        const index = Math.floor(Math.random() * availableVowels.length);
+        letterArray.push(availableVowels.splice(index, 1)[0]);
+      }
+
+      // Fill rest with consonants
+      const availableConsonants = CONSONANTS.split('');
+      while (letterArray.length < 6) {
+        const index = Math.floor(Math.random() * availableConsonants.length);
+        letterArray.push(availableConsonants.splice(index, 1)[0]);
+      }
+
+      const letters = letterArray.sort(() => Math.random() - 0.5).join('');
+
+      // Select center letter (randomly choose between vowel and consonant)
+      const isVowel = Math.random() < 0.5;
+      const letterPool = isVowel ? VOWELS : CONSONANTS;
+      const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
+
+      // Generate valid words
+      const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
+
+      if (isEasyMode) {
+        // Get frequencies for all words
+        const frequencies = await Promise.all(validWords.map(word => freqList.lookup(word)));
+        const freqPairs = validWords.map((word, i) => ({ word, freq: frequencies[i] || 0 }));
+        
+        // Sort by frequency to find 75th percentile threshold
+        const sortedFreqs = [...frequencies].sort((a, b) => b - a);
+        const percentileIdx = Math.floor(sortedFreqs.length * 0.75);
+        const freqThreshold = sortedFreqs[percentileIdx] || 0;
+        
+        // Count words above threshold
+        const highFreqCount = freqPairs.filter(pair => pair.freq >= freqThreshold).length;
+        const highFreqRatio = highFreqCount / validWords.length;
+        
+        // At least 75% of words should be common words
+        if (highFreqRatio < 0.75) {
+          return null;
+        }
+      }
+
+      const minWords = isEasyMode ? 15 : 5;
+      if (validWords.length < minWords) {
+        return null;
+      }
+
+      return { letters, centerLetter, validWords };
+    };
+
+    // Try up to 10 times to generate a valid set
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const result = await generateAndCheck();
+      if (result) {
+        return result;
+      }
+      console.log(`Attempt ${attempt + 1} failed, retrying...`);
     }
 
-    // Fill rest with consonants
-    const availableConsonants = CONSONANTS.split('');
-    while (letterArray.length < 6) {
-      const index = Math.floor(Math.random() * availableConsonants.length);
-      letterArray.push(availableConsonants.splice(index, 1)[0]);
-    }
-
-    const letters = letterArray.sort(() => Math.random() - 0.5).join('');
-
-    // Select center letter (randomly choose between vowel and consonant)
-    const isVowel = Math.random() < 0.5;
-    const letterPool = isVowel ? VOWELS : CONSONANTS;
-    const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
-
-    // Generate valid words
-    const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
-
-    // Retry if we don't have enough valid words based on mode
-    const minWords = isEasyMode ? 15 : 5;
-    if (validWords.length < minWords) {
-      console.log(`Not enough valid words (${validWords.length}), retrying...`);
-      return this.generateLetterSet(isEasyMode);
-    }
-
-    return { letters, centerLetter, validWords };
+    // If we couldn't generate a valid set after 10 attempts, try without frequency check
+    console.log("Falling back to basic generation...");
+    const result = await generateAndCheck();
+    return result || { letters: "AEIOUS", centerLetter: "T", validWords: ["test"] };
   }
 }
 
