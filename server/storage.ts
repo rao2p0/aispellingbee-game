@@ -13,6 +13,18 @@ const VOWEL_PATTERN = /[aeiou]/i;
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
 const VOWELS = 'EAIOU';
 
+// Patterns that suggest non-English or uncommon words
+const INVALID_PATTERNS = [
+  /[aeiou]{4,}/i,  // Too many consecutive vowels
+  /[bcdfghjklmnpqrstvwxyz]{6,}/i,  // Too many consecutive consonants (increased to 6)
+  /^x[aeiou]/i,  // Words starting with 'x' followed by vowel are often Greek
+  /^pf/i,  // Words starting with 'pf' are often German
+  /^ts/i,  // Words starting with 'ts' are often foreign
+  /q[^u]/i,  // 'q' not followed by 'u' (except 'q' at end)
+  /sch|tsch/i,  // German patterns
+  /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
+];
+
 // Load and filter the word list once at startup
 const WORDS = new Set(
   words.filter(word => {
@@ -53,18 +65,6 @@ const freqList = new wordfreq([...WORDS], {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Patterns that suggest non-English or uncommon words
-const INVALID_PATTERNS = [
-  /[aeiou]{4,}/i,  // Too many consecutive vowels
-  /[bcdfghjklmnpqrstvwxyz]{6,}/i,  // Too many consecutive consonants (increased to 6)
-  /^x[aeiou]/i,  // Words starting with 'x' followed by vowel are often Greek
-  /^pf/i,  // Words starting with 'pf' are often German
-  /^ts/i,  // Words starting with 'ts' are often foreign
-  /q[^u]/i,  // 'q' not followed by 'u' (except 'q' at end)
-  /sch|tsch/i,  // German patterns
-  /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
-];
 
 
 class GameDictionary {
