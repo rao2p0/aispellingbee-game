@@ -4,7 +4,11 @@ import { fileURLToPath } from 'url';
 import path from "path";
 import wordfreq from 'wordfreq';
 
-const freqList = new wordfreq();
+const freqList = wordfreq.generator({
+  cutoff: 1e-8,
+  minimumCount: 1,
+  maximumCutoff: 1
+});
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
@@ -208,8 +212,8 @@ export class MemStorage implements IStorage {
 
       if (isEasyMode) {
         // Get frequencies for all words
-        const frequencies = await Promise.all(validWords.map(word => freqList.lookup(word)));
-        const freqPairs = validWords.map((word, i) => ({ word, freq: frequencies[i] || 0 }));
+        const frequencies = await Promise.all(validWords.map(word => freqList.process(word)));
+        const freqPairs = validWords.map((word, i) => ({ word, freq: frequencies[i] ? 1 : 0 }));
         
         // Sort by frequency to find 75th percentile threshold
         const sortedFreqs = [...frequencies].sort((a, b) => b - a);
