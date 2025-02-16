@@ -222,7 +222,7 @@ export class MemStorage implements IStorage {
         return { letters, centerLetter, validWords: filteredWords };
       }
 
-      const minWords = isEasyMode ? 25 : 5;
+      const minWords = isEasyMode ? 15 : 5;
       if (validWords.length < minWords) {
         return null;
       }
