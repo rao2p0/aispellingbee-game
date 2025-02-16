@@ -212,13 +212,12 @@ export class MemStorage implements IStorage {
 
       if (isEasyMode) {
         // Get word frequencies from the wordfreq list
-        const wordFreqs = freqList.list();
-        const freqMap = new Map(wordFreqs);
+        const wordFreqs = freqList.getWordCounts();
         
         // Map words to their frequencies
         const freqPairs = validWords.map(word => ({
           word,
-          freq: freqMap.get(word.toLowerCase()) || 0
+          freq: wordFreqs[word.toLowerCase()] || 0
         }));
 
         // Sort by frequency to find 75th percentile threshold
