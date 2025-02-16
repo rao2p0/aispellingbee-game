@@ -56,10 +56,7 @@ const WORDS = new Set(
   })
 );
 
-const freqList = new wordfreq([...WORDS], {
-  stopWords: [],
-  minimumCount: 1
-});
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
