@@ -24,6 +24,7 @@ export default function Game() {
   const [celebration, setCelebration] = useState<{ word: string; points: number; } | null>(null);
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
+  const [isEasyMode, setIsEasyMode] = useState(false);
 
   const { data: puzzle, isLoading: isPuzzleLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
