@@ -172,12 +172,12 @@ export class MemStorage implements IStorage {
     return puzzle;
   }
 
-  private generateLetterSet(): { letters: string; centerLetter: string; validWords: string[] } {
-    console.log("Generating new letter set...");
+  private generateLetterSet(isEasyMode: boolean = false): { letters: string; centerLetter: string; validWords: string[] } {
+    console.log(`Generating new ${isEasyMode ? 'easy' : 'challenge'} letter set...`);
 
-    // Add 2-3 vowels
+    // Add more vowels for easy mode
     const letterArray: string[] = [];
-    const numVowels = Math.floor(Math.random() * 2) + 2;
+    const numVowels = isEasyMode ? 3 : Math.floor(Math.random() * 2) + 2;
     const availableVowels = VOWELS.split('');
     for (let j = 0; j < numVowels; j++) {
       const index = Math.floor(Math.random() * availableVowels.length);

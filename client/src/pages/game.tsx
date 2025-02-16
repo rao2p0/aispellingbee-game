@@ -33,8 +33,8 @@ export default function Game() {
   });
 
   const newGameMutation = useMutation({
-    mutationFn: async () => {
-      const res = await apiRequest("POST", "/api/puzzle/new");
+    mutationFn: async (isEasyMode: boolean) => {
+      const res = await apiRequest("POST", "/api/puzzle/new", { isEasyMode });
       const data = await res.json();
       return data as Puzzle;
     },
@@ -121,7 +121,7 @@ export default function Game() {
 
   const handleNewGame = async () => {
     if (newGameMutation.isPending) return;
-    await newGameMutation.mutateAsync();
+    await newGameMutation.mutateAsync(isEasyMode);
   };
 
   const handleRestart = () => {
@@ -242,7 +242,11 @@ export default function Game() {
                 {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
               </div>
               <button
-                onClick={() => setIsEasyMode(!isEasyMode)}
+                onClick={() => {
+                  const newMode = !isEasyMode;
+                  setIsEasyMode(newMode);
+                  newGameMutation.mutate(newMode);
+                }}
                 className={`px-3 py-1 rounded-full text-sm ${
                   isEasyMode 
                     ? 'bg-green-100 text-green-700 hover:bg-green-200' 

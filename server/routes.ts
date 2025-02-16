@@ -9,8 +9,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(puzzle);
   });
 
-  app.post("/api/puzzle/new", async (_req, res) => {
-    const puzzle = await storage.generateNewPuzzle();
+  app.post("/api/puzzle/new", async (req, res) => {
+    const isEasyMode = req.body.isEasyMode === true;
+    const puzzle = await storage.generateNewPuzzle(isEasyMode);
     res.json(puzzle);
   });
 
