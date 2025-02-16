@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import path from "path";
 import wordfreq from 'wordfreq';
 
-const freqList = wordfreq.createFreqList();
+const freqList = new wordfreq();
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
