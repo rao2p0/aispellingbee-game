@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import html2canvas from "html2canvas";
 import { useToast } from "@/hooks/use-toast";
 import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
@@ -149,23 +150,40 @@ export default function Game() {
       `Words: ${foundWords.length}/${puzzle.validWords.length} (${wordsPercentage}%)\n\n` +
       `Play at: ${window.location.origin}`;
 
-    if (navigator.share) {
-      try {
+    try {
+      const gameBoard = document.querySelector('.game-board') as HTMLElement;
+      if (!gameBoard) return;
+
+      const canvas = await html2canvas(gameBoard);
+      const blob = await new Promise<Blob>((resolve) => 
+        canvas.toBlob((blob) => resolve(blob!), 'image/png')
+      );
+      
+      const filesArray = [
+        new File([blob], 'spellbee-score.png', { type: 'image/png' })
+      ];
+
+      if (navigator.share && navigator.canShare({ files: filesArray })) {
         await navigator.share({
           title: 'Spell Bee Score',
           text: shareText,
+          files: filesArray
         });
         toast({
           title: "Shared successfully!",
-          description: "Your score has been shared.",
+          description: "Your score and screenshot have been shared.",
         });
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          copyToClipboard(shareText);
-        }
+      } else {
+        copyToClipboard(shareText);
+        toast({
+          title: "Copied to clipboard",
+          description: "Image sharing not supported on your device.",
+        });
       }
-    } else {
-      copyToClipboard(shareText);
+    } catch (err) {
+      if (err instanceof Error && err.name !== 'AbortError') {
+        copyToClipboard(shareText);
+      }
     }
   };
 
@@ -203,7 +221,7 @@ export default function Game() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-lg"
       >
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white shadow-lg game-board">
           <CardContent className="p-6 space-y-6">
             <HexGrid
               letters={puzzle.letters}
