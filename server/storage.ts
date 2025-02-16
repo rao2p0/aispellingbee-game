@@ -2,9 +2,9 @@ import { puzzles, type Puzzle } from "@shared/schema";
 import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import { fileURLToPath } from 'url';
 import path from "path";
-import { WordFreq } from 'wordfreq';
+import wordfreq from 'wordfreq';
 
-const freqList = new WordFreq();
+const freqList = wordfreq.createFreqList();
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
