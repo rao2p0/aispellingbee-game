@@ -151,11 +151,12 @@ export class MemStorage implements IStorage {
     return puzzle;
   }
 
-  async generateNewPuzzle(): Promise<Puzzle> {
+  async generateNewPuzzle(isEasyMode: boolean = false): Promise<Puzzle> {
     console.log("Generating new puzzle...");
     this.puzzles.clear();
 
-    const { letters, centerLetter, validWords } = this.generateLetterSet();
+    const result = await this.generateLetterSet(isEasyMode);
+    const { letters, centerLetter, validWords } = result;
     console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
     const points = validWords.reduce(
