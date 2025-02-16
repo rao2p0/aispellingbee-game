@@ -4,6 +4,11 @@ import { fileURLToPath } from 'url';
 import path from "path";
 import wordfreq from 'wordfreq';
 
+// Constants for word validation
+const MIN_WORD_LENGTH = 4;
+const MAX_WORD_LENGTH = 15;
+const VOWEL_PATTERN = /[aeiou]/i;
+
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
 const VOWELS = 'EAIOU';
@@ -48,11 +53,6 @@ const freqList = new wordfreq([...WORDS], {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Additional validation rules
-const MIN_WORD_LENGTH = 4;
-const MAX_WORD_LENGTH = 15;
-const VOWEL_PATTERN = /[aeiou]/i;
 
 // Patterns that suggest non-English or uncommon words
 const INVALID_PATTERNS = [
