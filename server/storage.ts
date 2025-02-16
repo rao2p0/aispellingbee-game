@@ -66,44 +66,12 @@ const INVALID_PATTERNS = [
   /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
 ];
 
-// Load and filter the word list once at startup
-const WORDS = new Set(
-  words.filter(word => {
-    // Basic length and character validation
-    if (word.length < MIN_WORD_LENGTH || 
-        word.length > MAX_WORD_LENGTH || 
-        !/^[a-z]+$/.test(word)) {
-      return false;
-    }
-
-    // Must contain at least one vowel
-    if (!VOWEL_PATTERN.test(word)) {
-      return false;
-    }
-
-    // Check for invalid patterns
-    for (const pattern of INVALID_PATTERNS) {
-      if (pattern.test(word)) {
-        return false;
-      }
-    }
-
-    // Check vowel-consonant ratio (English words typically don't have too many consonants in a row)
-    const vowelCount = (word.match(/[aeiou]/gi) || []).length;
-    const consonantCount = word.length - vowelCount;
-    if (consonantCount > vowelCount * 3.5) { // Allow more consonants for valid English words to vowels
-      return false;
-    }
-
-    return true;
-  })
-);
 
 class GameDictionary {
   filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
     const allLetters = (letters + centerLetter).toLowerCase();
     const centerLetterLower = centerLetter.toLowerCase();
-    
+
     return Array.from(WORDS).filter(word => {
       const basicValid = word.length >= MIN_WORD_LENGTH &&
         word.includes(centerLetterLower) &&
@@ -134,7 +102,7 @@ class GameDictionary {
       if (available === 0) return false;
       letterFreq.set(char, available - 1);
     }
-    
+
     return true;
   }
 
@@ -246,16 +214,16 @@ export class MemStorage implements IStorage {
         // Get frequencies for all words
         const frequencies = validWords.map(word => freqList.getFrequency(word.toLowerCase()) || 0);
         const freqPairs = validWords.map((word, i) => ({ word, freq: frequencies[i] }));
-        
+
         // Sort by frequency to find 75th percentile threshold
         const sortedFreqs = [...frequencies].sort((a, b) => b - a);
         const percentileIdx = Math.floor(sortedFreqs.length * 0.75);
         const freqThreshold = sortedFreqs[percentileIdx] || 0;
-        
+
         // Count words above threshold
         const highFreqCount = freqPairs.filter(pair => pair.freq >= freqThreshold).length;
         const highFreqRatio = highFreqCount / validWords.length;
-        
+
         // At least 75% of words should be common words
         if (highFreqRatio < 0.75) {
           return null;
