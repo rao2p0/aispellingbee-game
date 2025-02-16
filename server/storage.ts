@@ -4,14 +4,47 @@ import { fileURLToPath } from 'url';
 import path from "path";
 import wordfreq from 'wordfreq';
 
+// Common English consonants and vowels, weighted by frequency
+const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
+const VOWELS = 'EAIOU';
+
+// Load and filter the word list once at startup
+const WORDS = new Set(
+  words.filter(word => {
+    // Basic length and character validation
+    if (word.length < MIN_WORD_LENGTH || 
+        word.length > MAX_WORD_LENGTH || 
+        !/^[a-z]+$/.test(word)) {
+      return false;
+    }
+
+    // Must contain at least one vowel
+    if (!VOWEL_PATTERN.test(word)) {
+      return false;
+    }
+
+    // Check for invalid patterns
+    for (const pattern of INVALID_PATTERNS) {
+      if (pattern.test(word)) {
+        return false;
+      }
+    }
+
+    // Check vowel-consonant ratio
+    const vowelCount = (word.match(/[aeiou]/gi) || []).length;
+    const consonantCount = word.length - vowelCount;
+    if (consonantCount > vowelCount * 3.5) {
+      return false;
+    }
+
+    return true;
+  })
+);
+
 const freqList = new wordfreq([...WORDS], {
   stopWords: [],
   minimumCount: 1
 });
-
-// Common English consonants and vowels, weighted by frequency
-const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
-const VOWELS = 'EAIOU';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
