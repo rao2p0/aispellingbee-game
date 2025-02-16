@@ -236,6 +236,21 @@ export default function Game() {
               isError={isError}
               alreadyFound={alreadyFound}
             />
+            <div className="flex items-center justify-between mb-4">
+              <div className={`text-sm font-medium ${isEasyMode ? 'text-green-600' : 'text-blue-600'}`}>
+                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
+              </div>
+              <button
+                onClick={() => setIsEasyMode(!isEasyMode)}
+                className={`px-3 py-1 rounded-full text-sm ${
+                  isEasyMode 
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                }`}
+              >
+                Switch to {isEasyMode ? 'Challenge' : 'Easy'} Mode
+              </button>
+            </div>
             <ScoreDisplay 
               score={score} 
               totalPossible={puzzle.points}

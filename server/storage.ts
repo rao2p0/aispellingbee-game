@@ -61,15 +61,27 @@ const WORDS = new Set(
 );
 
 class GameDictionary {
-  filterValidWords(letters: string, centerLetter: string): string[] {
+  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
     const allLetters = (letters + centerLetter).toLowerCase();
     const centerLetterLower = centerLetter.toLowerCase();
     
-    return Array.from(WORDS).filter(word => 
-      word.length >= MIN_WORD_LENGTH &&
-      word.includes(centerLetterLower) &&
-      this.canMakeWord(word, allLetters)
-    );
+    return Array.from(WORDS).filter(word => {
+      const basicValid = word.length >= MIN_WORD_LENGTH &&
+        word.includes(centerLetterLower) &&
+        this.canMakeWord(word, allLetters);
+
+      if (!basicValid) return false;
+
+      if (isEasyMode) {
+        // In easy mode, exclude words with complex patterns
+        const isComplex = word.length > 8 || // Cap word length
+          /[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) || // Fewer consecutive consonants
+          /[aeiou]{3,}/i.test(word); // Fewer consecutive vowels
+        return !isComplex;
+      }
+
+      return true;
+    });
   }
 
   private canMakeWord(word: string, letters: string): boolean {
