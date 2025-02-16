@@ -5,55 +5,18 @@ import path from "path";
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
-const VOWEL_PATTERN = /[aeiou]/i;
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
 const VOWELS = 'EAIOU';
 
-// Patterns that suggest non-English or uncommon words
-const INVALID_PATTERNS = [
-  /[aeiou]{4,}/i,  // Too many consecutive vowels
-  /[bcdfghjklmnpqrstvwxyz]{6,}/i,  // Too many consecutive consonants (increased to 6)
-  /^x[aeiou]/i,  // Words starting with 'x' followed by vowel are often Greek
-  /^pf/i,  // Words starting with 'pf' are often German
-  /^ts/i,  // Words starting with 'ts' are often foreign
-  /q[^u]/i,  // 'q' not followed by 'u' (except 'q' at end)
-  /sch|tsch/i,  // German patterns
-  /[éèêëāăąēěėęīįİıōőœųūůűźżžāăąčćđēěėęģġħīįķļłńņňōőœŕřśşšţťųūůűźżž]/i // Diacritics
-];
-
-// Load and filter the word list once at startup
+// Load words from dictionary
 const WORDS = new Set(
-  words.filter(word => {
-    // Basic length and character validation
-    if (word.length < MIN_WORD_LENGTH || 
-        word.length > MAX_WORD_LENGTH || 
-        !/^[a-z]+$/.test(word)) {
-      return false;
-    }
-
-    // Must contain at least one vowel
-    if (!VOWEL_PATTERN.test(word)) {
-      return false;
-    }
-
-    // Check for invalid patterns
-    for (const pattern of INVALID_PATTERNS) {
-      if (pattern.test(word)) {
-        return false;
-      }
-    }
-
-    // Check vowel-consonant ratio
-    const vowelCount = (word.match(/[aeiou]/gi) || []).length;
-    const consonantCount = word.length - vowelCount;
-    if (consonantCount > vowelCount * 3.5) {
-      return false;
-    }
-
-    return true;
-  })
+  words.filter(word => 
+    word.length >= MIN_WORD_LENGTH && 
+    word.length <= MAX_WORD_LENGTH && 
+    /^[a-z]+$/.test(word)
+  )
 );
 
 
