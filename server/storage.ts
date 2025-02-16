@@ -2,8 +2,6 @@ import { puzzles, type Puzzle } from "@shared/schema";
 import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import { fileURLToPath } from 'url';
 import path from "path";
-import wordfreq from 'wordfreq';
-
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
@@ -211,29 +209,20 @@ export class MemStorage implements IStorage {
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
 
       if (isEasyMode) {
-        // Get word frequencies from the wordfreq list
-        const wordFreqs = freqList.getWordCounts();
-        
-        // Map words to their frequencies
-        const freqPairs = validWords.map(word => ({
-          word,
-          freq: wordFreqs[word.toLowerCase()] || 0
-        }));
+        // Filter out complex words
+        const simpleWords = validWords.filter(word => 
+          word.length <= 8 && // Not too long
+          !/[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) && // No long consonant chains
+          !/[aeiou]{3,}/i.test(word) // No long vowel chains
+        );
 
-        // Sort by frequency to find 75th percentile threshold
-        const frequencies = freqPairs.map(pair => pair.freq);
-        const sortedFreqs = [...frequencies].sort((a, b) => b - a);
-        const percentileIdx = Math.floor(sortedFreqs.length * 0.75);
-        const freqThreshold = sortedFreqs[percentileIdx] || 0;
-
-        // Count words above threshold
-        const highFreqCount = freqPairs.filter(pair => pair.freq >= freqThreshold).length;
-        const highFreqRatio = highFreqCount / validWords.length;
-
-        // At least 75% of words should be common words
-        if (highFreqRatio < 0.75) {
+        // Ensure we have enough simple words
+        if (simpleWords.length < validWords.length * 0.75) {
           return null;
         }
+
+        // Use the filtered simple words
+        validWords = simpleWords;
       }
 
       const minWords = isEasyMode ? 15 : 5;
