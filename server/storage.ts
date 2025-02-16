@@ -211,11 +211,18 @@ export class MemStorage implements IStorage {
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
 
       if (isEasyMode) {
-        // Get frequencies for all words
-        const frequencies = validWords.map(word => freqList.getCount(word.toLowerCase()) || 0);
-        const freqPairs = validWords.map((word, i) => ({ word, freq: frequencies[i] }));
+        // Get word frequencies from the wordfreq list
+        const wordFreqs = freqList.list();
+        const freqMap = new Map(wordFreqs);
+        
+        // Map words to their frequencies
+        const freqPairs = validWords.map(word => ({
+          word,
+          freq: freqMap.get(word.toLowerCase()) || 0
+        }));
 
         // Sort by frequency to find 75th percentile threshold
+        const frequencies = freqPairs.map(pair => pair.freq);
         const sortedFreqs = [...frequencies].sort((a, b) => b - a);
         const percentileIdx = Math.floor(sortedFreqs.length * 0.75);
         const freqThreshold = sortedFreqs[percentileIdx] || 0;
