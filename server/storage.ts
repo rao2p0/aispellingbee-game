@@ -201,10 +201,11 @@ export class MemStorage implements IStorage {
     // Generate valid words
     const validWords = DICTIONARY.filterValidWords(letters, centerLetter);
 
-    // Retry if we don't have enough valid words
-    if (validWords.length < 5) {
+    // Retry if we don't have enough valid words based on mode
+    const minWords = isEasyMode ? 15 : 5;
+    if (validWords.length < minWords) {
       console.log(`Not enough valid words (${validWords.length}), retrying...`);
-      return this.generateLetterSet();
+      return this.generateLetterSet(isEasyMode);
     }
 
     return { letters, centerLetter, validWords };
