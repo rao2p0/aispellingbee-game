@@ -207,19 +207,19 @@ export class MemStorage implements IStorage {
 
       if (isEasyMode) {
         // Filter out complex words
-        const simpleWords = validWords.filter(word => 
+        const filteredWords = validWords.filter(word => 
           word.length <= 8 && // Not too long
           !/[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) && // No long consonant chains
           !/[aeiou]{3,}/i.test(word) // No long vowel chains
         );
 
         // Ensure we have enough simple words
-        if (simpleWords.length < validWords.length * 0.75) {
+        if (filteredWords.length < validWords.length * 0.75) {
           return null;
         }
 
-        // Use the filtered simple words
-        validWords = simpleWords;
+        // Return with filtered words
+        return { letters, centerLetter, validWords: filteredWords };
       }
 
       const minWords = isEasyMode ? 15 : 5;
