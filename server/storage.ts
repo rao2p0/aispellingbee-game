@@ -193,23 +193,31 @@ export class MemStorage implements IStorage {
       return { letters, centerLetter, validWords };
     };
 
-    // Try up to 10 times to generate a valid set
-    for (let attempt = 0; attempt < 10; attempt++) {
+    let bestResult = null;
+    let maxWordCount = 0;
+
+    // Try up to 15 times to generate a valid set
+    for (let attempt = 0; attempt < 15; attempt++) {
       const result = await generateAndCheck();
-      if (result) {
-        return result;
+      if (result && result.validWords.length > maxWordCount) {
+        maxWordCount = result.validWords.length;
+        bestResult = result;
+        
+        // If we found a good puzzle, we can stop early
+        if (maxWordCount >= 20) {
+          break;
+        }
       }
-      console.log(`Attempt ${attempt + 1} failed, retrying...`);
+      console.log(`Attempt ${attempt + 1}: found ${result?.validWords.length || 0} words`);
     }
 
-    // If we couldn't generate a valid set after 10 attempts, try without frequency check
-    console.log("Falling back to basic generation...");
-    let result = await generateAndCheck();
-    if (!result) {
-      console.log("Using fallback puzzle");
-      result = { letters: "AEIOUS", centerLetter: "T", validWords: ["test"] };
+    if (bestResult && bestResult.validWords.length >= (isEasyMode ? 15 : 5)) {
+      return bestResult;
     }
-    return result;
+
+    // If we still don't have a valid puzzle, use a known good fallback
+    console.log("Using fallback puzzle");
+    return { letters: "AEIOUS", centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
   }
 }
 
