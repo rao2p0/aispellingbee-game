@@ -160,15 +160,22 @@ export class MemStorage implements IStorage {
 
       // Pick center letter based on mode
       let centerLetter;
+      let outerLetters;
       if (isEasyMode) {
+        // In easy mode, ensure we have at least one vowel for the center
+        if (vowels.length === 0) return null;
         centerLetter = vowels[Math.floor(Math.random() * vowels.length)];
+        // Remove ALL instances of the center letter from outer letters
+        outerLetters = letters.filter(l => l !== centerLetter);
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
+        outerLetters = letters.filter(l => l !== centerLetter);
       }
-      console.log('4. Selected center letter:', centerLetter);
       
-      // Remove center letter from outer circle and ensure we have exactly 6 letters
-      const outerLetters = letters.filter(l => l !== centerLetter);
+      // Ensure we have exactly 6 outer letters
+      if (outerLetters.length !== 6) return null;
+      
+      console.log('4. Selected center letter:', centerLetter);
       console.log('5. Outer circle letters:', outerLetters.join(', '));
 
       // Generate valid words using the base word (combining outer letters with center)
