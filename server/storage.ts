@@ -50,18 +50,8 @@ class GameDictionary {
   }
 
   private canMakeWord(word: string, letters: string): boolean {
-    const letterFreq = new Map<string, number>();
-    for (const letter of letters) {
-      letterFreq.set(letter, (letterFreq.get(letter) || 0) + 1);
-    }
-
-    for (const char of word) {
-      const available = letterFreq.get(char) || 0;
-      if (available === 0) return false;
-      letterFreq.set(char, available - 1);
-    }
-
-    return true;
+    const availableLetters = new Set(letters.toLowerCase());
+    return word.split('').every(char => availableLetters.has(char));
   }
 
   validateWord(word: string, letters: string, centerLetter: string): boolean {
