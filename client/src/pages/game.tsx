@@ -302,6 +302,7 @@ export default function Game() {
               )}
             </button>
               </div>
+            </div>
             </CardContent>
           </Card>
         </motion.div>
