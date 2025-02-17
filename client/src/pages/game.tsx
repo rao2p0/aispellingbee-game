@@ -265,32 +265,32 @@ export default function Game() {
                 totalWords={puzzle.validWords.length}
               />
               <FoundWordsDisplay words={foundWords} />
-              <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleRestart}
+                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+                  >
+                    Reset Progress
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    Share Score
+                  </button>
+                </div>
+                <WordListDialog 
+                  foundWords={foundWords}
+                  allWords={puzzle.validWords}
+                  totalPoints={puzzle.points}
+                  userPoints={score}
+                />
                 <button
-                  onClick={handleRestart}
-                  className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
-                >
-                  Reset Progress
-                </button>
-                <button
-                  onClick={handleShare}
-                  className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Share2 className="w-4 h-4" />
-                  Share Score
-                </button>
-              </div>
-            </div>
-            <WordListDialog 
-              foundWords={foundWords}
-              allWords={puzzle.validWords}
-              totalPoints={puzzle.points}
-              userPoints={score}
-            />
-            <button
-              onClick={handleNewGame}
-              disabled={newGameMutation.isPending}
-              className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleNewGame}
+                  disabled={newGameMutation.isPending}
+                  className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {newGameMutation.isPending ? (
                 <div className="flex items-center justify-center">
