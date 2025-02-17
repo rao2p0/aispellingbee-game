@@ -178,11 +178,6 @@ export class MemStorage implements IStorage {
                                    .sort(() => Math.random() - 0.5)
                                    .join('');
 
-      // Select center letter (randomly choose between vowel and consonant)
-      const isVowel = Math.random() < 0.5;
-      const letterPool = isVowel ? VOWELS : CONSONANTS;
-      const centerLetter = letterPool[Math.floor(Math.random() * letterPool.length)];
-
       // Generate valid words
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
 
