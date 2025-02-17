@@ -166,10 +166,13 @@ export class MemStorage implements IStorage {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
       console.log('4. Selected center letter:', centerLetter);
-      console.log('5. Outer circle letters:', letters.filter(l => l !== centerLetter).join(', '));
+      
+      // Remove center letter from outer circle and ensure we have exactly 6 letters
+      const outerLetters = letters.filter(l => l !== centerLetter);
+      console.log('5. Outer circle letters:', outerLetters.join(', '));
 
-      // Generate valid words using the base word
-      const validWords = await DICTIONARY.filterValidWords(letters.join(""), centerLetter, isEasyMode);
+      // Generate valid words using the base word (combining outer letters with center)
+      const validWords = await DICTIONARY.filterValidWords([...outerLetters, centerLetter].join(""), centerLetter, isEasyMode);
 
       if (isEasyMode) {
         // Filter out complex words
