@@ -1,19 +1,29 @@
 import { puzzles, type Puzzle } from "@shared/schema";
 import { execSync } from 'child_process';
 import path from "path";
+import fs from 'fs';
 
-// Download NLTK data if not already present
+// Initialize words from NLTK or cache
+let words: string[];
+const CACHE_FILE = 'nltk_words_cache.json';
+
 try {
-  execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`);
+  if (fs.existsSync(CACHE_FILE)) {
+    words = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+  } else {
+    // Download NLTK data and get words
+    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`);
+    words = execSync('python3 -c "import nltk; print(\\"\\n\\".join(w.lower() for w in nltk.corpus.words.words()))"')
+      .toString()
+      .split('\n')
+      .filter(Boolean);
+    // Cache the words
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(words));
+  }
 } catch (error) {
-  console.error('Failed to download NLTK data:', error);
+  console.error('Failed to load NLTK words:', error);
+  throw error;
 }
-
-// Load words from NLTK
-const words = execSync('python3 -c "import nltk; print(\\"\\n\\".join(w.lower() for w in nltk.corpus.words.words()))"')
-  .toString()
-  .split('\n')
-  .filter(Boolean);
 
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
