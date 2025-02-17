@@ -202,12 +202,12 @@ export class MemStorage implements IStorage {
         return null;
       }
       
-      const outerLetters = letters.filter(l => l !== centerLetter);
-      if (outerLetters.length !== 6) {
+      const finalOuterLetters = letters.filter(l => l !== centerLetter);
+      if (finalOuterLetters.length !== 6) {
         return null;
       }
 
-      return { letters: outerLetters, centerLetter, validWords };
+      return { letters: finalOuterLetters, centerLetter, validWords };
     };
 
     let bestResult = null;
