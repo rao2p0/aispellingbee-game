@@ -28,7 +28,7 @@ export class Dictionary {
       return false;
     }
 
-    const freq = await this.wordFreq.getFrequency(lowercaseWord);
+    const freq = await this.wordFreq.getWordFrequency(lowercaseWord);
     const isFrequent = freq > 0.2; // Only accept very common words (>20% frequency)
 
     if (!isFrequent) {
