@@ -28,7 +28,7 @@ export class Dictionary {
     }
 
     const freq = await this.wordFreq.getFrequency(lowercaseWord);
-    return freq > 1e-1; // Only accept words that appear in >10% of English text
+    return freq > 0.35; // Only accept words that appear in >10% of English text
   }
 }
 
