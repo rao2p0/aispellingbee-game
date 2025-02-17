@@ -196,7 +196,9 @@ export class MemStorage implements IStorage {
         return null;
       }
 
-      return { letters, centerLetter, validWords };
+      // Ensure outer letters don't include center letter
+      const outerLetters = letters.filter(l => l !== centerLetter);
+      return { letters: outerLetters, centerLetter, validWords };
     };
 
     let bestResult = null;
