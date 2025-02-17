@@ -165,14 +165,12 @@ export class MemStorage implements IStorage {
         // In easy mode, ensure we have at least one vowel for the center
         if (vowels.length === 0) return null;
         centerLetter = vowels[Math.floor(Math.random() * vowels.length)];
-        // Remove ALL instances of the center letter from outer letters
-        outerLetters = letters.filter(l => l !== centerLetter);
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
-        outerLetters = letters.filter(l => l !== centerLetter);
       }
       
-      // Ensure we have exactly 6 outer letters
+      // Remove center letter and ensure exactly 6 outer letters remain
+      outerLetters = Array.from(new Set(letters.filter(l => l !== centerLetter)));
       if (outerLetters.length !== 6) return null;
       
       console.log('4. Selected center letter:', centerLetter);
