@@ -174,10 +174,7 @@ export class MemStorage implements IStorage {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
 
-      // Return all letters and center letter separately
-      const letters = baseWord;
-
-      // Generate valid words
+      // Generate valid words using the base word
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
 
       if (isEasyMode) {
