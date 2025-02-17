@@ -291,7 +291,7 @@ export default function Game() {
                   onClick={handleNewGame}
                   disabled={newGameMutation.isPending}
                   className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-            >
+                >
               {newGameMutation.isPending ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
