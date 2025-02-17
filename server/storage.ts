@@ -1,7 +1,20 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
-import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 import path from "path";
+
+// Download NLTK data if not already present
+try {
+  execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`);
+} catch (error) {
+  console.error('Failed to download NLTK data:', error);
+}
+
+// Load words from NLTK
+const words = execSync('python3 -c "import nltk; print(\\"\\n\\".join(w.lower() for w in nltk.corpus.words.words()))"')
+  .toString()
+  .split('\n')
+  .filter(Boolean);
+
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
