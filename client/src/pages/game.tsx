@@ -7,7 +7,6 @@ import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
 import WordListDialog from "@/components/game/word-list-dialog";
-import FoundWordsDisplay from "@/components/game/found-words-display";
 import { saveGameStats, getTodayGameStats, resetTodayGameStats } from "@/lib/statistics";
 import type { Puzzle } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
@@ -263,7 +262,6 @@ export default function Game() {
               foundWords={foundWords.length}
               totalWords={puzzle.validWords.length}
             />
-            <FoundWordsDisplay words={foundWords} />
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleRestart}
