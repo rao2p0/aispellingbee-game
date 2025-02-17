@@ -282,28 +282,28 @@ export default function Game() {
                       Share Score
                     </button>
                   </div>
-                <WordListDialog 
-                  foundWords={foundWords}
-                  allWords={puzzle.validWords}
-                  totalPoints={puzzle.points}
-                  userPoints={score}
-                />
-                <button
-                  onClick={handleNewGame}
-                  disabled={newGameMutation.isPending}
-                  className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-                >
-              {newGameMutation.isPending ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                  Generating...
+                  <WordListDialog 
+                    foundWords={foundWords}
+                    allWords={puzzle.validWords}
+                    totalPoints={puzzle.points}
+                    userPoints={score}
+                  />
+                  <button
+                    onClick={handleNewGame}
+                    disabled={newGameMutation.isPending}
+                    className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                  >
+                    {newGameMutation.isPending ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                        Generating...
+                      </div>
+                    ) : (
+                      "New Game"
+                    )}
+                  </button>
                 </div>
-              ) : (
-                "New Game"
-              )}
-            </button>
               </div>
-            </div>
             </CardContent>
           </Card>
         </motion.div>
