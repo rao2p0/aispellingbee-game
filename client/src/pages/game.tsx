@@ -259,13 +259,13 @@ export default function Game() {
                 alreadyFound={alreadyFound}
               />
               <ScoreDisplay 
-              score={score} 
-              totalPossible={puzzle.points}
-              foundWords={foundWords.length}
-              totalWords={puzzle.validWords.length}
-            />
-            <FoundWordsDisplay words={foundWords} />
-            <div className="grid grid-cols-2 gap-2">
+                score={score} 
+                totalPossible={puzzle.points}
+                foundWords={foundWords.length}
+                totalWords={puzzle.validWords.length}
+              />
+              <FoundWordsDisplay words={foundWords} />
+              <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleRestart}
                 className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
