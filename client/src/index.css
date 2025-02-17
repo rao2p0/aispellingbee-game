@@ -1,11 +1,11 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@400;600;700&display=swap');
+
 @supports (-webkit-touch-callout: none) {
   .min-h-[100dvh] {
     min-height: -webkit-fill-available;
   }
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
