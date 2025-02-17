@@ -12,10 +12,10 @@ interface HexGridProps {
 export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGridProps) {
   // Filter out the center letter from the outer circle letters
   const outerLetters = letters.filter(letter => letter !== centerLetter);
-  const [shuffledLetters, setShuffledLetters] = useState(outerLetters);
+  const [shuffledLetters, setShuffledLetters] = useState(outerLetters.join(''));
   
   useEffect(() => {
-    setShuffledLetters(outerLetters);
+    setShuffledLetters(outerLetters.join(''));
   }, [letters, centerLetter]);
   const [isShuffling, setIsShuffling] = useState(false);
   const size = 50;
