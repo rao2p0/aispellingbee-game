@@ -142,23 +142,41 @@ export class MemStorage implements IStorage {
     console.log(`Generating new ${isEasyMode ? 'easy' : 'challenge'} letter set...`);
 
     const generateAndCheck = async () => {
-      // Add more vowels for easy mode
-      const letterArray: string[] = [];
-      const numVowels = isEasyMode ? 3 : Math.floor(Math.random() * 2) + 2;
-      const availableVowels = VOWELS.split('');
-      for (let j = 0; j < numVowels; j++) {
-        const index = Math.floor(Math.random() * availableVowels.length);
-        letterArray.push(availableVowels.splice(index, 1)[0]);
+      // Find a 7-letter word with unique letters
+      const sevenLetterWords = Array.from(WORDS).filter(word => {
+        if (word.length !== 7) return false;
+        const uniqueLetters = new Set(word.toUpperCase());
+        if (uniqueLetters.size !== 7) return false;
+        
+        if (isEasyMode) {
+          // Reject words with difficult letters in easy mode
+          if (/[JQXZ]/.test(word.toUpperCase())) return false;
+        }
+        return true;
+      });
+
+      if (sevenLetterWords.length === 0) return null;
+      
+      // Pick a random word
+      const baseWord = sevenLetterWords[Math.floor(Math.random() * sevenLetterWords.length)].toUpperCase();
+      console.log('Selected base word:', baseWord);
+
+      // Identify vowels and consonants
+      const letters = baseWord.split('');
+      const vowels = letters.filter(l => 'AEIOU'.includes(l));
+      const consonants = letters.filter(l => !'AEIOU'.includes(l));
+
+      // Pick center letter based on mode
+      let centerLetter;
+      if (isEasyMode) {
+        centerLetter = vowels[Math.floor(Math.random() * vowels.length)];
+      } else {
+        centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
 
-      // Fill rest with consonants
-      const availableConsonants = CONSONANTS.split('');
-      while (letterArray.length < 6) {
-        const index = Math.floor(Math.random() * availableConsonants.length);
-        letterArray.push(availableConsonants.splice(index, 1)[0]);
-      }
-
-      const letters = letterArray.sort(() => Math.random() - 0.5).join('');
+      const shuffledLetters = letters.filter(l => l !== centerLetter)
+                                   .sort(() => Math.random() - 0.5)
+                                   .join('');
 
       // Select center letter (randomly choose between vowel and consonant)
       const isVowel = Math.random() < 0.5;
