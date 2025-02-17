@@ -174,9 +174,8 @@ export class MemStorage implements IStorage {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
 
-      const shuffledLetters = letters.filter(l => l !== centerLetter)
-                                   .sort(() => Math.random() - 0.5)
-                                   .join('');
+      // Return all letters and center letter separately
+      const letters = baseWord;
 
       // Generate valid words
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
