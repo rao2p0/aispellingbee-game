@@ -267,21 +267,21 @@ export default function Game() {
               <div className="md:mr-[16rem]">
                 <FoundWordsDisplay words={foundWords} />
                 <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={handleRestart}
-                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
-                  >
-                    Reset Progress
-                  </button>
-                  <button
-                    onClick={handleShare}
-                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Share2 className="w-4 h-4" />
-                    Share Score
-                  </button>
-                </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={handleRestart}
+                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+                    >
+                      Reset Progress
+                    </button>
+                    <button
+                      onClick={handleShare}
+                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      Share Score
+                    </button>
+                  </div>
                 <WordListDialog 
                   foundWords={foundWords}
                   allWords={puzzle.validWords}

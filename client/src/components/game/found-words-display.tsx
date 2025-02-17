@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
 import { ChevronUp } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface FoundWordsDisplayProps {
   words: string[];
