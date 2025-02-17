@@ -1,6 +1,7 @@
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sidebar, SidebarContent, SidebarProvider } from "@/components/ui/sidebar"; // Added import for SidebarProvider
+import { Sidebar, SidebarContent, SidebarProvider } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
 import { ChevronUp } from "lucide-react";
@@ -45,13 +46,13 @@ export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
   }
 
   return (
-    <SidebarProvider> {/* Added SidebarProvider */}
+    <SidebarProvider>
       <Sidebar side="right" className="!fixed">
         <SidebarContent>
           <div className="p-2 font-medium">Found Words ({words.length})</div>
           <WordList />
         </SidebarContent>
       </Sidebar>
-    </SidebarProvider> {/* Added closing tag for SidebarProvider */}
+    </SidebarProvider>
   );
 }
