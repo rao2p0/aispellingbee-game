@@ -46,7 +46,7 @@ class GameDictionary {
   validateWord(word: string, letters: string, centerLetter: string): boolean {
     const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
-    
+
     return (
       this.isValidWordPattern(normalizedWord) &&
       this.isValidLength(normalizedWord) &&
@@ -125,12 +125,13 @@ export class MemStorage implements IStorage {
   }
 
   async generateNewPuzzle(isEasyMode: boolean = false): Promise<Puzzle> {
-    console.log("Generating new puzzle...");
+    // Generate puzzle with mode setting
+    const puzzleMode = isEasyMode ? 'easy' : 'challenge';
+
     this.puzzles.clear();
 
     const result = await this.generateLetterSet(isEasyMode);
     const { letters, centerLetter, validWords } = result;
-    console.log(`Generated puzzle: Letters=${letters}, Center=${centerLetter}, Words=${validWords.length}`);
 
     const points = validWords.reduce(
       (total, word) => total + Math.max(1, word.length - 3),
@@ -150,7 +151,8 @@ export class MemStorage implements IStorage {
   }
 
   private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string[]; centerLetter: string; validWords: string[] }> {
-    console.log(`Generating new ${isEasyMode ? 'easy' : 'challenge'} letter set...`);
+    // Generate puzzle with mode setting
+    const puzzleMode = isEasyMode ? 'easy' : 'challenge';
 
     const generateAndCheck = async () => {
       // Find a 7-letter word with unique letters
@@ -170,15 +172,11 @@ export class MemStorage implements IStorage {
 
       // Pick a random word
       const baseWord = sevenLetterWords[Math.floor(Math.random() * sevenLetterWords.length)].toUpperCase();
-      console.log('\nDebugging letter selection:');
-      console.log('1. Selected base word:', baseWord);
 
       // Identify vowels and consonants
       const letters = baseWord.split('');
       const vowels = letters.filter(l => 'AEIOU'.includes(l));
       const consonants = letters.filter(l => !'AEIOU'.includes(l));
-      console.log('2. Vowels found:', vowels.join(', '));
-      console.log('3. Consonants found:', consonants.join(', '));
 
       // Pick center letter based on mode
       let centerLetter;
@@ -190,13 +188,10 @@ export class MemStorage implements IStorage {
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
-      
+
       // Remove center letter and ensure exactly 6 outer letters remain
       outerLetters = Array.from(new Set(letters.filter(l => l !== centerLetter)));
       if (outerLetters.length !== 6) return null;
-      
-      console.log('4. Selected center letter:', centerLetter);
-      console.log('5. Outer circle letters:', outerLetters.join(', '));
 
       // Generate valid words using the base word (combining outer letters with center)
       const validWords = await DICTIONARY.filterValidWords([...outerLetters, centerLetter].join(""), centerLetter, isEasyMode);
@@ -228,7 +223,7 @@ export class MemStorage implements IStorage {
       if (uniqueLetters.length !== 7) {
         return null;
       }
-      
+
       const finalOuterLetters = letters.filter(l => l !== centerLetter);
       if (finalOuterLetters.length !== 6) {
         return null;
