@@ -148,12 +148,15 @@ export class MemStorage implements IStorage {
 
       // Pick a random word
       const baseWord = sevenLetterWords[Math.floor(Math.random() * sevenLetterWords.length)].toUpperCase();
-      console.log('Selected base word:', baseWord);
+      console.log('\nDebugging letter selection:');
+      console.log('1. Selected base word:', baseWord);
 
       // Identify vowels and consonants
       const letters = baseWord.split('');
       const vowels = letters.filter(l => 'AEIOU'.includes(l));
       const consonants = letters.filter(l => !'AEIOU'.includes(l));
+      console.log('2. Vowels found:', vowels.join(', '));
+      console.log('3. Consonants found:', consonants.join(', '));
 
       // Pick center letter based on mode
       let centerLetter;
@@ -162,6 +165,8 @@ export class MemStorage implements IStorage {
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
+      console.log('4. Selected center letter:', centerLetter);
+      console.log('5. Outer circle letters:', letters.filter(l => l !== centerLetter).join(', '));
 
       // Generate valid words using the base word
       const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
