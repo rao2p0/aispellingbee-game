@@ -301,9 +301,10 @@ export default function Game() {
                 "New Game"
               )}
             </button>
-          </CardContent>
-        </Card>
-      </motion.div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
       <CelebrationPopup
         word={celebration?.word ?? ""}
