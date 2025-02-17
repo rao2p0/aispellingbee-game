@@ -1,39 +1,10 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import { execSync } from 'child_process';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import path from "path";
 
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
-const CACHE_FILE = 'nltk_words_cache.json';
-
-// Initialize NLTK and load words
-let words: string[];
-try {
-  if (existsSync(CACHE_FILE)) {
-    words = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
-  } else {
-    // Download NLTK data first
-    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`, {
-      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' },
-      maxBuffer: 1024 * 1024 * 10 // 10MB buffer
-    });
-    
-    // Then load words in chunks
-    const output = execSync(`python3 -c "from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
-      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' },
-      maxBuffer: 1024 * 1024 * 10 // 10MB buffer
-    });
-    
-    words = output.toString().split('\n').filter(Boolean);
-    writeFileSync(CACHE_FILE, JSON.stringify(words));
-  }
-} catch (error) {
-  console.error('Error loading NLTK words:', error);
-  // Fallback to basic word list if NLTK fails
-  words = ['test', 'seat', 'east', 'ease', 'tea', 'ate', 'eat', 'sat', 'sea', 'set', 'site', 'suit', 'suite'];
-}
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
@@ -50,8 +21,7 @@ const WORDS = new Set(
 
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Using direct path operations
 
 
 class GameDictionary {
