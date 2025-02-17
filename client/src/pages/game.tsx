@@ -264,8 +264,9 @@ export default function Game() {
                 foundWords={foundWords.length}
                 totalWords={puzzle.validWords.length}
               />
-              <FoundWordsDisplay words={foundWords} />
-              <div className="space-y-4">
+              <div className="md:mr-[16rem]">
+                <FoundWordsDisplay words={foundWords} />
+                <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={handleRestart}
