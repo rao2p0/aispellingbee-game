@@ -127,7 +127,7 @@ export class MemStorage implements IStorage {
     return puzzle;
   }
 
-  private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string; centerLetter: string; validWords: string[] }> {
+  private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string[]; centerLetter: string; validWords: string[] }> {
     console.log(`Generating new ${isEasyMode ? 'easy' : 'challenge'} letter set...`);
 
     const generateAndCheck = async () => {
@@ -169,7 +169,7 @@ export class MemStorage implements IStorage {
       console.log('5. Outer circle letters:', letters.filter(l => l !== centerLetter).join(', '));
 
       // Generate valid words using the base word
-      const validWords = await DICTIONARY.filterValidWords(letters, centerLetter, isEasyMode);
+      const validWords = await DICTIONARY.filterValidWords(letters.join(""), centerLetter, isEasyMode);
 
       if (isEasyMode) {
         // Filter out complex words
@@ -193,7 +193,7 @@ export class MemStorage implements IStorage {
         return null;
       }
 
-      return { letters: letters.join(''), centerLetter, validWords };
+      return { letters, centerLetter, validWords };
     };
 
     let bestResult = null;
@@ -220,7 +220,7 @@ export class MemStorage implements IStorage {
 
     // If we still don't have a valid puzzle, use a known good fallback
     console.log("Using fallback puzzle");
-    return { letters: "AEIOUS", centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
+    return { letters: ["A", "E", "I", "O", "U", "S"], centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
   }
 }
 
