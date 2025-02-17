@@ -134,7 +134,7 @@ export class MemStorage implements IStorage {
       // Find a 7-letter word with unique letters
       const sevenLetterWords = Array.from(WORDS).filter(word => {
         if (word.length !== 7) return false;
-        const uniqueLetters = new Set(word.toUpperCase());
+        const uniqueLetters = new Set(word.toUpperCase().split(''));
         if (uniqueLetters.size !== 7) return false;
 
         if (isEasyMode) {
