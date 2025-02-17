@@ -1,12 +1,18 @@
 
-import twl from 'pytwl';
+import wordfreq from 'wordfreq';
+import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 
 export class Dictionary {
   private static instance: Dictionary;
-  private twlDict: any;
-
+  private wordList: Set<string>;
+  private wordFreq: any;
+  
   private constructor() {
-    this.twlDict = twl.Trie(true);
+    this.wordList = new Set(words);
+    this.wordFreq = new wordfreq({
+      language: 'english',
+      minimumFrequency: 1e-6  // Filter out very rare words
+    });
   }
 
   public static getInstance(): Dictionary {
@@ -16,8 +22,14 @@ export class Dictionary {
     return Dictionary.instance;
   }
 
-  public isValidWord(word: string): boolean {
-    return this.twlDict.exists(word.toLowerCase());
+  public async isValidWord(word: string): Promise<boolean> {
+    const lowercaseWord = word.toLowerCase();
+    if (!this.wordList.has(lowercaseWord)) {
+      return false;
+    }
+    
+    const freq = await this.wordFreq.getFrequency(lowercaseWord);
+    return freq > 1e-6; // Only accept words above our frequency threshold
   }
 }
 
