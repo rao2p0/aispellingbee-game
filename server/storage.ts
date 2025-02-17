@@ -1,6 +1,7 @@
 import { puzzles, type Puzzle } from "@shared/schema";
 import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import path from "path";
+import { Dictionary } from "./services/dictionary";
 
 // Word validation constants
 const MIN_WORD_LENGTH = 4;
