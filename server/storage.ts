@@ -1,33 +1,35 @@
 import { puzzles, type Puzzle } from "@shared/schema";
 import { execSync } from 'child_process';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import path from "path";
-import fs from 'fs';
-
-// Initialize words from NLTK or cache
-let words: string[];
-const CACHE_FILE = 'nltk_words_cache.json';
-
-try {
-  if (fs.existsSync(CACHE_FILE)) {
-    words = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
-  } else {
-    // Download NLTK data and get words
-    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`);
-    words = execSync('python3 -c "import nltk; print(\\"\\n\\".join(w.lower() for w in nltk.corpus.words.words()))"')
-      .toString()
-      .split('\n')
-      .filter(Boolean);
-    // Cache the words
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(words));
-  }
-} catch (error) {
-  console.error('Failed to load NLTK words:', error);
-  throw error;
-}
 
 // Constants for word validation
 const MIN_WORD_LENGTH = 4;
 const MAX_WORD_LENGTH = 15;
+const CACHE_FILE = 'nltk_words_cache.json';
+
+// Initialize NLTK and load words
+let words: string[];
+try {
+  if (existsSync(CACHE_FILE)) {
+    words = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
+  } else {
+    // Download NLTK data and get words
+    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True); from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
+      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' }
+    });
+    words = execSync(`python3 -c "from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
+      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' }
+    })
+      .toString()
+      .split('\n')
+      .filter(Boolean);
+    writeFileSync(CACHE_FILE, JSON.stringify(words));
+  }
+} catch (error) {
+  console.error('Error loading NLTK words:', error);
+  throw error;
+}
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
@@ -160,7 +162,7 @@ export class MemStorage implements IStorage {
         if (word.length !== 7) return false;
         const uniqueLetters = new Set(word.toUpperCase());
         if (uniqueLetters.size !== 7) return false;
-        
+
         if (isEasyMode) {
           // Reject words with difficult letters in easy mode
           if (/[JQXZ]/.test(word.toUpperCase())) return false;
@@ -169,7 +171,7 @@ export class MemStorage implements IStorage {
       });
 
       if (sevenLetterWords.length === 0) return null;
-      
+
       // Pick a random word
       const baseWord = sevenLetterWords[Math.floor(Math.random() * sevenLetterWords.length)].toUpperCase();
       console.log('Selected base word:', baseWord);
@@ -224,7 +226,7 @@ export class MemStorage implements IStorage {
       if (result && result.validWords.length > maxWordCount) {
         maxWordCount = result.validWords.length;
         bestResult = result;
-        
+
         // If we found a good puzzle, we can stop early
         if (maxWordCount >= 20) {
           break;
