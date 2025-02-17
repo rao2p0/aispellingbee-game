@@ -2,9 +2,10 @@ import { puzzles, type Puzzle } from "@shared/schema";
 import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import path from "path";
 
-// Constants for word validation
+// Word validation constants
 const MIN_WORD_LENGTH = 4;
-const MAX_WORD_LENGTH = 15;
+const MAX_WORD_LENGTH = 7;  // Changed from 15 to match requirements
+const VALID_WORD_PATTERN = /^[a-z]+$/;
 
 // Common English consonants and vowels, weighted by frequency
 const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
@@ -25,58 +26,57 @@ const WORDS = new Set(
 
 
 class GameDictionary {
-  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
-    const allLetters = (letters + centerLetter).toLowerCase();
-    const centerLetterLower = centerLetter.toLowerCase();
-
-    return Array.from(WORDS).filter(word => {
-      const basicValid = word.length >= MIN_WORD_LENGTH &&
-        word.includes(centerLetterLower) &&
-        this.canMakeWord(word, allLetters);
-
-      if (!basicValid) return false;
-
-      if (isEasyMode) {
-        // In easy mode, exclude words with complex patterns
-        const isComplex = word.length > 8 || // Cap word length
-          /[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) || // Fewer consecutive consonants
-          /[aeiou]{3,}/i.test(word); // Fewer consecutive vowels
-        return !isComplex;
-      }
-
-      return true;
-    });
+  private isValidWordPattern(word: string): boolean {
+    return VALID_WORD_PATTERN.test(word);
   }
 
-  private canMakeWord(word: string, letters: string): boolean {
-    const wordLetters = word.toLowerCase().split('');
-    const availableLetters = letters.toLowerCase().split('');
-    
-    // Check for no repeat letters
-    if (new Set(wordLetters).size !== wordLetters.length) {
-      return false;
-    }
-    
-    // Check each letter is available
-    return wordLetters.every(char => availableLetters.includes(char));
+  private hasNoRepeatedLetters(word: string): boolean {
+    return new Set(word).size === word.length;
+  }
+
+  private containsOnlyAvailableLetters(word: string, availableLetters: string): boolean {
+    const letterSet = new Set(availableLetters.toLowerCase());
+    return word.split('').every(char => letterSet.has(char));
+  }
+
+  private isValidLength(word: string): boolean {
+    return word.length >= MIN_WORD_LENGTH && word.length <= MAX_WORD_LENGTH;
   }
 
   validateWord(word: string, letters: string, centerLetter: string): boolean {
     const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
     
-    // Length check (4-7 letters)
-    if (normalizedWord.length < 4 || normalizedWord.length > 7) {
-      return false;
-    }
-    
-    // Must contain center letter
-    if (!normalizedWord.includes(normalizedCenter)) {
-      return false;
-    }
-    
-    // Must be in dictionary and valid with available letters
-    return WORDS.has(normalizedWord) && this.canMakeWord(normalizedWord, letters);
+    return (
+      this.isValidWordPattern(normalizedWord) &&
+      this.isValidLength(normalizedWord) &&
+      this.hasNoRepeatedLetters(normalizedWord) &&
+      normalizedWord.includes(normalizedCenter) &&
+      this.containsOnlyAvailableLetters(normalizedWord, letters + centerLetter) &&
+      WORDS.has(normalizedWord)
+    );
+  }
+
+  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
+    const allLetters = letters + centerLetter;
+    const centerLetterLower = centerLetter.toLowerCase();
+
+    return Array.from(WORDS).filter(word => {
+      // Apply core validation rules
+      if (!this.validateWord(word, letters, centerLetter)) {
+        return false;
+      }
+
+      if (isEasyMode) {
+        // Additional easy mode restrictions
+        const isComplex = 
+          /[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) || // No long consonant chains
+          /[aeiou]{3,}/i.test(word); // No long vowel chains
+        return !isComplex;
+      }
+
+      return true;
+    });
   }
 }
 
