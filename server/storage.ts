@@ -49,12 +49,34 @@ class GameDictionary {
   }
 
   private canMakeWord(word: string, letters: string): boolean {
-    const availableLetters = new Set(letters.toLowerCase());
-    return word.split('').every(char => availableLetters.has(char));
+    const wordLetters = word.toLowerCase().split('');
+    const availableLetters = letters.toLowerCase().split('');
+    
+    // Check for no repeat letters
+    if (new Set(wordLetters).size !== wordLetters.length) {
+      return false;
+    }
+    
+    // Check each letter is available
+    return wordLetters.every(char => availableLetters.includes(char));
   }
 
   validateWord(word: string, letters: string, centerLetter: string): boolean {
-    return this.filterValidWords(letters, centerLetter).includes(word.toLowerCase());
+    const normalizedWord = word.toLowerCase();
+    const normalizedCenter = centerLetter.toLowerCase();
+    
+    // Length check (4-7 letters)
+    if (normalizedWord.length < 4 || normalizedWord.length > 7) {
+      return false;
+    }
+    
+    // Must contain center letter
+    if (!normalizedWord.includes(normalizedCenter)) {
+      return false;
+    }
+    
+    // Must be in dictionary and valid with available letters
+    return WORDS.has(normalizedWord) && this.canMakeWord(normalizedWord, letters);
   }
 }
 
