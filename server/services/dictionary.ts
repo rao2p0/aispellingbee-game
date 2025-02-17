@@ -11,7 +11,7 @@ export class Dictionary {
     this.wordList = new Set(words);
     this.wordFreq = new wordfreq({
       language: 'english',
-      minimumFrequency: 1e-6  // Filter out very rare words
+      minimumFrequency: 1e-5  // Filter out more rare words
     });
   }
 
@@ -29,7 +29,7 @@ export class Dictionary {
     }
     
     const freq = await this.wordFreq.getFrequency(lowercaseWord);
-    return freq > 1e-6; // Only accept words above our frequency threshold
+    return freq > 1e-5; // Only accept words above our increased frequency threshold
   }
 }
 
