@@ -71,7 +71,9 @@ class GameDictionary {
       }
 
       // Check word frequency
-      if (!(await dictionary.isValidWord(word))) {
+      const isValid = await dictionary.isValidWord(word);
+      if (!isValid) {
+        console.log(`Frequency check rejected word: ${word}`);
         continue;
       }
 
