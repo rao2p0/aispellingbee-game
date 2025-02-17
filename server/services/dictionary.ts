@@ -33,7 +33,7 @@ export class Dictionary {
     const isFrequent = freq > 0.2; // Only accept very common words (>20% frequency)
     
     if (!isFrequent) {
-      console.log(`Word ${lowercaseWord} rejected - frequency ${freq}`);
+      console.log(`Word ${lowercaseWord} rejected - frequency ${freq};`);
     }
     
     return isFrequent;
