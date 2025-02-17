@@ -258,7 +258,7 @@ export default function Game() {
                 isError={isError}
                 alreadyFound={alreadyFound}
               />
-            <ScoreDisplay 
+              <ScoreDisplay 
               score={score} 
               totalPossible={puzzle.points}
               foundWords={foundWords.length}
