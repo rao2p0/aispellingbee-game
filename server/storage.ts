@@ -188,7 +188,7 @@ export class MemStorage implements IStorage {
         return null;
       }
 
-      return { letters, centerLetter, validWords };
+      return { letters: letters.join(''), centerLetter, validWords };
     };
 
     let bestResult = null;
