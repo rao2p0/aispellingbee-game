@@ -160,7 +160,7 @@ export default function Game() {
       const blob = await new Promise<Blob>((resolve) => 
         canvas.toBlob((blob) => resolve(blob!), 'image/png')
       );
-
+      
       const filesArray = [
         new File([blob], 'spellbee-score.png', { type: 'image/png' })
       ];
@@ -264,50 +264,48 @@ export default function Game() {
                 foundWords={foundWords.length}
                 totalWords={puzzle.validWords.length}
               />
-              <div className="md:mr-[16rem]">
-                <FoundWordsDisplay words={foundWords} />
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={handleRestart}
-                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
-                    >
-                      Reset Progress
-                    </button>
-                    <button
-                      onClick={handleShare}
-                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Share2 className="w-4 h-4" />
-                      Share Score
-                    </button>
-                  </div>
-                  <WordListDialog 
-                    foundWords={foundWords}
-                    allWords={puzzle.validWords}
-                    totalPoints={puzzle.points}
-                    userPoints={score}
-                  />
+              <FoundWordsDisplay words={foundWords} />
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={handleNewGame}
-                    disabled={newGameMutation.isPending}
-                    className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                    onClick={handleRestart}
+                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
                   >
-                    {newGameMutation.isPending ? (
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                        Generating...
-                      </div>
-                    ) : (
-                      "New Game"
-                    )}
+                    Reset Progress
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    Share Score
                   </button>
                 </div>
+                <WordListDialog 
+                  foundWords={foundWords}
+                  allWords={puzzle.validWords}
+                  totalPoints={puzzle.points}
+                  userPoints={score}
+                />
+                <button
+                  onClick={handleNewGame}
+                  disabled={newGameMutation.isPending}
+                  className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                >
+              {newGameMutation.isPending ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Generating...
+                </div>
+              ) : (
+                "New Game"
+              )}
+            </button>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
       <CelebrationPopup
         word={celebration?.word ?? ""}
