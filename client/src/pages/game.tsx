@@ -160,7 +160,7 @@ export default function Game() {
       const blob = await new Promise<Blob>((resolve) => 
         canvas.toBlob((blob) => resolve(blob!), 'image/png')
       );
-      
+
       const filesArray = [
         new File([blob], 'spellbee-score.png', { type: 'image/png' })
       ];
@@ -304,9 +304,10 @@ export default function Game() {
                   </button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       <CelebrationPopup
         word={celebration?.word ?? ""}
