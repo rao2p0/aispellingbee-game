@@ -14,21 +14,25 @@ try {
   if (existsSync(CACHE_FILE)) {
     words = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
   } else {
-    // Download NLTK data and get words
-    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True); from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
-      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' }
+    // Download NLTK data first
+    execSync(`python3 -c "import nltk; nltk.download('words', quiet=True)"`, {
+      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' },
+      maxBuffer: 1024 * 1024 * 10 // 10MB buffer
     });
-    words = execSync(`python3 -c "from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
-      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' }
-    })
-      .toString()
-      .split('\n')
-      .filter(Boolean);
+    
+    // Then load words in chunks
+    const output = execSync(`python3 -c "from nltk.corpus import words; print('\\n'.join(w.lower() for w in words.words()))"`, {
+      env: { ...process.env, PYTHONPATH: process.env.PYTHONPATH || '' },
+      maxBuffer: 1024 * 1024 * 10 // 10MB buffer
+    });
+    
+    words = output.toString().split('\n').filter(Boolean);
     writeFileSync(CACHE_FILE, JSON.stringify(words));
   }
 } catch (error) {
   console.error('Error loading NLTK words:', error);
-  throw error;
+  // Fallback to basic word list if NLTK fails
+  words = ['test', 'seat', 'east', 'ease', 'tea', 'ate', 'eat', 'sat', 'sea', 'set', 'site', 'suit', 'suite'];
 }
 
 // Common English consonants and vowels, weighted by frequency
