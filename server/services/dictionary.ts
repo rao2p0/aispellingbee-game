@@ -1,14 +1,15 @@
+
 import words from "an-array-of-english-words/index.json" assert { type: "json" };
-import { WordFreq } from 'wordfreq';
+import wordfreq from 'wordfreq';
 
 export class Dictionary {
   private static instance: Dictionary;
   private wordList: Set<string>;
-  private wordFreq: WordFreq;
+  private wordFreq: any;
 
   private constructor() {
     this.wordList = new Set(words);
-    this.wordFreq = new WordFreq({
+    this.wordFreq = wordfreq({
       wordsPath: undefined,
       minimumFrequency: 1e-6
     });
