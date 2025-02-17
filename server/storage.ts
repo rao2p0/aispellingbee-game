@@ -57,14 +57,21 @@ class GameDictionary {
     );
   }
 
-  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
+  async filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): Promise<string[]> {
     const allLetters = letters + centerLetter;
     const centerLetterLower = centerLetter.toLowerCase();
-
-    return Array.from(WORDS).filter(word => {
+    const dictionary = Dictionary.getInstance();
+    
+    const validWords = [];
+    for (const word of Array.from(WORDS)) {
       // Apply core validation rules
       if (!this.validateWord(word, letters, centerLetter)) {
-        return false;
+        continue;
+      }
+
+      // Check word frequency
+      if (!(await dictionary.isValidWord(word))) {
+        continue;
       }
 
       if (isEasyMode) {
@@ -72,11 +79,13 @@ class GameDictionary {
         const isComplex = 
           /[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) || // No long consonant chains
           /[aeiou]{3,}/i.test(word); // No long vowel chains
-        return !isComplex;
+        if (isComplex) continue;
       }
 
-      return true;
-    });
+      validWords.push(word);
+    }
+
+    return validWords;
   }
 }
 
