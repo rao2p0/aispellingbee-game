@@ -1,17 +1,16 @@
-
-import wordfreq from 'wordfreq';
-import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
+import wordfreq from "wordfreq";
+import words from "an-array-of-english-words/index.json" assert { type: "json" };
 
 export class Dictionary {
   private static instance: Dictionary;
   private wordList: Set<string>;
   private wordFreq: any;
-  
+
   private constructor() {
     this.wordList = new Set(words);
     this.wordFreq = new wordfreq({
-      language: 'english',
-      minimumFrequency: 1e-5  // Filter out more rare words
+      language: "english",
+      minimumFrequency: 1e-5, // Filter out more rare words
     });
   }
 
@@ -27,9 +26,9 @@ export class Dictionary {
     if (!this.wordList.has(lowercaseWord)) {
       return false;
     }
-    
+
     const freq = await this.wordFreq.getFrequency(lowercaseWord);
-    return freq > 1e-5; // Only accept words above our increased frequency threshold
+    return freq > 1e-2; // Only accept words above our increased frequency threshold
   }
 }
 
