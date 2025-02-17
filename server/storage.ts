@@ -196,7 +196,18 @@ export class MemStorage implements IStorage {
         return null;
       }
 
-      return { letters: letters.filter(l => l !== centerLetter), centerLetter, validWords };
+      // Ensure we have exactly 7 unique letters (6 outer + 1 center)
+      const uniqueLetters = Array.from(new Set(letters));
+      if (uniqueLetters.length !== 7) {
+        return null;
+      }
+      
+      const outerLetters = letters.filter(l => l !== centerLetter);
+      if (outerLetters.length !== 6) {
+        return null;
+      }
+
+      return { letters: outerLetters, centerLetter, validWords };
     };
 
     let bestResult = null;
