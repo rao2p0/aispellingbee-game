@@ -224,21 +224,8 @@ export default function Game() {
         className="w-full max-w-lg"
       >
         <Card className="bg-white shadow-lg game-board">
-          <CardContent className="p-6 space-y-6">
-            <HexGrid
-              letters={puzzle.letters}
-              centerLetter={puzzle.centerLetter}
-              onLetterClick={handleLetterClick}
-            />
-            <WordInput
-              value={currentWord}
-              onChange={setCurrentWord}
-              onSubmit={(word) => validateMutation.mutate(word)}
-              isSubmitting={validateMutation.isPending}
-              isError={isError}
-              alreadyFound={alreadyFound}
-            />
-            <div className="flex items-center justify-between mb-4">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-6">
               <div className={`text-sm font-medium ${isEasyMode ? 'text-green-600' : 'text-blue-600'}`}>
                 {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
               </div>
@@ -257,6 +244,20 @@ export default function Game() {
                 Switch to {isEasyMode ? 'Challenge' : 'Easy'} Mode
               </button>
             </div>
+            <div className="space-y-6">
+              <HexGrid
+                letters={puzzle.letters}
+                centerLetter={puzzle.centerLetter}
+                onLetterClick={handleLetterClick}
+              />
+              <WordInput
+                value={currentWord}
+                onChange={setCurrentWord}
+                onSubmit={(word) => validateMutation.mutate(word)}
+                isSubmitting={validateMutation.isPending}
+                isError={isError}
+                alreadyFound={alreadyFound}
+              />
             <ScoreDisplay 
               score={score} 
               totalPossible={puzzle.points}
