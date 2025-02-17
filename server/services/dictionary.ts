@@ -9,9 +9,12 @@ export class Dictionary {
 
   private constructor() {
     this.wordList = new Set(words);
-    this.wordFreq = wordfreq({
+    // Initialize wordfreq
+    wordfreq({
       wordsPath: undefined,
       minimumFrequency: 1e-6
+    }).then(wf => {
+      this.wordFreq = wf;
     });
   }
 
@@ -28,8 +31,10 @@ export class Dictionary {
       return false;
     }
 
-    const freq = await this.wordFreq.getWordFrequency(lowercaseWord);
-    const isFrequent = freq > 0.2; // Only accept very common words (>20% frequency)
+    if (!this.wordFreq) return true; // Allow all words if wordfreq isn't loaded yet
+    
+    const freq = await this.wordFreq.getFreq([lowercaseWord]);
+    const isFrequent = freq[lowercaseWord] > 0.00001; // Accept reasonably common words
 
     if (!isFrequent) {
       console.log(`Word ${lowercaseWord} rejected - frequency ${freq}`);
