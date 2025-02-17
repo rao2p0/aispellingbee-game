@@ -10,7 +10,11 @@ interface HexGridProps {
 }
 
 export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGridProps) {
-  const [shuffledLetters, setShuffledLetters] = useState(letters);
+  const [shuffledLetters, setShuffledLetters] = useState('');
+  
+  useEffect(() => {
+    setShuffledLetters(letters);
+  }, [letters]);
   const [isShuffling, setIsShuffling] = useState(false);
   const size = 50;
   const width = size * 2;
@@ -107,7 +111,7 @@ export default function HexGrid({ letters, centerLetter, onLetterClick }: HexGri
                 damping: 15
               }}
             >
-              <HexButton x={point[0]} y={point[1]} letter={shuffledLetters[i]} />
+              <HexButton x={point[0]} y={point[1]} letter={shuffledLetters[i] || ''} />
             </motion.g>
           ))}
           <motion.g
