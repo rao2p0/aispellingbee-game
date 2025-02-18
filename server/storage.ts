@@ -70,16 +70,6 @@ class GameDictionary {
         continue;
       }
 
-      validWords.push(word);
-    }
-
-    // Batch validate all words with GPT
-    const gptValidWords = await dictionary.validateWordsWithGPT(validWords);
-    return gptValidWords;
-  }
-
-  return validWords;
-
       if (isEasyMode) {
         // Additional easy mode restrictions
         const isComplex = 
@@ -91,7 +81,9 @@ class GameDictionary {
       validWords.push(word);
     }
 
-    return validWords;
+    // Batch validate all words with GPT
+    const gptValidWords = await dictionary.validateWordsWithGPT(validWords);
+    return gptValidWords;
   }
 }
 
