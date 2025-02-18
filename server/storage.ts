@@ -70,12 +70,15 @@ class GameDictionary {
         continue;
       }
 
-      // Check word frequency
-      const isValid = await dictionary.isValidWord(word);
-      if (!isValid) {
-        console.log(`Frequency check rejected word: ${word}`);
-        continue;
-      }
+      validWords.push(word);
+    }
+
+    // Batch validate all words with GPT
+    const gptValidWords = await dictionary.validateWordsWithGPT(validWords);
+    return gptValidWords;
+  }
+
+  return validWords;
 
       if (isEasyMode) {
         // Additional easy mode restrictions

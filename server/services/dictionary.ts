@@ -62,7 +62,10 @@ export class Dictionary {
 
   public async isValidWord(word: string): Promise<boolean> {
     const lowercaseWord = word.toLowerCase();
-    return this.wordList.has(lowercaseWord);
+    if (!this.wordList.has(lowercaseWord)) return false;
+    
+    const validations = await this.validateWordsWithGPT([lowercaseWord]);
+    return validations.includes(lowercaseWord);
   }
 }
 
