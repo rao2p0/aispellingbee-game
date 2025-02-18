@@ -1,4 +1,3 @@
-
 import words from "an-array-of-english-words/index.json" assert { type: "json" };
 import OpenAI from "openai";
 
@@ -23,7 +22,7 @@ export class Dictionary {
 
   private async askGpt4ValidWord(wordList: string[]): Promise<boolean[]> {
     console.log("Words being sent to GPT:", wordList);
-    const prompt = `You are an AI designed to classify words for a spelling bee game. Below is a list of words in English. For each word, please determine if it is a valid English word in common use. Output 1 if the word can be found in a standard English dictionary and is used in everyday speech, writing, or well-known specialized contexts. Output 0 only for archaic, obsolete, or extremely rare words that most English speakers wouldn't recognize. Do not provide explanations—only return 0 or 1. Return your answer as a comma separated list. Do not include anything besides '1', '0', ',' in your answer.\n\n${wordList.join(", ")}`;
+    const prompt = `You are an AI designed to classify words for a spelling bee game. Below is a list of words in English. For each word, please determine if it is a valid English word in common use. Output 1 if the word can be found in a standard English dictionary and is used in everyday speech, writing, or well-known specialized contexts. Output 0 for proper nouns, archaic, obsolete, or extremely rare words that most English speakers wouldn't recognize. Do not provide explanations—only return 0 or 1. Return your answer as a comma separated list. Do not include anything besides '1', '0', ',' in your answer.\n\n${wordList.join(", ")}`;
 
     const response = await this.openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -38,12 +37,12 @@ export class Dictionary {
 
     const result = response.choices[0].message.content;
     console.log("GPT response:", result);
-    
+
     if (!result) return wordList.map(() => false);
-    
-    const validations = result.split(",").map(val => val.trim() === "1");
+
+    const validations = result.split(",").map((val) => val.trim() === "1");
     console.log("Parsed validations:", validations);
-    
+
     return validations;
   }
 
@@ -55,7 +54,7 @@ export class Dictionary {
     for (let i = 0; i < words.length; i += chunkSize) {
       const chunk = words.slice(i, i + chunkSize);
       const validations = await this.askGpt4ValidWord(chunk);
-      
+
       chunk.forEach((word, index) => {
         if (validations[index]) {
           validWords.push(word);
@@ -69,7 +68,7 @@ export class Dictionary {
   public async isValidWord(word: string): Promise<boolean> {
     const lowercaseWord = word.toLowerCase();
     if (!this.wordList.has(lowercaseWord)) return false;
-    
+
     const validations = await this.validateWordsWithGPT([lowercaseWord]);
     return validations.includes(lowercaseWord);
   }

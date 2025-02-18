@@ -22,17 +22,12 @@ const WORDS = new Set(
 );
 
 
-
 // Using direct path operations
 
 
 class GameDictionary {
   private isValidWordPattern(word: string): boolean {
     return VALID_WORD_PATTERN.test(word);
-  }
-
-  private hasNoRepeatedLetters(word: string): boolean {
-    return new Set(word).size === word.length;
   }
 
   private containsOnlyAvailableLetters(word: string, availableLetters: string): boolean {
@@ -51,7 +46,6 @@ class GameDictionary {
     return (
       this.isValidWordPattern(normalizedWord) &&
       this.isValidLength(normalizedWord) &&
-      this.hasNoRepeatedLetters(normalizedWord) &&
       normalizedWord.includes(normalizedCenter) &&
       this.containsOnlyAvailableLetters(normalizedWord, letters + centerLetter) &&
       WORDS.has(normalizedWord)
