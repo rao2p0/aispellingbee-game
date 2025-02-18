@@ -62,7 +62,7 @@ class GameDictionary {
     const allLetters = letters + centerLetter;
     const centerLetterLower = centerLetter.toLowerCase();
     const dictionary = Dictionary.getInstance();
-    
+
     const validWords = [];
     for (const word of Array.from(WORDS)) {
       // Apply core validation rules
@@ -190,8 +190,9 @@ export class MemStorage implements IStorage {
       let outerLetters;
       if (isEasyMode) {
         // In easy mode, ensure we have at least one vowel for the center
-        if (vowels.length === 0) return null;
-        centerLetter = vowels[Math.floor(Math.random() * vowels.length)];
+        const puzzleVowels = letters.filter(l => 'AEIOU'.includes(l));
+        if (puzzleVowels.length === 0) return null;
+        centerLetter = puzzleVowels[Math.floor(Math.random() * puzzleVowels.length)];
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
@@ -217,7 +218,7 @@ export class MemStorage implements IStorage {
         }
 
         // Return with filtered words
-        return { letters, centerLetter, validWords: filteredWords };
+        return { letters: outerLetters, centerLetter, validWords: filteredWords };
       }
 
       const minWords = isEasyMode ? 15 : 5;
