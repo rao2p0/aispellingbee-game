@@ -23,7 +23,7 @@ export class Dictionary {
 
   private async askGpt4ValidWord(wordList: string[]): Promise<boolean[]> {
     console.log("Words being sent to GPT:", wordList);
-    const prompt = `You are an AI designed to classify words for a spelling bee game. Below is a list of words in English. For each word, please determine its frequency of use in modern English. Output 0 if the word is archaic, obsolete, extremely rare in contemporary usage or not a pure English word. Output 1 if the word is commonly used in general writing, speech, or specialized domains. Consider linguistic corpora, modern dictionaries, and real-world usage to make this determination. Do not provide explanations—only return 0 or 1. Return your answer as a comma separated list. Do not include anything besides '1', '0', ',' in your answer.\n\n${wordList.join(", ")}`;
+    const prompt = `You are an AI designed to classify words for a spelling bee game. Below is a list of words in English. For each word, please determine if it is a valid English word in common use. Output 1 if the word can be found in a standard English dictionary and is used in everyday speech, writing, or well-known specialized contexts. Output 0 only for archaic, obsolete, or extremely rare words that most English speakers wouldn't recognize. Do not provide explanations—only return 0 or 1. Return your answer as a comma separated list. Do not include anything besides '1', '0', ',' in your answer.\n\n${wordList.join(", ")}`;
 
     const response = await this.openai.chat.completions.create({
       model: "gpt-3.5-turbo",
