@@ -263,7 +263,7 @@ export class MemStorage implements IStorage {
     }
 
     // If we still don't have a valid puzzle, use a known good fallback
-    console.log("Using fallback puzzle");
+    console.log("No puzzle met the minimum word requirements after 15 attempts. Using fallback puzzle.");
     return { letters: ["A", "E", "I", "O", "U", "S"], centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
   }
 }
