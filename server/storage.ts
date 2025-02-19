@@ -1,7 +1,6 @@
 import { puzzles, type Puzzle } from "@shared/schema";
 import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import path from "path";
-import { Dictionary } from "./services/dictionary";
 
 // Word validation constants
 const MIN_WORD_LENGTH = 4;
@@ -22,12 +21,17 @@ const WORDS = new Set(
 );
 
 
+
 // Using direct path operations
 
 
 class GameDictionary {
   private isValidWordPattern(word: string): boolean {
     return VALID_WORD_PATTERN.test(word);
+  }
+
+  private hasNoRepeatedLetters(word: string): boolean {
+    return new Set(word).size === word.length;
   }
 
   private containsOnlyAvailableLetters(word: string, availableLetters: string): boolean {
@@ -46,22 +50,21 @@ class GameDictionary {
     return (
       this.isValidWordPattern(normalizedWord) &&
       this.isValidLength(normalizedWord) &&
+      this.hasNoRepeatedLetters(normalizedWord) &&
       normalizedWord.includes(normalizedCenter) &&
       this.containsOnlyAvailableLetters(normalizedWord, letters + centerLetter) &&
       WORDS.has(normalizedWord)
     );
   }
 
-  async filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): Promise<string[]> {
+  filterValidWords(letters: string, centerLetter: string, isEasyMode: boolean = false): string[] {
     const allLetters = letters + centerLetter;
     const centerLetterLower = centerLetter.toLowerCase();
-    const dictionary = Dictionary.getInstance();
 
-    const validWords = [];
-    for (const word of Array.from(WORDS)) {
+    return Array.from(WORDS).filter(word => {
       // Apply core validation rules
       if (!this.validateWord(word, letters, centerLetter)) {
-        continue;
+        return false;
       }
 
       if (isEasyMode) {
@@ -69,15 +72,11 @@ class GameDictionary {
         const isComplex = 
           /[bcdfghjklmnpqrstvwxyz]{4,}/i.test(word) || // No long consonant chains
           /[aeiou]{3,}/i.test(word); // No long vowel chains
-        if (isComplex) continue;
+        return !isComplex;
       }
 
-      validWords.push(word);
-    }
-
-    // Batch validate all words with GPT
-    const gptValidWords = await dictionary.validateWordsWithGPT(validWords);
-    return gptValidWords;
+      return true;
+    });
   }
 }
 
@@ -184,9 +183,8 @@ export class MemStorage implements IStorage {
       let outerLetters;
       if (isEasyMode) {
         // In easy mode, ensure we have at least one vowel for the center
-        const puzzleVowels = letters.filter(l => 'AEIOU'.includes(l));
-        if (puzzleVowels.length === 0) return null;
-        centerLetter = puzzleVowels[Math.floor(Math.random() * puzzleVowels.length)];
+        if (vowels.length === 0) return null;
+        centerLetter = vowels[Math.floor(Math.random() * vowels.length)];
       } else {
         centerLetter = consonants[Math.floor(Math.random() * consonants.length)];
       }
@@ -212,7 +210,7 @@ export class MemStorage implements IStorage {
         }
 
         // Return with filtered words
-        return { letters: outerLetters, centerLetter, validWords: filteredWords };
+        return { letters, centerLetter, validWords: filteredWords };
       }
 
       const minWords = isEasyMode ? 15 : 5;
@@ -257,7 +255,7 @@ export class MemStorage implements IStorage {
     }
 
     // If we still don't have a valid puzzle, use a known good fallback
-    console.log("No puzzle met the minimum word requirements after 15 attempts. Using fallback puzzle.");
+    console.log("Using fallback puzzle");
     return { letters: ["A", "E", "I", "O", "U", "S"], centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
   }
 }
