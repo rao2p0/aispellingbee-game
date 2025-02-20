@@ -10,35 +10,32 @@ interface FoundWordsDisplayProps {
 
 export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const sortedWords = [...words].sort((a, b) => a.length - b.length || a.localeCompare(b));
-  const latestWords = [...words].reverse().slice(0, 5);
+  const sortedWords = [...words].sort((a, b) => b.length - a.length || a.localeCompare(b));
+  const latestWords = words.slice(-3);
   
   return (
     <div className="space-y-2">
-      {/* Latest words section - always visible */}
-      <div className="p-2 bg-muted/30 rounded-lg">
-        <div className="text-sm text-muted-foreground mb-2">Latest Found Words:</div>
-        <div className="flex gap-2 flex-wrap">
-          {latestWords.map((word, index) => (
-            <motion.div
-              key={word}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="px-2 py-1 bg-primary/10 rounded text-sm"
-            >
-              {word.toUpperCase()}
-            </motion.div>
-          ))}
-        </div>
+      {/* Latest words - always visible */}
+      <div className="flex gap-2 flex-wrap">
+        {latestWords.map((word, index) => (
+          <motion.div
+            key={word}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="px-3 py-1.5 bg-primary/10 rounded-md text-sm font-medium"
+          >
+            {word.toUpperCase()}
+          </motion.div>
+        ))}
       </div>
 
-      {/* Expandable full list */}
+      {/* Full list with expand/collapse */}
       <div className="relative">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="w-full flex items-center justify-between p-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          <span>All Found Words ({words.length})</span>
+          <span>All Words ({words.length})</span>
           {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
         </button>
         
@@ -51,7 +48,7 @@ export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <ScrollArea className="h-[120px]">
+              <ScrollArea className="h-[200px]">
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {sortedWords.map((word) => (
                     <div
