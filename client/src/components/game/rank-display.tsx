@@ -37,8 +37,8 @@ export default function RankDisplay({ score, maxScore }: RankDisplayProps) {
             {RANKS.map((rank, i) => (
               <div
                 key={i}
-                className="absolute h-2 w-2 rounded-full bg-foreground/30 -top-0.5"
-                style={{ left: `${rank.threshold}%`, transform: 'translateX(-50%)' }}
+                className="absolute h-2 w-2 rounded-full bg-foreground/30"
+                style={{ left: `${rank.threshold}%`, transform: 'translateX(-50%) translateY(0)' }}
                 title={`${rank.title} (${rank.threshold}%)`}
               />
             ))}
