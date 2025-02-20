@@ -90,7 +90,7 @@ export default function Game() {
         const totalPoints = basePoints + bonusPoints;
         setScore(prev => prev + totalPoints);
         setFoundWords(prev => [...prev, word]);
-        setCelebration({ word, points: totalPoints });
+        setCelebration({ word, points: totalPoints, hasBonus: uniqueLetters === 7 });
         setCurrentWord("");
         setTimeout(() => setCelebration(null), 2000);
       } else {

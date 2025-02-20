@@ -6,6 +6,7 @@ interface CelebrationPopupProps {
   points: number;
   isVisible: boolean;
   onAnimationComplete?: () => void;
+  hasBonus?: boolean;
 }
 
 export default function CelebrationPopup({
@@ -54,18 +55,27 @@ export default function CelebrationPopup({
           >
             <motion.div
               animate={{ 
-                rotate: [0, 15, -15, 0],
-                scale: [1, 1.2, 1],
+                rotate: hasBonus ? [0, 15, -15, 15, -15, 0] : [0, 15, -15, 0],
+                scale: hasBonus ? [1, 1.4, 1.2, 1.4, 1.2, 1] : [1, 1.2, 1],
               }}
               transition={{
-                duration: 0.5,
-                times: [0, 0.2, 0.8, 1],
+                duration: hasBonus ? 1.2 : 0.5,
+                times: hasBonus ? [0, 0.2, 0.4, 0.6, 0.8, 1] : [0, 0.2, 0.8, 1],
               }}
             >
               <Icon className="w-8 h-8 mb-2" />
             </motion.div>
             <p className="text-lg font-bold">{word.toUpperCase()}</p>
             <p className="text-sm">+{points} points!</p>
+            {hasBonus && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-xs text-yellow-500 font-semibold mt-1"
+              >
+                +7 BONUS POINTS!
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
       )}
