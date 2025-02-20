@@ -251,17 +251,6 @@ export default function Game() {
               </button>
             </div>
             <div className="space-y-6">
-              <ScoreDisplay 
-                score={score} 
-                totalPossible={puzzle.points}
-                foundWords={foundWords.length}
-                totalWords={puzzle.validWords.length}
-              />
-              <RankDisplay 
-                score={score}
-                maxScore={puzzle.points}
-              />
-              <FoundWordsDisplay words={foundWords} />
               <HexGrid
                 letters={puzzle.letters}
                 centerLetter={puzzle.centerLetter}
