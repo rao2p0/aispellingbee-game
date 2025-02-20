@@ -11,7 +11,7 @@ interface FoundWordsDisplayProps {
 export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const sortedWords = [...words].sort((a, b) => b.length - a.length || a.localeCompare(b));
-  const latestWords = words.slice(-3);
+  const latestWords = words.slice(-5);
   
   return (
     <div className="space-y-2">
