@@ -63,7 +63,7 @@ class GameDictionary {
     const allLetters = letters + centerLetter;
     const centerLetterLower = centerLetter.toLowerCase();
 
-    return Array.from(WORDS).filter(word => {
+    return Array.from(VALID_WORDS).filter(word => {
       // Apply core validation rules
       if (!this.validateWord(word, letters, centerLetter)) {
         return false;
