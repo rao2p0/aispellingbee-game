@@ -229,41 +229,26 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg game-board">
           <CardContent className="p-6">
-            <div className="flex flex-col gap-2 mb-6">
-              <div className="flex items-center justify-between">
-                <div className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            <div className="mb-6">
+              <button
+                onClick={() => {
+                  if (!currentWord.length) {
+                    const newMode = !isEasyMode;
+                    setIsEasyMode(newMode);
+                    newGameMutation.mutate(newMode);
+                  }
+                }}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  currentWord.length ? 'opacity-50 cursor-not-allowed' : ''
+                } ${
                   isEasyMode 
-                    ? 'bg-green-100 text-green-700 border border-green-200' 
-                    : 'bg-blue-100 text-blue-700 border border-blue-200'
-                }`}>
-                  <span className="mr-2">{isEasyMode ? '🌟' : '💪'}</span>
-                  Currently Playing: {isEasyMode ? 'Easy Mode' : 'Challenge Mode'}
-                </div>
-                <button
-                  onClick={() => {
-                    if (!currentWord.length) {
-                      const newMode = !isEasyMode;
-                      setIsEasyMode(newMode);
-                      newGameMutation.mutate(newMode);
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    currentWord.length ? 'opacity-50 cursor-not-allowed' : ''
-                  } ${
-                    !isEasyMode 
-                      ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200' 
-                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
-                  }`}
-                  disabled={currentWord.length > 0}
-                >
-                  Switch to {isEasyMode ? 'Challenge Mode' : 'Easy Mode'}
-                </button>
-              </div>
-              <div className="text-xs text-gray-500 italic">
-                {isEasyMode 
-                  ? '✨ Easy Mode: Simpler words, vowel centered, perfect for beginners!' 
-                  : '🎯 Challenge Mode: More complex words, test your vocabulary!'}
-              </div>
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200' 
+                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
+                }`}
+                disabled={currentWord.length > 0}
+              >
+                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
+              </button>
             </div>
             <div className="space-y-6">
               <RankDisplay 
