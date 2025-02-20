@@ -16,13 +16,13 @@ export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
   return (
     <div className="space-y-2">
       {/* Latest words - always visible */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 justify-between">
         {latestWords.map((word, index) => (
           <motion.div
             key={word}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="px-3 py-1.5 bg-primary/10 rounded-md text-sm font-medium"
+            className="flex-1 text-center px-3 py-1.5 bg-primary/10 rounded-md text-sm font-medium"
           >
             {word.toUpperCase()}
           </motion.div>
