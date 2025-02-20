@@ -229,7 +229,14 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg game-board">
           <CardContent className="p-6">
-            <div className="mb-6">
+            <div className="mb-6 flex justify-between gap-4">
+              <div className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                isEasyMode 
+                  ? 'bg-green-100 text-green-700 border border-green-200' 
+                  : 'bg-blue-100 text-blue-700 border border-blue-200'
+              }`}>
+                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
+              </div>
               <button
                 onClick={() => {
                   if (!currentWord.length) {
@@ -241,13 +248,13 @@ export default function Game() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   currentWord.length ? 'opacity-50 cursor-not-allowed' : ''
                 } ${
-                  isEasyMode 
+                  !isEasyMode 
                     ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200' 
                     : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
                 }`}
                 disabled={currentWord.length > 0}
               >
-                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
+                Switch to {isEasyMode ? 'Challenge Mode' : 'Easy Mode'}
               </button>
             </div>
             <div className="space-y-6">
