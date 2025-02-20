@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import HexGrid from "@/components/game/hex-grid";
 import WordInput from "@/components/game/word-input";
 import ScoreDisplay from "@/components/game/score-display";
+import RankDisplay from "@/components/game/rank-display";
 import CelebrationPopup from "@/components/game/celebration-popup";
 import WordListDialog from "@/components/game/word-list-dialog";
 import FoundWordsDisplay from "@/components/game/found-words-display";
