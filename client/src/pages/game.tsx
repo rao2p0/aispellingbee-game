@@ -164,7 +164,7 @@ export default function Game() {
       const blob = await new Promise<Blob>((resolve) => 
         canvas.toBlob((blob) => resolve(blob!), 'image/png')
       );
-      
+
       const filesArray = [
         new File([blob], 'spellbee-score.png', { type: 'image/png' })
       ];
@@ -251,6 +251,11 @@ export default function Game() {
               </button>
             </div>
             <div className="space-y-6">
+              <RankDisplay 
+                score={score}
+                maxScore={puzzle.points}
+              />
+              <FoundWordsDisplay words={foundWords} />
               <HexGrid
                 letters={puzzle.letters}
                 centerLetter={puzzle.centerLetter}
@@ -271,12 +276,7 @@ export default function Game() {
                   foundWords={foundWords.length}
                   totalWords={puzzle.validWords.length}
                 />
-                <RankDisplay 
-                  score={score}
-                  maxScore={puzzle.points}
-                />
               </div>
-              <FoundWordsDisplay words={foundWords} />
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-2">
                   <button
