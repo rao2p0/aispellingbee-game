@@ -135,10 +135,12 @@ export class MemStorage implements IStorage {
     const result = await this.generateLetterSet(isEasyMode);
     const { letters, centerLetter, validWords } = result;
 
-    const points = validWords.reduce(
-      (total, word) => total + Math.max(1, word.length - 3),
-      0
-    );
+    const points = validWords.reduce((total, word) => {
+      const basePoints = word.length === 4 ? 1 : word.length;
+      const uniqueLetters = new Set(word.split('')).size;
+      const bonusPoints = uniqueLetters === 7 ? 7 : 0;
+      return total + basePoints + bonusPoints;
+    }, 0);
 
     const puzzle: Puzzle = {
       id: this.currentPuzzleId++,

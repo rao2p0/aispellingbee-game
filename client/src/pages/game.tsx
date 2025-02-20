@@ -84,10 +84,13 @@ export default function Game() {
           setCurrentWord("");
         }, 1500);
       } else if (data.valid) {
-        const points = Math.max(1, word.length - 3);
-        setScore(prev => prev + points);
+        const basePoints = word.length === 4 ? 1 : word.length;
+        const uniqueLetters = new Set(word.split('')).size;
+        const bonusPoints = uniqueLetters === 7 ? 7 : 0;
+        const totalPoints = basePoints + bonusPoints;
+        setScore(prev => prev + totalPoints);
         setFoundWords(prev => [...prev, word]);
-        setCelebration({ word, points });
+        setCelebration({ word, points: totalPoints });
         setCurrentWord("");
         setTimeout(() => setCelebration(null), 2000);
       } else {
