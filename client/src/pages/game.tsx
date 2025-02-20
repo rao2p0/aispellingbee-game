@@ -229,7 +229,7 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg game-board">
           <CardContent className="p-6">
-            <div className="absolute top-4 right-4">
+            <div className="flex justify-between items-center mb-4">
               <button
                 onClick={() => {
                   if (!currentWord.length) {  // Only allow mode switch when no word is being typed
