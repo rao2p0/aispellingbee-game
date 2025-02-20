@@ -14,6 +14,7 @@ export default function CelebrationPopup({
   points,
   isVisible,
   onAnimationComplete,
+  hasBonus,
 }: CelebrationPopupProps) {
   const getIcon = () => {
     if (word.length >= 7) return Crown;
