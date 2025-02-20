@@ -11,41 +11,62 @@ interface FoundWordsDisplayProps {
 export default function FoundWordsDisplay({ words }: FoundWordsDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const sortedWords = [...words].sort((a, b) => a.length - b.length || a.localeCompare(b));
+  const latestWords = [...words].reverse().slice(0, 5);
   
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <span>Found Words ({words.length})</span>
-        {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
-      </button>
-      
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <ScrollArea className="h-[120px]">
-              <div className="grid grid-cols-2 gap-1 p-2">
-                {sortedWords.map((word) => (
-                  <div
-                    key={word}
-                    className="text-sm px-2 py-1 rounded bg-muted/30"
-                  >
-                    {word.toUpperCase()}
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="space-y-2">
+      {/* Latest words section - always visible */}
+      <div className="p-2 bg-muted/30 rounded-lg">
+        <div className="text-sm text-muted-foreground mb-2">Latest Found Words:</div>
+        <div className="flex gap-2 flex-wrap">
+          {latestWords.map((word, index) => (
+            <motion.div
+              key={word}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="px-2 py-1 bg-primary/10 rounded text-sm"
+            >
+              {word.toUpperCase()}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Expandable full list */}
+      <div className="relative">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full flex items-center justify-between p-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <span>All Found Words ({words.length})</span>
+          {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+        </button>
+        
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <ScrollArea className="h-[120px]">
+                <div className="grid grid-cols-2 gap-1 p-2">
+                  {sortedWords.map((word) => (
+                    <div
+                      key={word}
+                      className="text-sm px-2 py-1 rounded bg-muted/30"
+                    >
+                      {word.toUpperCase()}
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

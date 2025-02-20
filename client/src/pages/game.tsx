@@ -229,26 +229,39 @@ export default function Game() {
       >
         <Card className="bg-white shadow-lg game-board">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className={`text-sm font-medium ${isEasyMode ? 'text-green-600' : 'text-blue-600'}`}>
-                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
-              </div>
+            <div className="absolute top-4 right-4">
               <button
                 onClick={() => {
-                  const newMode = !isEasyMode;
-                  setIsEasyMode(newMode);
-                  newGameMutation.mutate(newMode);
+                  if (!currentWord.length) {  // Only allow mode switch when no word is being typed
+                    const newMode = !isEasyMode;
+                    setIsEasyMode(newMode);
+                    newGameMutation.mutate(newMode);
+                  }
                 }}
-                className={`px-3 py-1 rounded-full text-sm ${
+                className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  currentWord.length ? 'opacity-50 cursor-not-allowed' : ''
+                } ${
                   isEasyMode 
                     ? 'bg-green-100 text-green-700 hover:bg-green-200' 
                     : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                 }`}
+                disabled={currentWord.length > 0}
               >
-                Switch to {isEasyMode ? 'Challenge' : 'Easy'} Mode
+                {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
               </button>
             </div>
             <div className="space-y-6">
+              <ScoreDisplay 
+                score={score} 
+                totalPossible={puzzle.points}
+                foundWords={foundWords.length}
+                totalWords={puzzle.validWords.length}
+              />
+              <RankDisplay 
+                score={score}
+                maxScore={puzzle.points}
+              />
+              <FoundWordsDisplay words={foundWords} />
               <HexGrid
                 letters={puzzle.letters}
                 centerLetter={puzzle.centerLetter}
