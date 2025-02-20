@@ -10,7 +10,7 @@ export default function RanksInfoDialog({ children }: { children: React.ReactNod
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Ranks & Milestones</DialogTitle>
+          <DialogTitle>Ranks</DialogTitle>
           <DialogDescription>
             Progress through these ranks as you discover more words
           </DialogDescription>
@@ -19,7 +19,7 @@ export default function RanksInfoDialog({ children }: { children: React.ReactNod
           {RANKS.slice().reverse().map((rank, i) => (
             <div key={i} className="flex justify-between items-center">
               <span className="font-medium">{rank.title}</span>
-              <span className="text-muted-foreground">{rank.threshold}% of max points</span>
+              <span className="text-muted-foreground">{rank.threshold}%</span>
             </div>
           ))}
         </div>
