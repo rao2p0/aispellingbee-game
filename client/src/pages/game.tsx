@@ -261,12 +261,18 @@ export default function Game() {
                 isError={isError}
                 alreadyFound={alreadyFound}
               />
-              <ScoreDisplay 
-                score={score} 
-                totalPossible={puzzle.points}
-                foundWords={foundWords.length}
-                totalWords={puzzle.validWords.length}
-              />
+              <div className="space-y-4">
+                <ScoreDisplay 
+                  score={score} 
+                  totalPossible={puzzle.points}
+                  foundWords={foundWords.length}
+                  totalWords={puzzle.validWords.length}
+                />
+                <RankDisplay 
+                  score={score}
+                  maxScore={puzzle.points}
+                />
+              </div>
               <FoundWordsDisplay words={foundWords} />
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-2">
