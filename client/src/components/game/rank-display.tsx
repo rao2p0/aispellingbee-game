@@ -10,6 +10,7 @@ interface RankDisplayProps {
 }
 
 export default function RankDisplay({ score, maxScore }: RankDisplayProps) {
+  console.log('RankDisplay props:', { score, maxScore });
   const currentRank = getCurrentRank(score, maxScore);
   const nextRank = getNextRank(score, maxScore);
   const percentage = (score / maxScore) * 100;

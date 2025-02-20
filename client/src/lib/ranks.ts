@@ -19,7 +19,10 @@ export const RANKS: Rank[] = [
 
 export function getCurrentRank(score: number, maxScore: number): Rank {
   const percentage = (score / maxScore) * 100;
-  return RANKS.find(rank => percentage >= rank.threshold) || RANKS[RANKS.length - 1];
+  console.log(`Current percentage: ${percentage}%, Score: ${score}, MaxScore: ${maxScore}`);
+  const rank = RANKS.find(rank => percentage >= rank.threshold) || RANKS[RANKS.length - 1];
+  console.log(`Selected rank: ${rank.title} (threshold: ${rank.threshold}%)`);
+  return rank;
 }
 
 export function getNextRank(score: number, maxScore: number): Rank | null {
