@@ -1,23 +1,25 @@
 import { puzzles, type Puzzle } from "@shared/schema";
-import words from 'an-array-of-english-words/index.json' assert { type: 'json' };
 import path from "path";
+import fs from "fs";
 
 // Word validation constants
 const MIN_WORD_LENGTH = 4;
-const MAX_WORD_LENGTH = 7;  // Changed from 15 to match requirements
+const MAX_WORD_LENGTH = 9;  // Updated to match requirements
 const VALID_WORD_PATTERN = /^[a-z]+$/;
 
-// Common English consonants and vowels, weighted by frequency
-const CONSONANTS = 'TNRSHDLCMFPGBVKWXQJZ';
-const VOWELS = 'EAIOU';
+// Load words from files
+const SEVEN_LETTER_WORDS = new Set(
+  fs.readFileSync('filtered_7_words.txt', 'utf8')
+    .split('\n')
+    .filter(word => word.trim().length > 0)
+    .map(word => word.toLowerCase())
+);
 
-// Load words from dictionary
-const WORDS = new Set(
-  words.filter(word => 
-    word.length >= MIN_WORD_LENGTH && 
-    word.length <= MAX_WORD_LENGTH && 
-    /^[a-z]+$/.test(word)
-  )
+const VALID_WORDS = new Set(
+  fs.readFileSync('filtered_456789_words.txt', 'utf8')
+    .split('\n')
+    .filter(word => word.trim().length > 0)
+    .map(word => word.toLowerCase())
 );
 
 
@@ -46,14 +48,14 @@ class GameDictionary {
   validateWord(word: string, letters: string, centerLetter: string): boolean {
     const normalizedWord = word.toLowerCase();
     const normalizedCenter = centerLetter.toLowerCase();
+    const allLetters = (letters + centerLetter).toLowerCase();
 
     return (
-      this.isValidWordPattern(normalizedWord) &&
-      this.isValidLength(normalizedWord) &&
-      this.hasNoRepeatedLetters(normalizedWord) &&
+      normalizedWord.length >= MIN_WORD_LENGTH &&
+      normalizedWord.length <= MAX_WORD_LENGTH &&
       normalizedWord.includes(normalizedCenter) &&
-      this.containsOnlyAvailableLetters(normalizedWord, letters + centerLetter) &&
-      WORDS.has(normalizedWord)
+      normalizedWord.split('').every(char => allLetters.includes(char)) &&
+      VALID_WORDS.has(normalizedWord)
     );
   }
 
@@ -151,22 +153,14 @@ export class MemStorage implements IStorage {
   }
 
   private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string[]; centerLetter: string; validWords: string[] }> {
-    // Generate puzzle with mode setting
-    const puzzleMode = isEasyMode ? 'easy' : 'challenge';
-
     const generateAndCheck = async () => {
-      // Find a 7-letter word with unique letters
-      const sevenLetterWords = Array.from(WORDS).filter(word => {
-        if (word.length !== 7) return false;
-        const uniqueLetters = new Set(word.toUpperCase().split(''));
-        if (uniqueLetters.size !== 7) return false;
-
-        if (isEasyMode) {
-          // Reject words with difficult letters in easy mode
-          if (/[JQXZ]/.test(word.toUpperCase())) return false;
-        }
-        return true;
-      });
+      // Get a random word from filtered 7-letter words
+      const sevenLetterWords = Array.from(SEVEN_LETTER_WORDS)
+        .filter(word => {
+          if (isEasyMode && /[jqxz]/i.test(word)) return false;
+          const uniqueLetters = new Set(word.toUpperCase().split(''));
+          return uniqueLetters.size === 7;
+        });
 
       if (sevenLetterWords.length === 0) return null;
 
