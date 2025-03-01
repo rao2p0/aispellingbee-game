@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { QuestionMarkCircleIcon } from "lucide-react";
-import { HowToPlayDialog } from "./how-to-play-dialog";
+import HowToPlayDialog from "./how-to-play-dialog";
 
 export function HowToPlayButton() {
   const [open, setOpen] = React.useState(false);
