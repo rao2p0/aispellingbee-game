@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Footer } from "@/components/footer";
+import { HowToPlayButton } from "@/components/game/how-to-play-button";
 import NotFound from "@/pages/not-found";
 import Game from "@/pages/game";
 import Statistics from "@/pages/statistics";
@@ -36,6 +37,7 @@ function Navigation() {
           >
             <Link href="/statistics">Statistics</Link>
           </Button>
+          <HowToPlayButton />
           <ThemeToggle />
         </div>
       </div>
