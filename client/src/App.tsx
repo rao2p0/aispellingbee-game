@@ -18,26 +18,28 @@ function ResponsiveNavigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-primary/10 backdrop-blur-sm border-b border-primary/20 p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 no-underline">
-          <img src="/logo.png" alt="Spell Bee Logo" className="h-12 w-12" />
-          <h1 className="text-3xl font-bold text-primary logo-font">Spell Bee</h1>
+        <Link href="/" className="flex items-center gap-2 no-underline mr-4">
+          <img src="/logo.png" alt="Spell Bee Logo" className="h-10 w-10 md:h-12 md:w-12" />
+          <h1 className="text-2xl md:text-3xl font-bold text-primary logo-font hidden sm:block">Spell Bee</h1>
         </Link>
-        <div className="flex items-center space-x-4 md:space-x-6 lg:space-x-8"> {/* Added responsiveness */}
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-4"> {/* Changed to gap for better mobile layout */}
           <Button
             variant={location === "/" ? "default" : "ghost"}
             asChild
-            className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`}
-            /* Added padding responsiveness */
+            size="sm"
+            className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-2 py-1 md:px-4 md:py-2`}
+            /* Reduced button size */
           >
             <Link href="/">Game</Link>
           </Button>
           <Button
             variant={location === "/statistics" ? "default" : "ghost"}
             asChild
-            className={`${location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`}
-            /* Added padding responsiveness */
+            size="sm"
+            className={`${location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-2 py-1 md:px-4 md:py-2`}
+            /* Reduced button size */
           >
-            <Link href="/statistics">Statistics</Link>
+            <Link href="/statistics">Stats</Link>
           </Button>
           <HowToPlayButton />
           <ThemeToggle />
