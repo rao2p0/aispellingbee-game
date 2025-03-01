@@ -26,14 +26,16 @@ function ResponsiveNavigation() {
           <Button
             variant={location === "/" ? "default" : "ghost"}
             asChild
-            className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`} {/* Added padding responsiveness */}
+            className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`}
+            /* Added padding responsiveness */
           >
             <Link href="/">Game</Link>
           </Button>
           <Button
             variant={location === "/statistics" ? "default" : "ghost"}
             asChild
-            className={`${location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`} {/* Added padding responsiveness */}
+            className={`${location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`}
+            /* Added padding responsiveness */
           >
             <Link href="/statistics">Statistics</Link>
           </Button>
