@@ -15,6 +15,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/api";
+import HowToPlayDialog from "@/components/game/how-to-play-dialog"; // Import the new component
+
 
 export default function Game() {
   const queryClient = useQueryClient();
@@ -27,6 +29,7 @@ export default function Game() {
   const [isError, setIsError] = useState(false);
   const [alreadyFound, setAlreadyFound] = useState(false);
   const [isEasyMode, setIsEasyMode] = useState(true);
+  const [showHowToPlay, setShowHowToPlay] = useState(false); // Add state for HowToPlayDialog
 
   const { data: puzzle, isLoading: isPuzzleLoading } = useQuery<Puzzle>({
     queryKey: ["/api/puzzle"],
@@ -109,6 +112,16 @@ export default function Game() {
     if (savedStats) {
       setScore(savedStats.score);
       setFoundWords(savedStats.wordsFound);
+    }
+    // Show How to Play dialog for new users
+    const hasSeenInstructions = localStorage.getItem('hasSeenInstructions');
+    if (!hasSeenInstructions) {
+      // Delay showing the dialog slightly to ensure the game has loaded
+      const timer = setTimeout(() => {
+        setShowHowToPlay(true);
+        localStorage.setItem('hasSeenInstructions', 'true');
+      }, 1000);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -256,6 +269,7 @@ export default function Game() {
               >
                 Switch to {isEasyMode ? 'Challenge Mode' : 'Easy Mode'}
               </button>
+              <HowToPlayDialog open={showHowToPlay} onOpenChange={setShowHowToPlay} /> {/* Add HowToPlayDialog button */}
             </div>
             <div className="space-y-6">
               <RankDisplay 
