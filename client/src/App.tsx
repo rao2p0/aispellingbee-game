@@ -12,7 +12,7 @@ import Statistics from "@/pages/statistics";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 
-function Navigation() {
+function ResponsiveNavigation() {
   const [location] = useLocation();
 
   return (
@@ -22,18 +22,18 @@ function Navigation() {
           <img src="/logo.png" alt="Spell Bee Logo" className="h-12 w-12" />
           <h1 className="text-3xl font-bold text-primary logo-font">Spell Bee</h1>
         </Link>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 md:space-x-6 lg:space-x-8"> {/* Added responsiveness */}
           <Button
             variant={location === "/" ? "default" : "ghost"}
             asChild
-            className={location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"}
+            className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`} {/* Added padding responsiveness */}
           >
             <Link href="/">Game</Link>
           </Button>
           <Button
             variant={location === "/statistics" ? "default" : "ghost"}
             asChild
-            className={location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"}
+            className={`${location === "/statistics" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4`} {/* Added padding responsiveness */}
           >
             <Link href="/statistics">Statistics</Link>
           </Button>
@@ -60,7 +60,7 @@ function App() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
         <div className="min-h-screen flex flex-col">
-          <Navigation />
+          <ResponsiveNavigation />
           <main className="flex-1 pt-16">
             <Router />
           </main>
