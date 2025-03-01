@@ -18,8 +18,8 @@ export default function RanksInfoDialog({ children }: { children: React.ReactNod
         <div className="space-y-4">
           {RANKS.slice().reverse().map((rank, i) => (
             <div key={i} className="flex justify-between items-center">
-              <span className="font-medium">{rank.title}</span>
-              <span className="text-muted-foreground">{rank.threshold}%</span>
+              <span className="font-medium dark:text-white">{rank.title}</span>
+              <span className="text-muted-foreground dark:text-gray-300">{rank.threshold}%</span>
             </div>
           ))}
         </div>

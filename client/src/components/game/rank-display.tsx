@@ -18,9 +18,9 @@ export default function RankDisplay({ score, maxScore }: RankDisplayProps) {
   return (
     <div className="space-y-2">
       <div className="flex justify-between text-sm font-medium">
-        <span className="text-foreground">Current Rank: {currentRank.title}</span>
+        <span className="text-foreground font-semibold dark:text-white">Current Rank: {currentRank.title}</span>
         {nextRank && (
-          <span className="text-muted-foreground">
+          <span className="text-muted-foreground dark:text-gray-300">
             Next: {nextRank.title} ({nextRank.threshold}%)
           </span>
         )}
