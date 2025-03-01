@@ -16,7 +16,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
     <div className="space-y-4">
       <div className="space-y-2">
         <div className="flex justify-between text-sm font-medium">
-          <span className="text-foreground font-semibold dark:text-white">Score: {score}</span>
+          <span className="text-primary font-semibold dark:text-primary">Score: {score}</span>
           <span className="text-muted-foreground dark:text-gray-300">Max Score: {totalPossible}</span>
         </div>
         <motion.div
@@ -30,7 +30,7 @@ export default function ScoreDisplay({ score, totalPossible, foundWords, totalWo
 
       <div className="space-y-2">
         <div className="flex justify-between text-sm font-medium">
-          <span className="text-foreground font-semibold dark:text-white">Words Found: {foundWords}</span>
+          <span className="text-primary font-semibold dark:text-primary">Words Found: {foundWords}</span>
           <span className="text-muted-foreground dark:text-gray-300">Max Words: {totalWords}</span>
         </div>
         <motion.div
