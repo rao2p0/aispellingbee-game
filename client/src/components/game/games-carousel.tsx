@@ -83,14 +83,14 @@ export default function GamesCarousel() {
     <div className="w-full max-w-5xl mx-auto">
       <h2 className="text-3xl font-bold mb-8 text-center">Play Other Games</h2>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game) => (
           <Card 
             key={game.id}
             className="overflow-hidden border shadow-sm transition-all hover:shadow-md"
           >
-            <div className={`h-40 flex items-center justify-center ${getBackgroundColor(game.id)}`}>
-              <div className="w-24 h-24 relative">
+            <div className={`h-32 flex items-center justify-center ${getBackgroundColor(game.id)}`}>
+              <div className="w-20 h-20 relative">
                 <img
                   src={game.logoUrl}
                   alt={`${game.name} logo`}
@@ -98,19 +98,19 @@ export default function GamesCarousel() {
                 />
                 {game.comingSoon && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full">
-                    <span className="text-white font-medium text-sm">Coming Soon</span>
+                    <span className="text-white font-medium text-xs">Coming Soon</span>
                   </div>
                 )}
               </div>
             </div>
 
-            <CardContent className="p-5">
-              <h3 className="text-xl font-bold text-center mb-1">{game.name}</h3>
-              <p className="text-sm text-muted-foreground text-center mb-4">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-bold text-center mb-1">{game.name}</h3>
+              <p className="text-xs text-muted-foreground text-center mb-3">
                 {game.description}
               </p>
               <Button 
-                className="w-full rounded-full"
+                className="w-full rounded-full text-sm py-1 h-auto"
                 variant={game.comingSoon ? "outline" : "default"}
                 disabled={game.comingSoon}
               >
