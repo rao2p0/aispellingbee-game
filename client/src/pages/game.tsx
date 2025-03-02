@@ -16,6 +16,22 @@ import { Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/api";
 
+//New Component for the Games Carousel
+const GamesCarousel = () => {
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-2">More Word Games</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="flex flex-col items-center">
+            <img src="/wordle-logo.svg" alt="Wordle Logo" className="w-16 h-16" /> {/*Replace with actual path*/}
+            <p className="text-sm mt-1">Wordle</p>
+          </div>
+        {/* Add more games here */}
+      </div>
+    </div>
+  );
+};
+
 
 export default function Game() {
   const queryClient = useQueryClient();
@@ -323,16 +339,18 @@ export default function Game() {
             </button>
               </div>
             </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
-      <CelebrationPopup
-        word={celebration?.word ?? ""}
-        points={celebration?.points ?? 0}
-        isVisible={celebration !== null}
-        onAnimationComplete={() => setCelebration(null)}
-      />
+      {/* Games Carousel */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <GamesCarousel />
+      </motion.div>
     </div>
   );
 }
