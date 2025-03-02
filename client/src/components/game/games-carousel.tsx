@@ -36,6 +36,13 @@ export default function GamesCarousel() {
       comingSoon: true
     },
     {
+      id: "wordsearch",
+      name: "Word Search",
+      logoUrl: "/wordle-logo.svg",
+      description: "Find hidden words in a grid",
+      comingSoon: true
+    },
+    {
       id: "combinations",
       name: "Combinations",
       logoUrl: "/wordle-logo.svg",
@@ -123,6 +130,7 @@ function getBackgroundColor(gameId: string): string {
     wordle: "bg-amber-50",
     spellbee: "bg-amber-100",
     squares: "bg-white",
+    wordsearch: "bg-indigo-50",
     combinations: "bg-amber-50",
     strands: "bg-blue-100",
     connections: "bg-purple-100",
