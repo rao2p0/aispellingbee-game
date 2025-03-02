@@ -22,11 +22,11 @@ export default function GamesCarousel() {
       comingSoon: true
     },
     {
-      id: "spellbee",
-      name: "SpellBee",
-      logoUrl: "/wordle-logo.svg", // Should use a bee logo
-      description: "Make words with 7 letters",
-      comingSoon: false
+      id: "connections",
+      name: "Connections",
+      logoUrl: "/wordle-logo.svg", 
+      description: "Group words by topic",
+      comingSoon: true
     },
     {
       id: "squares",
@@ -34,49 +34,49 @@ export default function GamesCarousel() {
       logoUrl: "/wordle-logo.svg", 
       description: "New word search game",
       comingSoon: true
-    },
-    {
-      id: "wordsearch",
-      name: "Word Search",
-      logoUrl: "/word-search-logo.svg",
-      description: "Find hidden words in a grid",
-      comingSoon: true
-    },
-    {
-      id: "combinations",
-      name: "Combinations",
-      logoUrl: "/wordle-logo.svg",
-      description: "Combine letters and create words",
-      comingSoon: true
-    },
-    {
-      id: "strands",
-      name: "Strands",
-      logoUrl: "/wordle-logo.svg",
-      description: "Solve a 6x8 letter grid",
-      comingSoon: true
-    },
-    {
-      id: "connections",
-      name: "Connections",
-      logoUrl: "/wordle-logo.svg",
-      description: "Group words by topic",
-      comingSoon: true
-    },
-    {
-      id: "phrazle",
-      name: "Phrazle",
-      logoUrl: "/wordle-logo.svg",
-      description: "Guess the Phrase",
-      comingSoon: true
-    },
-    {
-      id: "dordle",
-      name: "Dordle",
-      logoUrl: "/wordle-logo.svg",
-      description: "Solve 2 Wordles at once",
-      comingSoon: true
     }
+    // {
+    //   id: "wordsearch",
+    //   name: "Word Search",
+    //   logoUrl: "/word-search-logo.svg",
+    //   description: "Find hidden words in a grid",
+    //   comingSoon: true
+    // },
+    // {
+    //   id: "combinations",
+    //   name: "Combinations",
+    //   logoUrl: "/wordle-logo.svg",
+    //   description: "Combine letters and create words",
+    //   comingSoon: true
+    // },
+    // {
+    //   id: "strands",
+    //   name: "Strands",
+    //   logoUrl: "/wordle-logo.svg",
+    //   description: "Solve a 6x8 letter grid",
+    //   comingSoon: true
+    // },
+    // {
+    //   id: "connections",
+    //   name: "Connections",
+    //   logoUrl: "/wordle-logo.svg",
+    //   description: "Group words by topic",
+    //   comingSoon: true
+    // },
+    // {
+    //   id: "phrazle",
+    //   name: "Phrazle",
+    //   logoUrl: "/wordle-logo.svg",
+    //   description: "Guess the Phrase",
+    //   comingSoon: true
+    // },
+    // {
+    //   id: "dordle",
+    //   name: "Dordle",
+    //   logoUrl: "/wordle-logo.svg",
+    //   description: "Solve 2 Wordles at once",
+    //   comingSoon: true
+    // }
   ];
 
   return (
