@@ -38,7 +38,7 @@ export default function GamesCarousel() {
     {
       id: "wordsearch",
       name: "Word Search",
-      logoUrl: "/wordle-logo.svg",
+      logoUrl: "/word-search-logo.svg",
       description: "Find hidden words in a grid",
       comingSoon: true
     },
