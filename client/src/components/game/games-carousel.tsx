@@ -21,7 +21,27 @@ export default function GamesCarousel() {
       description: "Guess the 5-letter word in 6 tries",
       comingSoon: true
     },
-    // More games will be added here in the future
+    {
+      id: "anagrams",
+      name: "Word Anagrams",
+      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
+      description: "Rearrange letters to form as many words as possible",
+      comingSoon: true
+    },
+    {
+      id: "word-connect",
+      name: "Word Connect",
+      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
+      description: "Connect letters to form words across a grid",
+      comingSoon: true
+    },
+    {
+      id: "word-scramble",
+      name: "Word Scramble",
+      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
+      description: "Unscramble jumbled letters to form words",
+      comingSoon: true
+    }
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,10 +55,10 @@ export default function GamesCarousel() {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-center">More Word Games</h2>
+    <div className="w-full max-w-lg mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-center">More Word Games</h2>
       
-      <div className="relative">
+      <div className="relative pb-8">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

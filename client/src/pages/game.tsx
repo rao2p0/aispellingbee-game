@@ -348,6 +348,7 @@ export default function Game() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
+        className="mt-12"
       >
         <GamesCarousel />
       </motion.div>
