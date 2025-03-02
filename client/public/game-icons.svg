@@ -1,0 +1,42 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="squares-icon" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7" rx="1" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <rect x="14" y="3" width="7" height="7" rx="1" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <rect x="3" y="14" width="7" height="7" rx="1" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <rect x="14" y="14" width="7" height="7" rx="1" fill="#F5F5F5" stroke="#000" stroke-width="1.5"/>
+  </symbol>
+  
+  <symbol id="combinations-icon" viewBox="0 0 24 24">
+    <rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="#000" stroke-width="1.5"/>
+    <line x1="2" y1="8" x2="22" y2="8" stroke="#000" stroke-width="1.5"/>
+    <line x1="2" y1="15" x2="22" y2="15" stroke="#000" stroke-width="1.5"/>
+    <line x1="8" y1="2" x2="8" y2="22" stroke="#000" stroke-width="1.5"/>
+    <line x1="15" y1="2" x2="15" y2="22" stroke="#000" stroke-width="1.5"/>
+    <rect x="8" y="8" width="7" height="7" fill="#F0D78C"/>
+  </symbol>
+  
+  <symbol id="spellbee-icon" viewBox="0 0 24 24">
+    <path d="M12,4 L8,8 L8,16 L16,16 L16,8 Z" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <path d="M8,8 C6,6 6,12 5,10 M16,8 C18,6 18,12 19,10" fill="none" stroke="#000" stroke-width="1.5"/>
+  </symbol>
+  
+  <symbol id="strands-icon" viewBox="0 0 24 24">
+    <circle cx="6" cy="6" r="2.5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <circle cx="12" cy="6" r="2.5" fill="#A5D5F5" stroke="#000" stroke-width="1.5"/>
+    <circle cx="18" cy="6" r="2.5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <circle cx="6" cy="12" r="2.5" fill="#A5D5F5" stroke="#000" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="2.5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <circle cx="18" cy="12" r="2.5" fill="#A5D5F5" stroke="#000" stroke-width="1.5"/>
+    <circle cx="6" cy="18" r="2.5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <circle cx="12" cy="18" r="2.5" fill="#A5D5F5" stroke="#000" stroke-width="1.5"/>
+    <circle cx="18" cy="18" r="2.5" fill="#F0D78C" stroke="#000" stroke-width="1.5"/>
+    <line x1="8.5" y1="6" x2="9.5" y2="6" stroke="#000" stroke-width="1.5"/>
+    <line x1="14.5" y1="6" x2="15.5" y2="6" stroke="#000" stroke-width="1.5"/>
+    <line x1="12" y1="8.5" x2="12" y2="9.5" stroke="#000" stroke-width="1.5"/>
+    <line x1="12" y1="14.5" x2="12" y2="15.5" stroke="#000" stroke-width="1.5"/>
+    <line x1="9.5" y1="12" x2="8.5" y2="12" stroke="#000" stroke-width="1.5"/>
+    <line x1="15.5" y1="12" x2="14.5" y2="12" stroke="#000" stroke-width="1.5"/>
+  </symbol>
+</svg>

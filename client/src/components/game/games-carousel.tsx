@@ -1,8 +1,8 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Motion, motion } from "framer-motion";
 
 interface Game {
   id: string;
@@ -22,99 +22,114 @@ export default function GamesCarousel() {
       comingSoon: true
     },
     {
-      id: "anagrams",
-      name: "Word Anagrams",
-      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
-      description: "Rearrange letters to form as many words as possible",
+      id: "spellbee",
+      name: "SpellBee",
+      logoUrl: "/wordle-logo.svg", // Should use a bee logo
+      description: "Make words with 7 letters",
+      comingSoon: false
+    },
+    {
+      id: "squares",
+      name: "Squares",
+      logoUrl: "/wordle-logo.svg", 
+      description: "New word search game",
       comingSoon: true
     },
     {
-      id: "word-connect",
-      name: "Word Connect",
-      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
-      description: "Connect letters to form words across a grid",
+      id: "combinations",
+      name: "Combinations",
+      logoUrl: "/wordle-logo.svg",
+      description: "Combine letters and create words",
       comingSoon: true
     },
     {
-      id: "word-scramble",
-      name: "Word Scramble",
-      logoUrl: "/wordle-logo.svg", // Using wordle logo as placeholder
-      description: "Unscramble jumbled letters to form words",
+      id: "strands",
+      name: "Strands",
+      logoUrl: "/wordle-logo.svg",
+      description: "Solve a 6x8 letter grid",
+      comingSoon: true
+    },
+    {
+      id: "connections",
+      name: "Connections",
+      logoUrl: "/wordle-logo.svg",
+      description: "Group words by topic",
+      comingSoon: true
+    },
+    {
+      id: "phrazle",
+      name: "Phrazle",
+      logoUrl: "/wordle-logo.svg",
+      description: "Guess the Phrase",
+      comingSoon: true
+    },
+    {
+      id: "dordle",
+      name: "Dordle",
+      logoUrl: "/wordle-logo.svg",
+      description: "Solve 2 Wordles at once",
       comingSoon: true
     }
   ];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const nextGame = () => {
-    setActiveIndex((prev) => (prev + 1) % games.length);
-  };
-
-  const prevGame = () => {
-    setActiveIndex((prev) => (prev - 1 + games.length) % games.length);
-  };
-
   return (
-    <div className="w-full max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center">More Word Games</h2>
+    <div className="w-full max-w-5xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8 text-center">Play Other Games</h2>
       
-      <div className="relative pb-8">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="overflow-hidden"
-        >
-          <div className="flex gap-4 justify-center">
-            {games.map((game, index) => (
-              <Card 
-                key={game.id}
-                className={`w-full max-w-[280px] transition-all duration-300 ${
-                  index === activeIndex ? "opacity-100 scale-100" : "opacity-40 scale-95"
-                }`}
-              >
-                <CardContent className="p-6 flex flex-col items-center">
-                  <div className="w-32 h-32 mb-4 relative flex items-center justify-center">
-                    <img
-                      src={game.logoUrl}
-                      alt={`${game.name} logo`}
-                      className="w-full h-full object-contain"
-                    />
-                    {game.comingSoon && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full">
-                        <span className="text-white font-medium text-sm">Coming Soon</span>
-                      </div>
-                    )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {games.map((game) => (
+          <Card 
+            key={game.id}
+            className="overflow-hidden border shadow-sm transition-all hover:shadow-md"
+          >
+            <div className={`h-40 flex items-center justify-center ${getBackgroundColor(game.id)}`}>
+              <div className="w-24 h-24 relative">
+                <img
+                  src={game.logoUrl}
+                  alt={`${game.name} logo`}
+                  className="w-full h-full object-contain"
+                />
+                {game.comingSoon && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full">
+                    <span className="text-white font-medium text-sm">Coming Soon</span>
                   </div>
-                  <h3 className="text-xl font-bold">{game.name}</h3>
-                  <p className="text-sm text-muted-foreground text-center mt-2">
-                    {game.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </motion.div>
-        
-        {games.length > 1 && (
-          <>
-            <button
-              onClick={prevGame}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-background/80 rounded-full shadow-md"
-              aria-label="Previous game"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={nextGame}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-background/80 rounded-full shadow-md"
-              aria-label="Next game"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </>
-        )}
+                )}
+              </div>
+            </div>
+
+            <CardContent className="p-5">
+              <h3 className="text-xl font-bold text-center mb-1">{game.name}</h3>
+              <p className="text-sm text-muted-foreground text-center mb-4">
+                {game.description}
+              </p>
+              <Button 
+                className="w-full rounded-full"
+                variant={game.comingSoon ? "outline" : "default"}
+                disabled={game.comingSoon}
+              >
+                Play
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
+}
+
+// Helper function to get unique background colors for each game card
+function getBackgroundColor(gameId: string): string {
+  const colorMap: Record<string, string> = {
+    wordle: "bg-amber-50",
+    spellbee: "bg-amber-100",
+    squares: "bg-white",
+    combinations: "bg-amber-50",
+    strands: "bg-blue-100",
+    connections: "bg-purple-100",
+    phrazle: "bg-green-100",
+    dordle: "bg-amber-50",
+    default: "bg-gray-100"
+  };
+
+  return colorMap[gameId] || colorMap.default;
 }
