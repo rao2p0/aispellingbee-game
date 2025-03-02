@@ -16,6 +16,32 @@ import { Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/api";
 
+// Added ShareMenu component - basic implementation
+const ShareMenu = ({ shareText, url, title }: { shareText: string; url: string; title: string }) => {
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: shareText,
+        url: url,
+      })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.error('Error sharing:', error));
+    } else {
+      // Fallback for browsers that don't support navigator.share
+      navigator.clipboard.writeText(`${shareText} ${url}`)
+        .then(() => console.log('Copied to clipboard!'))
+        .catch(err => console.error('Failed to copy: ', err));
+    }
+  };
+
+  return (
+    <button onClick={handleShare} className="px-4 py-2 bg-primary text-primary-foreground rounded-md">
+      Share
+    </button>
+  );
+};
+
 
 export default function Game() {
   const queryClient = useQueryClient();
@@ -162,7 +188,7 @@ export default function Game() {
       if (!gameBoard) return;
 
       const canvas = await html2canvas(gameBoard);
-      const blob = await new Promise<Blob>((resolve) => 
+      const blob = await new Promise<Blob>((resolve) =>
         canvas.toBlob((blob) => resolve(blob!), 'image/png')
       );
 
@@ -232,8 +258,8 @@ export default function Game() {
           <CardContent className="p-6">
             <div className="mb-6 flex justify-between gap-4">
               <div className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                isEasyMode 
-                  ? 'bg-green-100 text-green-700 border border-green-200' 
+                isEasyMode
+                  ? 'bg-green-100 text-green-700 border border-green-200'
                   : 'bg-blue-100 text-blue-700 border border-blue-200'
               }`}>
                 {isEasyMode ? '🌟 Easy Mode' : '💪 Challenge Mode'}
@@ -249,8 +275,8 @@ export default function Game() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   currentWord.length ? 'opacity-50 cursor-not-allowed' : ''
                 } ${
-                  !isEasyMode 
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200' 
+                  !isEasyMode
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
                     : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
                 }`}
                 disabled={currentWord.length > 0}
@@ -259,7 +285,7 @@ export default function Game() {
               </button>
             </div>
             <div className="space-y-6">
-              <RankDisplay 
+              <RankDisplay
                 score={score}
                 maxScore={puzzle.points}
               />
@@ -278,8 +304,8 @@ export default function Game() {
                 alreadyFound={alreadyFound}
               />
               <div className="space-y-4">
-                <ScoreDisplay 
-                  score={score} 
+                <ScoreDisplay
+                  score={score}
                   totalPossible={puzzle.points}
                   foundWords={foundWords.length}
                   totalWords={puzzle.validWords.length}
@@ -293,15 +319,22 @@ export default function Game() {
                   >
                     Reset Progress
                   </button>
-                  <button
-                    onClick={handleShare}
-                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Share2 className="w-4 h-4" />
-                    Share Score
-                  </button>
+                  <div className="flex gap-2"> {/* Added div to better integrate the ShareMenu */}
+                    <button
+                      onClick={handleShare}
+                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      Share Score
+                    </button>
+                    <ShareMenu 
+                      shareText={`I scored ${score} points in Spelling Bee! Can you beat me?`}
+                      url={window.location.href}
+                      title="Spelling Bee Score"
+                    />
+                  </div>
                 </div>
-                <WordListDialog 
+                <WordListDialog
                   foundWords={foundWords}
                   allWords={puzzle.validWords}
                   totalPoints={puzzle.points}
@@ -312,20 +345,20 @@ export default function Game() {
                   disabled={newGameMutation.isPending}
                   className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                 >
-              {newGameMutation.isPending ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                  Generating...
-                </div>
-              ) : (
-                "New Game"
-              )}
-            </button>
+                  {newGameMutation.isPending ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                      Generating...
+                    </div>
+                  ) : (
+                    "New Game"
+                  )}
+                </button>
               </div>
             </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       <CelebrationPopup
         word={celebration?.word ?? ""}
