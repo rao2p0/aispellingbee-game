@@ -1,2 +1,2 @@
-// This file is no longer needed as we've moved to simple local validation
-import words from 'an-array-of-english-words/index.json' with { type: 'json' };
+
+// This file is intentionally empty as word validation is now handled in storage.ts
