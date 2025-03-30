@@ -23,6 +23,13 @@ export default function GamesCarousel() {
       comingSoon: false
     },
     {
+      id: "word-search",
+      name: "Word Search",
+      logoUrl: "/wordle-logo.svg",
+      description: "Find hidden words in a grid",
+      comingSoon: false
+    },
+    {
       id: "connections",
       name: "Connections",
       logoUrl: "/wordle-logo.svg", 
@@ -36,13 +43,6 @@ export default function GamesCarousel() {
       description: "New word search game",
       comingSoon: true
     }
-    // {
-    //   id: "wordsearch",
-    //   name: "Word Search",
-    //   logoUrl: "/word-search-logo.svg",
-    //   description: "Find hidden words in a grid",
-    //   comingSoon: true
-    // },
     // {
     //   id: "combinations",
     //   name: "Combinations",
@@ -142,6 +142,7 @@ function getBackgroundColor(gameId: string): string {
     wordle: "bg-amber-50",
     spellbee: "bg-amber-100",
     squares: "bg-white",
+    "word-search": "bg-indigo-50",
     wordsearch: "bg-indigo-50",
     combinations: "bg-amber-50",
     strands: "bg-blue-100",
