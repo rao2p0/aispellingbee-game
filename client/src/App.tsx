@@ -19,6 +19,7 @@ function ResponsiveNavigation() {
     <nav className="fixed top-0 left-0 right-0 bg-primary/10 backdrop-blur-sm border-b border-primary/20 p-4 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 no-underline mr-4">
+          <img src="/bee-logo.png" alt="Spell Bee Logo" className="h-8 md:h-10 w-auto" />
           <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-primary logo-font">Spell Bee</h1>
         </Link>
         <div className="flex items-center gap-2 md:gap-3 lg:gap-4"> {/* Changed to gap for better mobile layout */}
