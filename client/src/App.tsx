@@ -9,6 +9,7 @@ import { HowToPlayButton } from "@/components/game/how-to-play-button";
 import NotFound from "@/pages/not-found";
 import Game from "@/pages/game";
 import Statistics from "@/pages/statistics";
+import Wordle from "@/pages/wordle";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 
@@ -30,7 +31,16 @@ function ResponsiveNavigation() {
             className={`${location === "/" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-2 py-1 md:px-4 md:py-2`}
             /* Reduced button size */
           >
-            <Link href="/">Game</Link>
+            <Link href="/">Spell Bee</Link>
+          </Button>
+          <Button
+            variant={location === "/wordle" ? "default" : "ghost"}
+            asChild
+            size="sm"
+            className={`${location === "/wordle" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-2 py-1 md:px-4 md:py-2`}
+            /* Reduced button size */
+          >
+            <Link href="/wordle">Wordle</Link>
           </Button>
           <Button
             variant={location === "/statistics" ? "default" : "ghost"}
@@ -54,6 +64,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Game} />
       <Route path="/statistics" component={Statistics} />
+      <Route path="/wordle" component={Wordle} />
       <Route component={NotFound} />
     </Switch>
   );
