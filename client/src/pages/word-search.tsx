@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import WordSearchGrid from "@/components/game/word-search/grid";
-import WordList from "@/components/game/word-search/word-list";
-import WordSearchTimer from "@/components/game/word-search/timer";
-import WordSearchControls from "@/components/game/word-search/controls";
-import HowToPlayDialog from "@/components/game/word-search/how-to-play-dialog";
 import { Separator } from "@/components/ui/separator";
-import { generateWordSearchPuzzle, type Orientation } from "@/lib/wordSearch";
+
+// Import directly using relative paths to avoid import errors
+import WordSearchGrid from "../components/game/word-search/grid";
+import WordList from "../components/game/word-search/word-list";
+import WordSearchTimer from "../components/game/word-search/timer";
+import WordSearchControls from "../components/game/word-search/controls";
+import HowToPlayDialog from "../components/game/word-search/how-to-play-dialog";
+import { generateWordSearchPuzzle, type Orientation } from "../lib/wordSearch";
 
 export type WordPosition = {
   word: string;
@@ -327,35 +329,39 @@ export default function WordSearch() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         <div className="col-span-1 md:col-span-2">
-          <WordSearchGrid 
-            grid={grid}
-            onWordFound={(word: string, coordinates: Coordinate[]) => {
-              // Check if word is in the word positions
-              const wordPosition = wordPositions.find((wp: WordPosition) => wp.word === word && !wp.found);
-              if (wordPosition) {
-                // Mark word as found
-                const newWordPositions = [...wordPositions];
-                const index = newWordPositions.findIndex((wp: WordPosition) => wp.word === word);
-                newWordPositions[index] = { ...newWordPositions[index], found: true };
-                setWordPositions(newWordPositions);
-                setFoundWords([...foundWords, word]);
-                
-                // Show success toast
-                toast({
-                  title: "Word Found!",
-                  description: `You found "${word}"`,
-                  variant: "default",
-                });
-              }
-            }}
-          />
+          {grid.length > 0 && (
+            <WordSearchGrid 
+              grid={grid}
+              onWordFound={(word: string, coordinates: Coordinate[]) => {
+                // Check if word is in the word positions
+                const wordPosition = wordPositions.find((wp: WordPosition) => wp.word === word && !wp.found);
+                if (wordPosition) {
+                  // Mark word as found
+                  const newWordPositions = [...wordPositions];
+                  const index = newWordPositions.findIndex((wp: WordPosition) => wp.word === word);
+                  newWordPositions[index] = { ...newWordPositions[index], found: true };
+                  setWordPositions(newWordPositions);
+                  setFoundWords([...foundWords, word]);
+                  
+                  // Show success toast
+                  toast({
+                    title: "Word Found!",
+                    description: `You found "${word}"`,
+                    variant: "default",
+                  });
+                }
+              }}
+            />
+          )}
         </div>
         
         <div className="col-span-1">
-          <WordList 
-            wordPositions={wordPositions}
-            foundWords={foundWords}
-          />
+          {wordPositions.length > 0 && (
+            <WordList 
+              wordPositions={wordPositions}
+              foundWords={foundWords}
+            />
+          )}
         </div>
       </div>
       
