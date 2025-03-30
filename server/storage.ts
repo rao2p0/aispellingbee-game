@@ -32,9 +32,10 @@ class GameDictionary {
     return VALID_WORD_PATTERN.test(word);
   }
 
-  private hasNoRepeatedLetters(word: string): boolean {
-    return new Set(word).size === word.length;
-  }
+  // We are no longer enforcing unique letters in words
+  // private hasNoRepeatedLetters(word: string): boolean {
+  //   return new Set(word).size === word.length;
+  // }
 
   private containsOnlyAvailableLetters(word: string, availableLetters: string): boolean {
     const letterSet = new Set(availableLetters.toLowerCase());
@@ -154,8 +155,8 @@ export class MemStorage implements IStorage {
     return puzzle;
   }
 
-  private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string[]; centerLetter: string; validWords: string[] }> {
-    const generateAndCheck = async () => {
+  private async generateLetterSet(isEasyMode: boolean = false): Promise<{ letters: string; centerLetter: string; validWords: string[] }> {
+    const generateAndCheck = async (): Promise<{ letters: string; centerLetter: string; validWords: string[] } | null> => {
       // Get a random word from filtered 7-letter words
       const sevenLetterWords = Array.from(SEVEN_LETTER_WORDS)
         .filter(word => {
@@ -190,7 +191,8 @@ export class MemStorage implements IStorage {
       if (outerLetters.length !== 6) return null;
 
       // Generate valid words using the base word (combining outer letters with center)
-      const validWords = await DICTIONARY.filterValidWords([...outerLetters, centerLetter].join(""), centerLetter, isEasyMode);
+      const outerLettersStr = outerLetters.join("");
+      const validWords = await DICTIONARY.filterValidWords(outerLettersStr, centerLetter, isEasyMode);
 
       if (isEasyMode) {
         // Filter out complex words
@@ -206,7 +208,7 @@ export class MemStorage implements IStorage {
         }
 
         // Return with filtered words
-        return { letters, centerLetter, validWords: filteredWords };
+        return { letters: letters.join(''), centerLetter, validWords: filteredWords };
       }
 
       const minWords = isEasyMode ? 15 : 5;
@@ -225,10 +227,10 @@ export class MemStorage implements IStorage {
         return null;
       }
 
-      return { letters: finalOuterLetters, centerLetter, validWords };
+      return { letters: finalOuterLetters.join(''), centerLetter, validWords };
     };
 
-    let bestResult = null;
+    let bestResult: { letters: string; centerLetter: string; validWords: string[] } | null = null;
     let maxWordCount = 0;
 
     // Try up to 15 times to generate a valid set
@@ -251,8 +253,17 @@ export class MemStorage implements IStorage {
     }
 
     // If we still don't have a valid puzzle, use a known good fallback
+    // This ensures we never have a game with zero possible words
     console.log("Using fallback puzzle");
-    return { letters: ["A", "E", "I", "O", "U", "S"], centerLetter: "T", validWords: ["test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", "site", "suit", "suite"] };
+    return { 
+      letters: "AEIOUS", 
+      centerLetter: "T", 
+      validWords: [
+        "test", "seat", "east", "ease", "tea", "ate", "eat", "sat", "sea", "set", 
+        "site", "suit", "suite", "statue", "status", "state", "taste", "tease",
+        "toast", "toasties", "toasts"
+      ] 
+    };
   }
 }
 

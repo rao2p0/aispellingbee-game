@@ -68,7 +68,7 @@ export default function Statistics() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={wordLengthData}
-                  margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
+                  margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
@@ -79,6 +79,8 @@ export default function Statistics() {
                     label={{ value: "Number of Words", angle: -90, position: "insideLeft", offset: 10 }}
                     tickFormatter={(value) => String(Math.floor(value))}
                     allowDecimals={false}
+                    domain={[0, 'dataMax']}
+                    tickCount={6}
                   />
                   <Tooltip 
                     formatter={(value) => [String(Math.floor(Number(value))), "Words"]}
