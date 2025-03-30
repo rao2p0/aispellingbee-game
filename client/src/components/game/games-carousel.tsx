@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Motion, motion } from "framer-motion";
+import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 interface Game {
   id: string;
@@ -19,7 +20,7 @@ export default function GamesCarousel() {
       name: "Wordle",
       logoUrl: "/wordle-logo.svg",
       description: "Guess the 5-letter word in 6 tries",
-      comingSoon: true
+      comingSoon: false
     },
     {
       id: "connections",
@@ -109,13 +110,24 @@ export default function GamesCarousel() {
               <p className="text-xs text-muted-foreground text-center mb-3">
                 {game.description}
               </p>
-              <Button 
-                className="w-full rounded-full text-sm py-1 h-auto"
-                variant={game.comingSoon ? "outline" : "default"}
-                disabled={game.comingSoon}
-              >
-                Play
-              </Button>
+              {game.comingSoon ? (
+                <Button 
+                  className="w-full rounded-full text-sm py-1 h-auto"
+                  variant="outline"
+                  disabled
+                >
+                  Coming Soon
+                </Button>
+              ) : (
+                <Link href={`/${game.id}`}>
+                  <Button 
+                    className="w-full rounded-full text-sm py-1 h-auto"
+                    variant="default"
+                  >
+                    Play
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
         ))}

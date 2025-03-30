@@ -4,6 +4,7 @@ import Keyboard from "@/components/game/wordle/keyboard";
 import HowToPlayDialog from "@/components/game/wordle/how-to-play-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { Link } from "wouter";
 
 type KeyStatus = "correct" | "present" | "absent" | "unused";
 
@@ -259,7 +260,14 @@ export default function Wordle() {
   return (
     <div className="container max-w-lg mx-auto px-4 pb-8">
       <div className="flex justify-between items-center mb-4 mt-6">
-        <div className="w-8"></div>
+        <Link href="/">
+          <button className="text-sm text-muted-foreground hover:text-foreground flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+            Back to Spell Bee
+          </button>
+        </Link>
         <h1 className="text-2xl font-bold text-center">Wordle</h1>
         <HowToPlayDialog />
       </div>
