@@ -47,15 +47,15 @@ export default function Grid({ guesses, currentGuess, targetWord, maxGuesses }: 
   const getColorClass = (status: CellStatus) => {
     switch (status) {
       case "correct":
-        return "bg-green-500 text-white border-green-500";
+        return "bg-green-600 dark:bg-green-500 text-white border-green-600 dark:border-green-500";
       case "present":
-        return "bg-yellow-500 text-white border-yellow-500";
+        return "bg-yellow-600 dark:bg-yellow-500 text-white border-yellow-600 dark:border-yellow-500";
       case "absent":
-        return "bg-gray-500 text-white border-gray-500";
+        return "bg-gray-500 dark:bg-gray-600 text-white border-gray-500 dark:border-gray-600";
       case "filled":
-        return "bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600";
+        return "bg-gray-200 dark:bg-gray-700 text-foreground border-gray-300 dark:border-gray-600";
       default:
-        return "bg-transparent dark:border-gray-600";
+        return "bg-transparent border-gray-300 dark:border-gray-600 text-foreground";
     }
   };
 

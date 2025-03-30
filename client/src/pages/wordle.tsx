@@ -268,7 +268,7 @@ export default function Wordle() {
       
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary"></div>
         </div>
       ) : (
         <>
@@ -288,17 +288,17 @@ export default function Wordle() {
 
           {gameStatus === "won" && (
             <div className="mt-6 text-center">
-              <h2 className="text-xl font-bold text-green-500">Congratulations!</h2>
+              <h2 className="text-xl font-bold text-green-600 dark:text-green-500">Congratulations!</h2>
               <p>You found the word in {guesses.length} {guesses.length === 1 ? 'try' : 'tries'}!</p>
-              <p className="mt-2 text-sm text-gray-500">Come back tomorrow for a new word!</p>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
             </div>
           )}
           
           {gameStatus === "lost" && (
             <div className="mt-6 text-center">
-              <h2 className="text-xl font-bold text-red-500">Game Over</h2>
+              <h2 className="text-xl font-bold text-red-600 dark:text-red-500">Game Over</h2>
               <p>The word was <span className="font-bold">{targetWord}</span></p>
-              <p className="mt-2 text-sm text-gray-500">Come back tomorrow for a new word!</p>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
             </div>
           )}
         </>

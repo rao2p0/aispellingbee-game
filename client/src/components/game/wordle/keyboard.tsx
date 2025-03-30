@@ -20,13 +20,13 @@ export default function Keyboard({ onKeyPress, keyboardStatus }: KeyboardProps) 
     const status = keyboardStatus[key] || "unused";
     switch(status) {
       case "correct":
-        return "bg-green-500 hover:bg-green-600 text-white";
+        return "bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600 text-white";
       case "present":
-        return "bg-yellow-500 hover:bg-yellow-600 text-white";
+        return "bg-yellow-600 dark:bg-yellow-500 hover:bg-yellow-700 dark:hover:bg-yellow-600 text-white";
       case "absent":
-        return "bg-gray-500 hover:bg-gray-600 text-white";
+        return "bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 text-white";
       default:
-        return "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600";
+        return "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-foreground";
     }
   };
 
