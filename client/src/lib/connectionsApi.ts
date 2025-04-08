@@ -33,81 +33,276 @@ export const connectionsApi = {
     // Database of word groups by difficulty
     const wordGroupsDatabase = {
       easy: [
-        {
-          words: ['APPLE', 'ORANGE', 'BANANA', 'GRAPE'],
-          category: "Fruits"
-        },
-        {
-          words: ['DOG', 'CAT', 'RABBIT', 'HAMSTER'],
-          category: "Pets"
-        },
+        // Game 1
         {
           words: ['RED', 'BLUE', 'GREEN', 'YELLOW'],
           category: "Colors"
         },
         {
-          words: ['PIANO', 'GUITAR', 'DRUMS', 'VIOLIN'],
+          words: ['APPLE', 'BANANA', 'ORANGE', 'MANGO'],
+          category: "Fruits"
+        },
+        {
+          words: ['DOG', 'CAT', 'LION', 'TIGER'],
+          category: "Animals"
+        },
+        {
+          words: ['CAR', 'BUS', 'BIKE', 'TRAIN'],
+          category: "Vehicles"
+        },
+        
+        // Game 2
+        {
+          words: ['JANUARY', 'MARCH', 'JULY', 'OCTOBER'],
+          category: "Months"
+        },
+        {
+          words: ['ARM', 'LEG', 'EYE', 'NOSE'],
+          category: "Body Parts"
+        },
+        {
+          words: ['WATER', 'JUICE', 'TEA', 'COFFEE'],
+          category: "Drinks"
+        },
+        {
+          words: ['TEACHER', 'DOCTOR', 'CHEF', 'FARMER'],
+          category: "Jobs"
+        },
+        
+        // Game 3
+        {
+          words: ['CIRCLE', 'SQUARE', 'TRIANGLE', 'RECTANGLE'],
+          category: "Shapes"
+        },
+        {
+          words: ['DOLL', 'PUZZLE', 'LEGO', 'YO-YO'],
+          category: "Toys"
+        },
+        {
+          words: ['HAMSTER', 'FISH', 'PARROT', 'RABBIT'],
+          category: "Pets"
+        },
+        {
+          words: ['ANT', 'BEE', 'FLY', 'MOSQUITO'],
+          category: "Insects"
+        },
+        
+        // Game 4
+        {
+          words: ['PIANO', 'GUITAR', 'VIOLIN', 'DRUM'],
           category: "Musical Instruments"
         },
         {
-          words: ['SHIRT', 'PANTS', 'JACKET', 'SOCKS'],
-          category: "Clothing Items"
+          words: ['CHAIR', 'TABLE', 'SOFA', 'BED'],
+          category: "Furniture"
         },
         {
-          words: ['SOCCER', 'BASEBALL', 'BASKETBALL', 'FOOTBALL'],
+          words: ['SOCCER', 'TENNIS', 'CRICKET', 'BASEBALL'],
           category: "Sports"
+        },
+        {
+          words: ['EARTH', 'MARS', 'JUPITER', 'SATURN'],
+          category: "Planets"
+        },
+        
+        // Game 5
+        {
+          words: ['RAIN', 'SNOW', 'SUN', 'WIND'],
+          category: "Weather"
+        },
+        {
+          words: ['CAKE', 'PIE', 'COOKIE', 'ICECREAM'],
+          category: "Desserts"
+        },
+        {
+          words: ['SHIRT', 'PANTS', 'HAT', 'JACKET'],
+          category: "Clothing"
+        },
+        {
+          words: ['EAGLE', 'CROW', 'OWL', 'SPARROW'],
+          category: "Birds"
         }
       ],
       medium: [
+        // Game 6
         {
-          words: ['EARTH', 'MARS', 'VENUS', 'JUPITER'],
-          category: "Planets"
+          words: ['HAMMER', 'SCREWDRIVER', 'WRENCH', 'DRILL'],
+          category: "Tools"
         },
         {
-          words: ['GOLD', 'SILVER', 'BRONZE', 'COPPER'],
-          category: "Metals"
+          words: ['ASIA', 'AFRICA', 'EUROPE', 'AUSTRALIA'],
+          category: "Continents"
         },
         {
-          words: ['WINTER', 'SUMMER', 'SPRING', 'FALL'],
-          category: "Seasons"
+          words: ['ENGLISH', 'HINDI', 'SPANISH', 'FRENCH'],
+          category: "Languages"
         },
         {
-          words: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
-          category: "Directions"
+          words: ['ROSE', 'LILY', 'DAISY', 'TULIP'],
+          category: "Flowers"
+        },
+        
+        // Game 7
+        {
+          words: ['OXYGEN', 'HYDROGEN', 'CARBON', 'NITROGEN'],
+          category: "Elements"
         },
         {
-          words: ['NOVEL', 'POEM', 'ESSAY', 'BIOGRAPHY'],
-          category: "Types of Writing"
+          words: ['DOLLAR', 'YEN', 'EURO', 'RUPEE'],
+          category: "Currencies"
         },
         {
-          words: ['ELEPHANT', 'GIRAFFE', 'LION', 'ZEBRA'],
-          category: "African Animals"
+          words: ['OAK', 'MAPLE', 'PINE', 'BIRCH'],
+          category: "Trees"
+        },
+        {
+          words: ['HAPPY', 'SAD', 'ANGRY', 'SCARED'],
+          category: "Emotions"
+        },
+        
+        // Game 8
+        {
+          words: ['CHESS', 'MONOPOLY', 'SCRABBLE', 'CLUE'],
+          category: "Board Games"
+        },
+        {
+          words: ['CHROME', 'SAFARI', 'FIREFOX', 'EDGE'],
+          category: "Web Browsers"
+        },
+        {
+          words: ['WHALE', 'OCTOPUS', 'SHARK', 'DOLPHIN'],
+          category: "Ocean Animals"
+        },
+        {
+          words: ['COTTON', 'SILK', 'WOOL', 'DENIM'],
+          category: "Fabrics"
+        },
+        
+        // Game 9
+        {
+          words: ['EVEREST', 'ALPS', 'ANDES', 'ROCKIES'],
+          category: "Mountains"
+        },
+        {
+          words: ['PYTHON', 'JAVA', 'RUBY', 'GO'],
+          category: "Programming Languages"
+        },
+        {
+          words: ['PEPPER', 'CINNAMON', 'CLOVE', 'TURMERIC'],
+          category: "Spices"
+        },
+        {
+          words: ['DEVELOPER', 'ANALYST', 'DESIGNER', 'TESTER'],
+          category: "Jobs in Tech"
+        },
+        
+        // Game 10
+        {
+          words: ['SNEAKERS', 'BOOTS', 'SLIPPERS', 'SANDALS'],
+          category: "Footwear"
+        },
+        {
+          words: ['SECOND', 'MINUTE', 'HOUR', 'DAY'],
+          category: "Time Units"
+        },
+        {
+          words: ['MCDONALDS', 'KFC', 'SUBWAY', 'WENDYS'],
+          category: "Fast Food Chains"
+        },
+        {
+          words: ['NECKLACE', 'RING', 'BRACELET', 'EARRING'],
+          category: "Jewelry"
         }
       ],
       hard: [
+        // Game 11
         {
-          words: ['MERCURY', 'VENUS', 'EARTH', 'MARS'],
-          category: "Inner Planets"
+          words: ['ZEUS', 'HADES', 'ARES', 'APOLLO'],
+          category: "Greek Gods"
         },
         {
-          words: ['JAZZ', 'BLUES', 'ROCK', 'SOUL'],
-          category: "Music Genres"
+          words: ['CRIMSON', 'SCARLET', 'MAROON', 'RUBY'],
+          category: "Shades of Red"
         },
         {
-          words: ['PICASSO', 'DALI', 'MONET', 'WARHOL'],
-          category: "Famous Painters"
+          words: ['FUNCTIONAL', 'OBJECT-ORIENTED', 'PROCEDURAL', 'DECLARATIVE'],
+          category: "Programming Paradigms"
         },
         {
-          words: ['EAGLE', 'HAWK', 'FALCON', 'OWL'],
-          category: "Birds of Prey"
+          words: ['HAIKU', 'SONNET', 'ODE', 'LIMERICK'],
+          category: "Types of Poems"
+        },
+        
+        // Game 12
+        {
+          words: ['UNICORN', 'DRAGON', 'PHOENIX', 'GRIFFIN'],
+          category: "Mythical Creatures"
         },
         {
-          words: ['SHAKESPEARE', 'HEMINGWAY', 'TOLSTOY', 'AUSTEN'],
+          words: ['TOLKIEN', 'AUSTEN', 'ORWELL', 'HEMINGWAY'],
           category: "Famous Authors"
         },
         {
-          words: ['OXYGEN', 'HYDROGEN', 'CARBON', 'NITROGEN'],
-          category: "Chemical Elements"
+          words: ['SOLID', 'LIQUID', 'GAS', 'PLASMA'],
+          category: "Chemical States"
+        },
+        {
+          words: ['BISHOP', 'KNIGHT', 'ROOK', 'PAWN'],
+          category: "Chess Pieces"
+        },
+        
+        // Game 13
+        {
+          words: ['SAHARA', 'GOBI', 'MOJAVE', 'ATACAMA'],
+          category: "Deserts"
+        },
+        {
+          words: ['TANGO', 'SALSA', 'WALTZ', 'BALLET'],
+          category: "Dances"
+        },
+        {
+          words: ['CUBISM', 'SURREALISM', 'IMPRESSIONISM', 'BAROQUE'],
+          category: "Art Movements"
+        },
+        {
+          words: ['CUMULUS', 'STRATUS', 'CIRRUS', 'NIMBUS'],
+          category: "Cloud Types"
+        },
+        
+        // Game 14
+        {
+          words: ['TITAN', 'EUROPA', 'IO', 'GANYMEDE'],
+          category: "Satellites (Moons)"
+        },
+        {
+          words: ['INFLATION', 'RECESSION', 'GDP', 'TAX'],
+          category: "Economic Terms"
+        },
+        {
+          words: ['CLAUSTROPHOBIA', 'ARACHNOPHOBIA', 'ACROPHOBIA', 'NYCTOPHOBIA'],
+          category: "Phobias"
+        },
+        {
+          words: ['HORROR', 'ROMANCE', 'SCI-FI', 'THRILLER'],
+          category: "Movie Genres"
+        },
+        
+        // Game 15
+        {
+          words: ['LANCELOT', 'GAWAIN', 'PERCIVAL', 'GALAHAD'],
+          category: "Knights of the Round Table"
+        },
+        {
+          words: ['FLAT EARTH', 'MOON LANDING', 'AREA 51', 'BIGFOOT'],
+          category: "Conspiracy Theories"
+        },
+        {
+          words: ['BITCOIN', 'ETHEREUM', 'DOGECOIN', 'LITECOIN'],
+          category: "Cryptocurrencies"
+        },
+        {
+          words: ['EINSTEIN', 'NEWTON', 'CURIE', 'HAWKING'],
+          category: "Famous Scientists"
         }
       ]
     };

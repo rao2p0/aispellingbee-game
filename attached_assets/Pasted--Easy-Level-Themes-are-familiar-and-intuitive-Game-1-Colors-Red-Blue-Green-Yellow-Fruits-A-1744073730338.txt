@@ -1,0 +1,202 @@
+✅ Easy Level (Themes are familiar and intuitive)
+Game 1
+
+Colors: Red, Blue, Green, Yellow
+
+Fruits: Apple, Banana, Orange, Mango
+
+Animals: Dog, Cat, Lion, Tiger
+
+Vehicles: Car, Bus, Bike, Train
+
+Game 2
+
+Months: January, March, July, October
+
+Body Parts: Arm, Leg, Eye, Nose
+
+Drinks: Water, Juice, Tea, Coffee
+
+Jobs: Teacher, Doctor, Chef, Farmer
+
+Game 3
+
+Shapes: Circle, Square, Triangle, Rectangle
+
+Toys: Doll, Puzzle, Lego, Yo-yo
+
+Pets: Hamster, Fish, Parrot, Rabbit
+
+Insects: Ant, Bee, Fly, Mosquito
+
+Game 4
+
+Musical Instruments: Piano, Guitar, Violin, Drum
+
+Furniture: Chair, Table, Sofa, Bed
+
+Sports: Soccer, Tennis, Cricket, Baseball
+
+Planets: Earth, Mars, Jupiter, Saturn
+
+Game 5
+
+Weather: Rain, Snow, Sun, Wind
+
+Desserts: Cake, Pie, Cookie, Icecream
+
+Clothing: Shirt, Pants, Hat, Jacket
+
+Birds: Eagle, Crow, Owl, Sparrow
+
+⚖️ Medium Level (More abstract or less commonly grouped)
+Game 6
+
+Tools: Hammer, Screwdriver, Wrench, Drill
+
+Continents: Asia, Africa, Europe, Australia
+
+Languages: English, Hindi, Spanish, French
+
+Flowers: Rose, Lily, Daisy, Tulip
+
+Game 7
+
+Elements: Oxygen, Hydrogen, Carbon, Nitrogen
+
+Currencies: Dollar, Yen, Euro, Rupee
+
+Trees: Oak, Maple, Pine, Birch
+
+Emotions: Happy, Sad, Angry, Scared
+
+Game 8
+
+Board Games: Chess, Monopoly, Scrabble, Clue
+
+Web Browsers: Chrome, Safari, Firefox, Edge
+
+Ocean Animals: Whale, Octopus, Shark, Dolphin
+
+Fabrics: Cotton, Silk, Wool, Denim
+
+Game 9
+
+Mountains: Everest, Alps, Andes, Rockies
+
+Programming Languages: Python, Java, Ruby, Go
+
+Spices: Pepper, Cinnamon, Clove, Turmeric
+
+Jobs in Tech: Developer, Analyst, Designer, Tester
+
+Game 10
+
+Footwear: Sneakers, Boots, Slippers, Sandals
+
+Time Units: Second, Minute, Hour, Day
+
+Fast Food Chains: McDonald's, KFC, Subway, Wendy’s
+
+Jewelry: Necklace, Ring, Bracelet, Earring
+
+🧠 Hard Level (Trickier, overlapping categories or obscure)
+Game 11
+
+Greek Gods: Zeus, Hades, Ares, Apollo
+
+Shades of Red: Crimson, Scarlet, Maroon, Ruby
+
+Programming Paradigms: Functional, Object-Oriented, Procedural, Declarative
+
+Types of Poems: Haiku, Sonnet, Ode, Limerick
+
+Game 12
+
+Mythical Creatures: Unicorn, Dragon, Phoenix, Griffin
+
+Famous Authors: Tolkien, Austen, Orwell, Hemingway
+
+Chemical States: Solid, Liquid, Gas, Plasma
+
+Chess Pieces: Bishop, Knight, Rook, Pawn
+
+Game 13
+
+Deserts: Sahara, Gobi, Mojave, Atacama
+
+Dances: Tango, Salsa, Waltz, Ballet
+
+Art Movements: Cubism, Surrealism, Impressionism, Baroque
+
+Cloud Types: Cumulus, Stratus, Cirrus, Nimbus
+
+Game 14
+
+Satellites (Moons): Titan, Europa, Io, Ganymede
+
+Economic Terms: Inflation, Recession, GDP, Tax
+
+Phobias: Claustrophobia, Arachnophobia, Acrophobia, Nyctophobia
+
+Movie Genres: Horror, Romance, Sci-fi, Thriller
+
+Game 15
+
+Knights of the Round Table: Lancelot, Gawain, Percival, Galahad
+
+Conspiracy Theories: Flat Earth, Moon Landing, Area 51, Bigfoot
+
+Cryptocurrencies: Bitcoin, Ethereum, Dogecoin, Litecoin
+
+Famous Scientists: Einstein, Newton, Curie, Hawking
+
+Game 16
+
+Constellations: Orion, Draco, Lyra, Ursa
+
+Punctuation Marks: Comma, Colon, Semicolon, Dash
+
+Brain Lobes: Frontal, Parietal, Temporal, Occipital
+
+Types of Pasta: Penne, Fusilli, Spaghetti, Macaroni
+
+Game 17
+
+Psychological Terms: Ego, Id, Superego, Archetype
+
+Operating Systems: Windows, Linux, macOS, Android
+
+Wine Varieties: Merlot, Chardonnay, Pinot, Shiraz
+
+Genres of Literature: Drama, Satire, Epic, Tragedy
+
+Game 18
+
+Famous Paintings: Mona Lisa, Starry Night, The Scream, Guernica
+
+Parts of an Airplane: Fuselage, Wing, Cockpit, Rudder
+
+Bones: Femur, Tibia, Skull, Spine
+
+Alien Movies: Arrival, Alien, Prometheus, E.T.
+
+Game 19
+
+Jazz Musicians: Miles, Coltrane, Ellington, Davis
+
+Types of Clouds: Cirrus, Stratus, Cumulus, Nimbus
+
+Philosophers: Plato, Kant, Nietzsche, Descartes
+
+Islands: Fiji, Bali, Iceland, Madagascar
+
+Game 20
+
+Programming Frameworks: React, Django, Angular, Laravel
+
+Precious Stones: Diamond, Ruby, Sapphire, Emerald
+
+Types of Cheese: Brie, Gouda, Cheddar, Mozzarella
+
+Nobel Prize Categories: Peace, Chemistry, Literature, Physics
