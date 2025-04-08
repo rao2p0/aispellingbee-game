@@ -5,6 +5,7 @@ import { wordSubmissionSchema } from "@shared/schema";
 import { wordleService } from "./services/wordle";
 import { connectionsService } from "./services/connections";
 import { hangmanService, Difficulty } from "./services/hangman";
+import { wordLadderService, Difficulty as WordLadderDifficulty } from "./services/wordLadder";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/puzzle", async (_req, res) => {
@@ -189,6 +190,133 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error checking word guess for Hangman:', error);
       res.status(500).json({ error: "Error checking word guess" });
+    }
+  });
+
+  // Word Ladder game endpoints
+  app.get("/api/word-ladder/puzzle", (req, res) => {
+    try {
+      const difficultyParam = (req.query.difficulty as string) || 'medium';
+      
+      // Convert string to enum value
+      let difficulty;
+      switch(difficultyParam) {
+        case 'easy':
+          difficulty = WordLadderDifficulty.EASY;
+          break;
+        case 'hard':
+          difficulty = WordLadderDifficulty.HARD;
+          break;
+        default:
+          difficulty = WordLadderDifficulty.MEDIUM;
+      }
+      
+      const puzzle = wordLadderService.getRandomPuzzle(difficulty);
+      res.json(puzzle);
+    } catch (error) {
+      console.error('Error getting Word Ladder puzzle:', error);
+      res.status(500).json({ error: "Error getting puzzle" });
+    }
+  });
+  
+  app.get("/api/word-ladder/puzzle/:id", (req, res) => {
+    try {
+      const puzzleId = parseInt(req.params.id);
+      if (isNaN(puzzleId)) {
+        return res.status(400).json({ error: "Invalid puzzle ID" });
+      }
+      
+      const puzzle = wordLadderService.getPuzzleById(puzzleId);
+      if (!puzzle) {
+        return res.status(404).json({ error: "Puzzle not found" });
+      }
+      
+      res.json(puzzle);
+    } catch (error) {
+      console.error('Error getting Word Ladder puzzle by ID:', error);
+      res.status(500).json({ error: "Error getting puzzle" });
+    }
+  });
+  
+  app.post("/api/word-ladder/validate-word", (req, res) => {
+    try {
+      const { word } = req.body;
+      
+      if (!word || typeof word !== 'string') {
+        return res.status(400).json({ error: "Invalid word format" });
+      }
+      
+      const isValid = wordLadderService.isValidWord(word);
+      res.json({ valid: isValid });
+    } catch (error) {
+      console.error('Error validating word for Word Ladder:', error);
+      res.status(500).json({ error: "Error validating word" });
+    }
+  });
+  
+  app.post("/api/word-ladder/validate-step", (req, res) => {
+    try {
+      const { currentWord, nextWord } = req.body;
+      
+      if (!currentWord || !nextWord || typeof currentWord !== 'string' || typeof nextWord !== 'string') {
+        return res.status(400).json({ error: "Invalid word format" });
+      }
+      
+      const isValidWord = wordLadderService.isValidWord(nextWord);
+      if (!isValidWord) {
+        return res.json({ 
+          valid: false, 
+          reason: `'${nextWord}' is not a valid word` 
+        });
+      }
+      
+      const isValidStep = wordLadderService.isValidStep(currentWord, nextWord);
+      if (!isValidStep) {
+        return res.json({
+          valid: false,
+          reason: `Invalid step from '${currentWord}' to '${nextWord}' (must change exactly one letter)`
+        });
+      }
+      
+      res.json({ valid: true });
+    } catch (error) {
+      console.error('Error validating step for Word Ladder:', error);
+      res.status(500).json({ error: "Error validating step" });
+    }
+  });
+  
+  app.post("/api/word-ladder/validate-solution", (req, res) => {
+    try {
+      const { startWord, targetWord, solution } = req.body;
+      
+      if (!startWord || !targetWord || !solution || !Array.isArray(solution)) {
+        return res.status(400).json({ error: "Invalid request format" });
+      }
+      
+      const validationResult = wordLadderService.validateSolution(startWord, targetWord, solution);
+      res.json(validationResult);
+    } catch (error) {
+      console.error('Error validating solution for Word Ladder:', error);
+      res.status(500).json({ error: "Error validating solution" });
+    }
+  });
+  
+  app.get("/api/word-ladder/hints", (req, res) => {
+    try {
+      const { word } = req.query;
+      
+      if (!word || typeof word !== 'string') {
+        return res.status(400).json({ error: "Invalid word parameter" });
+      }
+      
+      const possibleWords = wordLadderService.findPossibleNextWords(word);
+      // Only send a limited number of hints to prevent giving away the solution too easily
+      const limitedHints = possibleWords.slice(0, Math.min(5, possibleWords.length));
+      
+      res.json({ possibleNextWords: limitedHints });
+    } catch (error) {
+      console.error('Error getting hints for Word Ladder:', error);
+      res.status(500).json({ error: "Error getting hints" });
     }
   });
 

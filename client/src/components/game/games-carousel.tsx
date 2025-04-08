@@ -49,6 +49,13 @@ export default function GamesCarousel() {
       logoUrl: "/images/games/hangman-icon.svg", 
       description: "Guess the word letter by letter",
       comingSoon: false
+    },
+    {
+      id: "word-ladder",
+      name: "Word Ladder",
+      logoUrl: "/images/games/wordladder-icon.svg", 
+      description: "Transform words one letter at a time",
+      comingSoon: false
     }
     // {
     //   id: "combinations",
@@ -152,6 +159,7 @@ function getBackgroundColor(gameId: string): string {
     wordsearch: "bg-indigo-50",
     connections: "bg-fuchsia-50", // Connections (purple theme)
     hangman: "bg-rose-50", // Hangman (red theme)
+    "word-ladder": "bg-blue-50", // Word Ladder (blue theme)
     spellbee: "bg-amber-50",
     squares: "bg-white",
     combinations: "bg-amber-50",
