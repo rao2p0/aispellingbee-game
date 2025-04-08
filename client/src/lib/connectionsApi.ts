@@ -33,6 +33,7 @@ export const connectionsApi = {
     // Database of word groups by difficulty
     const wordGroupsDatabase = {
       easy: [
+        // Original Games
         // Game 1
         {
           words: ['RED', 'BLUE', 'GREEN', 'YELLOW'],
@@ -121,6 +122,305 @@ export const connectionsApi = {
         {
           words: ['EAGLE', 'CROW', 'OWL', 'SPARROW'],
           category: "Birds"
+        },
+        
+        // Additional Games (CSV data)
+        // Game 41
+        {
+          words: ['GREEN', 'BLUE', 'ORANGE', 'PURPLE'],
+          category: "Colors"
+        },
+        {
+          words: ['BUTTERFLY', 'WASP', 'ANT', 'GRASSHOPPER'],
+          category: "Insects"
+        },
+        {
+          words: ['BASEBALL', 'CRICKET', 'GOLF', 'SOCCER'],
+          category: "Sports"
+        },
+        {
+          words: ['JUPITER', 'NEPTUNE', 'EARTH', 'VENUS'],
+          category: "Planets"
+        },
+        
+        // Game 42
+        {
+          words: ['OVAL', 'CIRCLE', 'TRIANGLE', 'HEXAGON'],
+          category: "Shapes"
+        },
+        {
+          words: ['GRAPES', 'PEACH', 'APPLE', 'ORANGE'],
+          category: "Fruits"
+        },
+        {
+          words: ['PINK', 'ORANGE', 'PURPLE', 'GREEN'],
+          category: "Colors"
+        },
+        {
+          words: ['TURTLE', 'RABBIT', 'FISH', 'DOG'],
+          category: "Pets"
+        },
+        
+        // Game 43
+        {
+          words: ['TRUCK', 'BUS', 'BOAT', 'BIKE'],
+          category: "Vehicles"
+        },
+        {
+          words: ['CAR', 'TEDDY', 'LEGO', 'BLOCKS'],
+          category: "Toys"
+        },
+        {
+          words: ['RED', 'YELLOW', 'PURPLE', 'GREEN'],
+          category: "Colors"
+        },
+        {
+          words: ['PIE', 'COOKIE', 'PUDDING', 'DONUT'],
+          category: "Desserts"
+        },
+        
+        // Game 44
+        {
+          words: ['CAKE', 'DONUT', 'ICECREAM', 'PIE'],
+          category: "Desserts"
+        },
+        {
+          words: ['MOSQUITO', 'BUTTERFLY', 'FLY', 'WASP'],
+          category: "Insects"
+        },
+        {
+          words: ['BLUE', 'YELLOW', 'GREEN', 'RED'],
+          category: "Colors"
+        },
+        {
+          words: ['BASEBALL', 'RUGBY', 'SOCCER', 'BASKETBALL'],
+          category: "Sports"
+        },
+        
+        // Game 45
+        {
+          words: ['BALL', 'LEGO', 'PUZZLE', 'CAR'],
+          category: "Toys"
+        },
+        {
+          words: ['RULER', 'NOTEBOOK', 'MARKER', 'PEN'],
+          category: "School Supplies"
+        },
+        {
+          words: ['CIRCLE', 'STAR', 'RECTANGLE', 'DIAMOND'],
+          category: "Shapes"
+        },
+        {
+          words: ['COOKIE', 'CUPCAKE', 'ICECREAM', 'PIE'],
+          category: "Desserts"
+        },
+        
+        // Game 46
+        {
+          words: ['PEACOCK', 'SPARROW', 'PIGEON', 'PARROT'],
+          category: "Birds"
+        },
+        {
+          words: ['CUPCAKE', 'ICECREAM', 'BROWNIE', 'DONUT'],
+          category: "Desserts"
+        },
+        {
+          words: ['FRIES', 'BURGER', 'WRAP', 'HOTDOG'],
+          category: "Fast Food"
+        },
+        {
+          words: ['FISH', 'PARROT', 'TURTLE', 'DOG'],
+          category: "Pets"
+        },
+        
+        // Game 47
+        {
+          words: ['EAR', 'NOSE', 'LEG', 'HAND'],
+          category: "Body Parts"
+        },
+        {
+          words: ['SODA', 'TEA', 'LEMONADE', 'COFFEE'],
+          category: "Drinks"
+        },
+        {
+          words: ['SANDWICH', 'TACO', 'NUGGETS', 'HOTDOG'],
+          category: "Fast Food"
+        },
+        {
+          words: ['ORANGE', 'BANANA', 'GRAPES', 'LEMON'],
+          category: "Fruits"
+        },
+        
+        // Game 48
+        {
+          words: ['SATURN', 'MERCURY', 'MARS', 'VENUS'],
+          category: "Planets"
+        },
+        {
+          words: ['GOLF', 'TENNIS', 'BASEBALL', 'CRICKET'],
+          category: "Sports"
+        },
+        {
+          words: ['MILK', 'SMOOTHIE', 'TEA', 'WATER'],
+          category: "Drinks"
+        },
+        {
+          words: ['BLUE', 'GREEN', 'PURPLE', 'ORANGE'],
+          category: "Colors"
+        },
+        
+        // Game 49
+        {
+          words: ['DOCTOR', 'NURSE', 'POLICE', 'TEACHER'],
+          category: "Jobs"
+        },
+        {
+          words: ['STOOL', 'BED', 'SOFA', 'SHELF'],
+          category: "Furniture"
+        },
+        {
+          words: ['PIZZA', 'HOTDOG', 'SANDWICH', 'BURGER'],
+          category: "Fast Food"
+        },
+        {
+          words: ['ARM', 'FOOT', 'EYE', 'MOUTH'],
+          category: "Body Parts"
+        },
+        
+        // Game 50
+        {
+          words: ['GUINEA PIG', 'CAT', 'RABBIT', 'FISH'],
+          category: "Pets"
+        },
+        {
+          words: ['CRAYON', 'PENCIL', 'NOTEBOOK', 'PEN'],
+          category: "School Supplies"
+        },
+        {
+          words: ['CAR', 'VAN', 'BIKE', 'TRUCK'],
+          category: "Vehicles"
+        },
+        {
+          words: ['LEMON', 'PEAR', 'APPLE', 'ORANGE'],
+          category: "Fruits"
+        },
+
+        // Games 51-60
+        {
+          words: ['GLOVES', 'JACKET', 'SKIRT', 'SHIRT'],
+          category: "Clothing"
+        },
+        {
+          words: ['TRIANGLE', 'HEXAGON', 'CIRCLE', 'DIAMOND'],
+          category: "Shapes"
+        },
+        {
+          words: ['CAR', 'DOLL', 'LEGO', 'BLOCKS'],
+          category: "Toys"
+        },
+        {
+          words: ['TEA', 'SODA', 'SMOOTHIE', 'COFFEE'],
+          category: "Drinks"
+        },
+        {
+          words: ['HAND', 'FOOT', 'MOUTH', 'LEG'],
+          category: "Body Parts"
+        },
+        {
+          words: ['BEE', 'BUTTERFLY', 'GRASSHOPPER', 'BEETLE'],
+          category: "Insects"
+        },
+        {
+          words: ['HOCKEY', 'RUGBY', 'GOLF', 'CRICKET'],
+          category: "Sports"
+        },
+        {
+          words: ['EAGLE', 'OWL', 'PIGEON', 'PARROT'],
+          category: "Birds"
+        },
+        {
+          words: ['SHARPENER', 'NOTEBOOK', 'ERASER', 'RULER'],
+          category: "School Supplies"
+        },
+        {
+          words: ['CAT', 'GUINEA PIG', 'RABBIT', 'TURTLE'],
+          category: "Pets"
+        },
+
+        // Games 61-70
+        {
+          words: ['BALL', 'PUZZLE', 'TEDDY', 'BLOCKS'],
+          category: "Toys"
+        },
+        {
+          words: ['DIAMOND', 'STAR', 'OVAL', 'HEXAGON'],
+          category: "Shapes"
+        },
+        {
+          words: ['GREEN', 'RED', 'YELLOW', 'BLUE'],
+          category: "Colors"
+        },
+        {
+          words: ['BURGER', 'WRAP', 'PIZZA', 'SANDWICH'],
+          category: "Fast Food"
+        },
+        {
+          words: ['ICECREAM', 'PIE', 'DONUT', 'CUPCAKE'],
+          category: "Desserts"
+        },
+        {
+          words: ['JUICE', 'TEA', 'SODA', 'SMOOTHIE'],
+          category: "Drinks"
+        },
+        {
+          words: ['STORM', 'FOG', 'SUN', 'HAIL'],
+          category: "Weather"
+        },
+        {
+          words: ['BEETLE', 'GRASSHOPPER', 'WASP', 'ANT'],
+          category: "Insects"
+        },
+        {
+          words: ['MOUTH', 'ARM', 'NOSE', 'LEG'],
+          category: "Body Parts"
+        },
+        {
+          words: ['GOLF', 'TENNIS', 'HOCKEY', 'BASEBALL'],
+          category: "Sports"
+        },
+
+        // Games 71-80
+        {
+          words: ['SODA', 'MILK', 'JUICE', 'SMOOTHIE'],
+          category: "Drinks"
+        },
+        {
+          words: ['CAT', 'GUINEA PIG', 'HAMSTER', 'DOG'],
+          category: "Pets"
+        },
+        {
+          words: ['FIREFIGHTER', 'TEACHER', 'CHEF', 'NURSE'],
+          category: "Jobs"
+        },
+        {
+          words: ['JUPITER', 'NEPTUNE', 'MARS', 'SATURN'],
+          category: "Planets"
+        },
+        {
+          words: ['HAND', 'MOUTH', 'NOSE', 'EAR'],
+          category: "Body Parts"
+        },
+        {
+          words: ['CROW', 'EAGLE', 'PARROT', 'PEACOCK'],
+          category: "Birds"
+        },
+        {
+          words: ['LEMONADE', 'COFFEE', 'MILK', 'WATER'],
+          category: "Drinks"
+        },
+        {
+          words: ['SQUARE', 'DIAMOND', 'RECTANGLE', 'TRIANGLE'],
+          category: "Shapes"
         }
       ],
       medium: [
