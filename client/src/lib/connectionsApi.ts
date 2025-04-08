@@ -29,35 +29,115 @@ export const connectionsApi = {
     words: string[];
     gameData: GameData;  // We'll need to store this client-side for validation
   }> => {
-    // Since we don't have a real API endpoint yet, we'll generate mock data for development
-    // In a real implementation, this would call the server
+    // Since we don't have a real API endpoint yet, we'll generate different sets of word groups
+    // Database of word groups by difficulty
+    const wordGroupsDatabase = {
+      easy: [
+        {
+          words: ['APPLE', 'ORANGE', 'BANANA', 'GRAPE'],
+          category: "Fruits"
+        },
+        {
+          words: ['DOG', 'CAT', 'RABBIT', 'HAMSTER'],
+          category: "Pets"
+        },
+        {
+          words: ['RED', 'BLUE', 'GREEN', 'YELLOW'],
+          category: "Colors"
+        },
+        {
+          words: ['PIANO', 'GUITAR', 'DRUMS', 'VIOLIN'],
+          category: "Musical Instruments"
+        },
+        {
+          words: ['SHIRT', 'PANTS', 'JACKET', 'SOCKS'],
+          category: "Clothing Items"
+        },
+        {
+          words: ['SOCCER', 'BASEBALL', 'BASKETBALL', 'FOOTBALL'],
+          category: "Sports"
+        }
+      ],
+      medium: [
+        {
+          words: ['EARTH', 'MARS', 'VENUS', 'JUPITER'],
+          category: "Planets"
+        },
+        {
+          words: ['GOLD', 'SILVER', 'BRONZE', 'COPPER'],
+          category: "Metals"
+        },
+        {
+          words: ['WINTER', 'SUMMER', 'SPRING', 'FALL'],
+          category: "Seasons"
+        },
+        {
+          words: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
+          category: "Directions"
+        },
+        {
+          words: ['NOVEL', 'POEM', 'ESSAY', 'BIOGRAPHY'],
+          category: "Types of Writing"
+        },
+        {
+          words: ['ELEPHANT', 'GIRAFFE', 'LION', 'ZEBRA'],
+          category: "African Animals"
+        }
+      ],
+      hard: [
+        {
+          words: ['MERCURY', 'VENUS', 'EARTH', 'MARS'],
+          category: "Inner Planets"
+        },
+        {
+          words: ['JAZZ', 'BLUES', 'ROCK', 'SOUL'],
+          category: "Music Genres"
+        },
+        {
+          words: ['PICASSO', 'DALI', 'MONET', 'WARHOL'],
+          category: "Famous Painters"
+        },
+        {
+          words: ['EAGLE', 'HAWK', 'FALCON', 'OWL'],
+          category: "Birds of Prey"
+        },
+        {
+          words: ['SHAKESPEARE', 'HEMINGWAY', 'TOLSTOY', 'AUSTEN'],
+          category: "Famous Authors"
+        },
+        {
+          words: ['OXYGEN', 'HYDROGEN', 'CARBON', 'NITROGEN'],
+          category: "Chemical Elements"
+        }
+      ]
+    };
     
-    // Sample words for the connections game (4 groups of 4 related words)
-    const mockGroups: WordGroup[] = [
-      {
-        words: ['APPLE', 'ORANGE', 'BANANA', 'GRAPE'],
-        category: "Fruits",
-        difficulty: difficulty
-      },
-      {
-        words: ['DOG', 'CAT', 'RABBIT', 'HAMSTER'],
-        category: "Pets", 
-        difficulty: difficulty
-      },
-      {
-        words: ['RED', 'BLUE', 'GREEN', 'YELLOW'],
-        category: "Colors",
-        difficulty: difficulty
-      },
-      {
-        words: ['PIANO', 'GUITAR', 'DRUMS', 'VIOLIN'],
-        category: "Musical Instruments",
-        difficulty: difficulty
-      }
-    ];
+    // Select 4 random groups from the database for the requested difficulty
+    const availableGroups = wordGroupsDatabase[difficulty];
+    const selectedGroups: WordGroup[] = [];
+    
+    // Create a copy of indices that we can remove from as we select groups
+    const availableIndices = Array.from({length: availableGroups.length}, (_, i) => i);
+    
+    // Select 4 random groups without replacement
+    for (let i = 0; i < 4; i++) {
+      if (availableIndices.length === 0) break;
+      
+      const randomIndex = Math.floor(Math.random() * availableIndices.length);
+      const groupIndex = availableIndices[randomIndex];
+      
+      // Remove the selected index
+      availableIndices.splice(randomIndex, 1);
+      
+      // Add the selected group to our game
+      selectedGroups.push({
+        ...availableGroups[groupIndex],
+        difficulty
+      });
+    }
     
     // Flatten all words and shuffle them
-    const allWords = mockGroups.flatMap(group => group.words);
+    const allWords = selectedGroups.flatMap(group => group.words);
     for (let i = allWords.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
@@ -66,7 +146,7 @@ export const connectionsApi = {
     return {
       words: allWords,
       gameData: {
-        groups: mockGroups,
+        groups: selectedGroups,
         difficulty
       }
     };

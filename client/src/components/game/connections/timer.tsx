@@ -16,7 +16,10 @@ export default function Timer({ isRunning, onTimeUpdate }: TimerProps) {
       interval = setInterval(() => {
         setSeconds(prev => {
           const newTime = prev + 1;
-          if (onTimeUpdate) onTimeUpdate(newTime);
+          // Using a timeout to avoid the React warning about state updates during rendering
+          setTimeout(() => {
+            if (onTimeUpdate) onTimeUpdate(newTime);
+          }, 0);
           return newTime;
         });
       }, 1000);
