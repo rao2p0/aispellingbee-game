@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { wordSubmissionSchema } from "@shared/schema";
 import { wordleService } from "./services/wordle";
+import { connectionsService } from "./services/connections";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/puzzle", async (_req, res) => {
@@ -68,7 +69,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const dailyWord = wordleService.getDailyWord();
     res.json({ word: dailyWord });
   });
+  
+  // Connections game endpoints
+  app.get("/api/connections/new", (req, res) => {
+    const difficulty = req.query.difficulty as 'easy' | 'medium' | 'hard' || 'medium';
+    const gameData = connectionsService.getNewGame(difficulty);
+    
+    // Flatten and shuffle the words for the frontend
+    const allWords = gameData.groups.flatMap(group => group.words);
+    const shuffledWords = shuffleArray([...allWords]);
+    
+    res.json({
+      words: shuffledWords,
+      difficulty: gameData.difficulty,
+      // Don't send the categories to prevent cheating
+      gameId: Date.now() // Simple identifier for the current game
+    });
+  });
+  
+  app.post("/api/connections/validate", (req, res) => {
+    const { words, gameData } = req.body;
+    
+    if (!words || !Array.isArray(words) || words.length !== 4 || !gameData) {
+      return res.status(400).json({ error: "Invalid request format" });
+    }
+    
+    const result = connectionsService.validateSelection(words, gameData);
+    res.json(result);
+  });
 
   const httpServer = createServer(app);
   return httpServer;
+}
+
+// Helper function to shuffle an array (Fisher-Yates algorithm)
+function shuffleArray<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
