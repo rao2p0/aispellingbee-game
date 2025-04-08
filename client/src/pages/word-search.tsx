@@ -9,7 +9,6 @@ import WordSearchGrid from "../components/game/word-search/grid";
 import WordList from "../components/game/word-search/word-list";
 import WordSearchTimer from "../components/game/word-search/timer";
 import WordSearchControls from "../components/game/word-search/controls";
-import HowToPlayDialog from "../components/game/word-search/how-to-play-dialog";
 import { generateWordSearchPuzzle, type Orientation } from "../lib/wordSearch";
 
 export type WordPosition = {
@@ -319,7 +318,7 @@ export default function WordSearch() {
           
           <div className="flex items-center gap-2">
             <WordSearchTimer time={formatTime(timeElapsed)} />
-            <HowToPlayDialog />
+            {/* Help button removed - now available in the header */}
           </div>
         </div>
         

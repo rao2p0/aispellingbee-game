@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Grid from "@/components/game/wordle/grid";
 import Keyboard from "@/components/game/wordle/keyboard";
-import HowToPlayDialog from "@/components/game/wordle/how-to-play-dialog";
 import GameLayout from "@/components/global/game-layout";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -265,7 +264,8 @@ export default function Wordle() {
           <div className="w-10"> {/* Empty div for space balance */}
           </div>
           <h1 className="text-3xl font-bold text-center">Wordle</h1>
-          <HowToPlayDialog />
+          <div className="w-10"> {/* Empty div for space balance - Help is now in the header */}
+          </div>
         </div>
         
         {isLoading ? (
