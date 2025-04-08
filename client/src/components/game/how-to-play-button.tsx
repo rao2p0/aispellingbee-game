@@ -20,7 +20,7 @@ export function HowToPlayButton() {
         onClick={() => setOpen(true)}
         variant="ghost"
         size="icon"
-        className="rounded-full w-8 h-8 flex items-center justify-center"
+        className="h-8 w-8 p-0 flex items-center justify-center"
         aria-label="How to play"
         title="How to play"
       >
