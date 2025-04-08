@@ -12,6 +12,7 @@ import Statistics from "@/pages/statistics";
 import Wordle from "@/pages/wordle";
 import WordSearch from "@/pages/word-search";
 import Connections from "@/pages/connections";
+import Hangman from "@/pages/hangman";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 
@@ -61,6 +62,14 @@ function ResponsiveNavigation() {
             <Link href="/connections">Connections</Link>
           </Button>
           <Button
+            variant={location === "/hangman" ? "default" : "ghost"}
+            asChild
+            size="sm"
+            className={`${location === "/hangman" ? "bg-primary hover:bg-primary/90" : "hover:bg-primary/10"} px-2 py-1 md:px-4 md:py-2`}
+          >
+            <Link href="/hangman">Hangman</Link>
+          </Button>
+          <Button
             variant={location === "/statistics" ? "default" : "ghost"}
             asChild
             size="sm"
@@ -84,6 +93,7 @@ function Router() {
       <Route path="/wordle" component={Wordle} />
       <Route path="/word-search" component={WordSearch} />
       <Route path="/connections" component={Connections} />
+      <Route path="/hangman" component={Hangman} />
       <Route component={NotFound} />
     </Switch>
   );

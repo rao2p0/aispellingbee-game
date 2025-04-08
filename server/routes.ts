@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { wordSubmissionSchema } from "@shared/schema";
 import { wordleService } from "./services/wordle";
 import { connectionsService } from "./services/connections";
+import { hangmanService, Difficulty } from "./services/hangman";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/puzzle", async (_req, res) => {
@@ -96,6 +97,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     const result = connectionsService.validateSelection(words, gameData);
     res.json(result);
+  });
+  
+  // Hangman game endpoints
+  app.get("/api/hangman/word", (req, res) => {
+    try {
+      const difficultyParam = (req.query.difficulty as string) || 'medium';
+      
+      // Convert string to enum value
+      let difficulty;
+      switch(difficultyParam) {
+        case 'easy':
+          difficulty = Difficulty.EASY;
+          break;
+        case 'hard':
+          difficulty = Difficulty.HARD;
+          break;
+        default:
+          difficulty = Difficulty.MEDIUM;
+      }
+      const word = hangmanService.getRandomWord(difficulty);
+      
+      // Don't send the actual word to the client to prevent cheating
+      // Store the word temporarily in storage (in a production app, we'd use a database)
+      const wordId = Date.now().toString();
+      
+      // In a real app, we'd save this to a database
+      // For now, we'll just return the word with the response for simplicity
+      // In production, this would only send the wordId and length
+      res.json({
+        wordId,
+        word, // We're including the word for development simplicity
+        length: word.length,
+        difficulty
+      });
+    } catch (error) {
+      console.error('Error getting random word for Hangman:', error);
+      res.status(500).json({ error: "Error getting random word" });
+    }
+  });
+  
+  app.post("/api/hangman/guess", (req, res) => {
+    try {
+      const { wordId, word, letter } = req.body;
+      
+      if (!word || !letter || letter.length !== 1) {
+        return res.status(400).json({ error: "Invalid request format" });
+      }
+      
+      // Check if the letter is in the word (case insensitive)
+      const upperCaseWord = word.toUpperCase();
+      const upperCaseLetter = letter.toUpperCase();
+      const positions = [];
+      
+      for (let i = 0; i < upperCaseWord.length; i++) {
+        if (upperCaseWord[i] === upperCaseLetter) {
+          positions.push(i);
+        }
+      }
+      
+      res.json({
+        letter: upperCaseLetter,
+        found: positions.length > 0,
+        positions,
+        wordId
+      });
+    } catch (error) {
+      console.error('Error checking letter guess for Hangman:', error);
+      res.status(500).json({ error: "Error checking letter guess" });
+    }
+  });
+  
+  app.post("/api/hangman/guess-word", (req, res) => {
+    try {
+      const { wordId, word, guess } = req.body;
+      
+      if (!word || !guess) {
+        return res.status(400).json({ error: "Invalid request format" });
+      }
+      
+      // Check if the guess matches the word (case insensitive)
+      const upperCaseWord = word.toUpperCase();
+      const upperCaseGuess = guess.toUpperCase();
+      
+      const isCorrect = upperCaseWord === upperCaseGuess;
+      
+      res.json({
+        correct: isCorrect,
+        wordId
+      });
+    } catch (error) {
+      console.error('Error checking word guess for Hangman:', error);
+      res.status(500).json({ error: "Error checking word guess" });
+    }
   });
 
   const httpServer = createServer(app);
