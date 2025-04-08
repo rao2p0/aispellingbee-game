@@ -963,6 +963,457 @@ export const connectionsApi = {
         {
           words: ['EINSTEIN', 'NEWTON', 'CURIE', 'HAWKING'],
           category: "Famous Scientists"
+        },
+        
+        // Additional Hard Games (CSV data)
+        // Game 16
+        {
+          words: ['ID', 'ARCHETYPE', 'COGNITION', 'SCHEMA'],
+          category: "Psychological Terms"
+        },
+        {
+          words: ['DIAMOND', 'RUBY', 'OPAL', 'TOPAZ'],
+          category: "Precious Stones"
+        },
+        {
+          words: ['HUMERUS', 'RADIUS', 'SPINE', 'ULNA'],
+          category: "Bones"
+        },
+        {
+          words: ['CIRRUS', 'CUMULUS', 'STRATUS', 'CUMULONIMBUS'],
+          category: "Cloud Types"
+        },
+        
+        // Game 17
+        {
+          words: ['BORS', 'LANCELOT', 'GAWAIN', 'PERCIVAL'],
+          category: "Knights of the Round Table"
+        },
+        {
+          words: ['STRATUS', 'CUMULONIMBUS', 'NIMBOSTRATUS', 'CIRRUS'],
+          category: "Cloud Types"
+        },
+        {
+          words: ['ODE', 'ELEGY', 'FREE VERSE', 'BALLAD'],
+          category: "Types of Poems"
+        },
+        {
+          words: ['COLON', 'DASH', 'COMMA', 'EXCLAMATION'],
+          category: "Punctuation Marks"
+        },
+        
+        // Game 18
+        {
+          words: ['GALAHAD', 'BEDIVERE', 'TRISTAN', 'PERCIVAL'],
+          category: "Knights of the Round Table"
+        },
+        {
+          words: ['FIJI', 'ICELAND', 'MADAGASCAR', 'SICILY'],
+          category: "Islands"
+        },
+        {
+          words: ['ODE', 'HAIKU', 'BALLAD', 'ELEGY'],
+          category: "Types of Poems"
+        },
+        {
+          words: ['COLON', 'HYPHEN', 'SEMICOLON', 'COMMA'],
+          category: "Punctuation Marks"
+        },
+        
+        // Game 19
+        {
+          words: ['QUEEN', 'KING', 'ROOK', 'PAWN'],
+          category: "Chess Pieces"
+        },
+        {
+          words: ['JIVE', 'RUMBA', 'BALLET', 'FOXTROT'],
+          category: "Dances"
+        },
+        {
+          words: ['CRETE', 'BALI', 'SICILY', 'FIJI'],
+          category: "Islands"
+        },
+        {
+          words: ['TAIL', 'RUDDER', 'ENGINE', 'ELEVATOR'],
+          category: "Parts of an Airplane"
+        },
+        
+        // Game 20
+        {
+          words: ['GALILEO', 'TESLA', 'EINSTEIN', 'BOHR'],
+          category: "Famous Scientists"
+        },
+        {
+          words: ['HYDRA', 'DRAGON', 'UNICORN', 'GRIFFIN'],
+          category: "Mythical Creatures"
+        },
+        {
+          words: ['GARNET', 'RUBY', 'MAROON', 'CARMINE'],
+          category: "Shades of Red"
+        },
+        {
+          words: ['WINDOWS', 'DEBIAN', 'UBUNTU', 'IOS'],
+          category: "Operating Systems"
+        },
+        
+        // Game 21
+        {
+          words: ['BEETHOVEN', 'BACH', 'VIVALDI', 'HANDEL'],
+          category: "Classical Composers"
+        },
+        {
+          words: ['MACOS', 'DEBIAN', 'WINDOWS', 'ANDROID'],
+          category: "Operating Systems"
+        },
+        {
+          words: ['OBJECT-ORIENTED', 'IMPERATIVE', 'FUNCTIONAL', 'PROCEDURAL'],
+          category: "Programming Paradigms"
+        },
+        {
+          words: ['SAHARA', 'MOJAVE', 'SONORAN', 'GOBI'],
+          category: "Deserts"
+        },
+        
+        // Game 22
+        {
+          words: ['CRIMSON', 'GARNET', 'CARMINE', 'BURGUNDY'],
+          category: "Shades of Red"
+        },
+        {
+          words: ['EXCLAMATION', 'SEMICOLON', 'COLON', 'HYPHEN'],
+          category: "Punctuation Marks"
+        },
+        {
+          words: ['PELVIS', 'RADIUS', 'HUMERUS', 'TIBIA'],
+          category: "Bones"
+        },
+        {
+          words: ['PHOBOS', 'IO', 'DEIMOS', 'GANYMEDE'],
+          category: "Satellites (Moons)"
+        },
+        
+        // Game 23
+        {
+          words: ['DECLARATIVE', 'OBJECT-ORIENTED', 'EVENT-DRIVEN', 'IMPERATIVE'],
+          category: "Programming Paradigms"
+        },
+        {
+          words: ['LANCELOT', 'GALAHAD', 'TRISTAN', 'PERCIVAL'],
+          category: "Knights of the Round Table"
+        },
+        {
+          words: ['MEDICINE', 'LITERATURE', 'ECONOMICS', 'CHEMISTRY'],
+          category: "Nobel Prize Categories"
+        },
+        {
+          words: ['PROMETHEUS', 'INTERSTELLAR', 'CONTACT', 'SIGNS'],
+          category: "Alien Movies"
+        },
+        
+        // Game 24
+        {
+          words: ['DIAMOND', 'GARNET', 'EMERALD', 'AMETHYST'],
+          category: "Precious Stones"
+        },
+        {
+          words: ['PHYSICS', 'ECONOMICS', 'PEACE', 'MEDICINE'],
+          category: "Nobel Prize Categories"
+        },
+        {
+          words: ['ZINFANDEL', 'RIESLING', 'SHIRAZ', 'MALBEC'],
+          category: "Wine Varieties"
+        },
+        {
+          words: ['TARIFF', 'SUBSIDY', 'INFLATION', 'GDP'],
+          category: "Economic Terms"
+        },
+        
+        // Game 25
+        {
+          words: ['TRAGEDY', 'MYTH', 'ALLEGORY', 'COMEDY'],
+          category: "Genres of Literature"
+        },
+        {
+          words: ['CRIMSON', 'CHERRY', 'SCARLET', 'BURGUNDY'],
+          category: "Shades of Red"
+        },
+        {
+          words: ['GARNET', 'OPAL', 'SAPPHIRE', 'TOPAZ'],
+          category: "Precious Stones"
+        },
+        {
+          words: ['BASIE', 'DAVIS', 'HANCOCK', 'COLTRANE'],
+          category: "Jazz Musicians"
+        },
+        
+        // Game 26
+        {
+          words: ['CALLISTO', 'IO', 'DEIMOS', 'TITAN'],
+          category: "Satellites (Moons)"
+        },
+        {
+          words: ['ID', 'SUPEREGO', 'ARCHETYPE', 'NEUROSIS'],
+          category: "Psychological Terms"
+        },
+        {
+          words: ['DOCUMENTARY', 'THRILLER', 'COMEDY', 'DRAMA'],
+          category: "Movie Genres"
+        },
+        {
+          words: ['TANGO', 'SALSA', 'WALTZ', 'CHA-CHA'],
+          category: "Dances"
+        },
+        
+        // Game 27
+        {
+          words: ['BAROQUE', 'IMPRESSIONISM', 'FUTURISM', 'SURREALISM'],
+          category: "Art Movements"
+        },
+        {
+          words: ['DRAMA', 'SATIRE', 'EPIC', 'FABLE'],
+          category: "Genres of Literature"
+        },
+        {
+          words: ['SHIRAZ', 'ZINFANDEL', 'CHARDONNAY', 'CABERNET'],
+          category: "Wine Varieties"
+        },
+        {
+          words: ['GRIFFIN', 'MINOTAUR', 'PHOENIX', 'KRAKEN'],
+          category: "Mythical Creatures"
+        },
+        
+        // Game 28
+        {
+          words: ['GALILEO', 'EINSTEIN', 'NEWTON', 'HAWKING'],
+          category: "Famous Scientists"
+        },
+        {
+          words: ['PEGASUS', 'LYRA', 'ANDROMEDA', 'CYGNUS'],
+          category: "Constellations"
+        },
+        {
+          words: ['ALTOCUMULUS', 'STRATUS', 'ALTOSTRATUS', 'CIRRUS'],
+          category: "Cloud Types"
+        },
+        {
+          words: ['GRIFFIN', 'DRAGON', 'BASILISK', 'MINOTAUR'],
+          category: "Mythical Creatures"
+        },
+        
+        // Game 29
+        {
+          words: ['RUBY', 'EMERALD', 'AMETHYST', 'DIAMOND'],
+          category: "Precious Stones"
+        },
+        {
+          words: ['SURREALISM', 'RENAISSANCE', 'DADAISM', 'CUBISM'],
+          category: "Art Movements"
+        },
+        {
+          words: ['EUROPA', 'TRITON', 'DEIMOS', 'CALLISTO'],
+          category: "Satellites (Moons)"
+        },
+        {
+          words: ['POSEIDON', 'ATHENA', 'HADES', 'ARTEMIS'],
+          category: "Greek Gods"
+        },
+        
+        // Game 30
+        {
+          words: ['IOS', 'UBUNTU', 'ANDROID', 'MACOS'],
+          category: "Operating Systems"
+        },
+        {
+          words: ['TEMPORAL', 'FRONTAL', 'OCCIPITAL', 'PARIETAL'],
+          category: "Brain Lobes"
+        },
+        {
+          words: ['HYDRA', 'MINOTAUR', 'GRIFFIN', 'PHOENIX'],
+          category: "Mythical Creatures"
+        },
+        {
+          words: ['SPAGHETTI', 'RAVIOLI', 'MACARONI', 'PENNE'],
+          category: "Types of Pasta"
+        },
+        
+        // Game 31
+        {
+          words: ['LOGIC', 'OBJECT-ORIENTED', 'DECLARATIVE', 'EVENT-DRIVEN'],
+          category: "Programming Paradigms"
+        },
+        {
+          words: ['DRAMA', 'TRAGEDY', 'SATIRE', 'EPIC'],
+          category: "Genres of Literature"
+        },
+        {
+          words: ['ECONOMICS', 'CHEMISTRY', 'LITERATURE', 'MEDICINE'],
+          category: "Nobel Prize Categories"
+        },
+        {
+          words: ['BURGUNDY', 'SCARLET', 'CRIMSON', 'CARMINE'],
+          category: "Shades of Red"
+        },
+        
+        // Game 32
+        {
+          words: ['VIVALDI', 'HAYDN', 'TCHAIKOVSKY', 'HANDEL'],
+          category: "Classical Composers"
+        },
+        {
+          words: ['SKULL', 'FEMUR', 'TIBIA', 'SPINE'],
+          category: "Bones"
+        },
+        {
+          words: ['LOGIC', 'DECLARATIVE', 'IMPERATIVE', 'REACTIVE'],
+          category: "Programming Paradigms"
+        },
+        {
+          words: ['DASH', 'COMMA', 'COLON', 'HYPHEN'],
+          category: "Punctuation Marks"
+        },
+        
+        // Game 33
+        {
+          words: ['CONDENSATE', 'IONIZED', 'SUPERFLUID', 'SOLID'],
+          category: "Chemical States"
+        },
+        {
+          words: ['ALTOCUMULUS', 'ALTOSTRATUS', 'NIMBOSTRATUS', 'CUMULUS'],
+          category: "Cloud Types"
+        },
+        {
+          words: ['NIETZSCHE', 'HUME', 'SOCRATES', 'KANT'],
+          category: "Philosophers"
+        },
+        {
+          words: ['GDP', 'SUBSIDY', 'RECESSION', 'INFLATION'],
+          category: "Economic Terms"
+        },
+        
+        // Game 34
+        {
+          words: ['GALAHAD', 'BEDIVERE', 'LANCELOT', 'PERCIVAL'],
+          category: "Knights of the Round Table"
+        },
+        {
+          words: ['OCCIPITAL', 'FRONTAL', 'TEMPORAL', 'PARIETAL'],
+          category: "Brain Lobes"
+        },
+        {
+          words: ['RECESSION', 'SUBSIDY', 'SURPLUS', 'TAX'],
+          category: "Economic Terms"
+        },
+        {
+          words: ['MERLOT', 'CABERNET', 'SHIRAZ', 'CHARDONNAY'],
+          category: "Wine Varieties"
+        },
+        
+        // Game 35
+        {
+          words: ['GARNET', 'CARMINE', 'BURGUNDY', 'RUBY'],
+          category: "Shades of Red"
+        },
+        {
+          words: ['CASTLE', 'QUEEN', 'KNIGHT', 'ROOK'],
+          category: "Chess Pieces"
+        },
+        {
+          words: ['REACT', 'ANGULAR', 'SPRING', 'FLASK'],
+          category: "Programming Frameworks"
+        },
+        {
+          words: ['BALLET', 'WALTZ', 'CHA-CHA', 'JIVE'],
+          category: "Dances"
+        },
+        
+        // Game 36
+        {
+          words: ['OCCIPITAL', 'FRONTAL', 'PARIETAL', 'TEMPORAL'],
+          category: "Brain Lobes"
+        },
+        {
+          words: ['STRATUS', 'NIMBOSTRATUS', 'NIMBUS', 'CUMULONIMBUS'],
+          category: "Cloud Types"
+        },
+        {
+          words: ['CYGNUS', 'ANDROMEDA', 'DRACO', 'CASSIOPEIA'],
+          category: "Constellations"
+        },
+        {
+          words: ['ZINFANDEL', 'RIESLING', 'PINOT', 'MERLOT'],
+          category: "Wine Varieties"
+        },
+        
+        // Game 37
+        {
+          words: ['GOUDA', 'PARMESAN', 'CAMEMBERT', 'CHEDDAR'],
+          category: "Types of Cheese"
+        },
+        {
+          words: ['RAILS', 'REACT', 'FLASK', 'SPRING'],
+          category: "Programming Frameworks"
+        },
+        {
+          words: ['OPAL', 'TOPAZ', 'EMERALD', 'DIAMOND'],
+          category: "Precious Stones"
+        },
+        {
+          words: ['ELEGY', 'BALLAD', 'ODE', 'LIMERICK'],
+          category: "Types of Poems"
+        },
+        
+        // Game 38
+        {
+          words: ['LITERATURE', 'PEACE', 'PHYSICS', 'CHEMISTRY'],
+          category: "Nobel Prize Categories"
+        },
+        {
+          words: ['LITECOIN', 'BITCOIN', 'CARDANO', 'POLKADOT'],
+          category: "Cryptocurrencies"
+        },
+        {
+          words: ['THANATOPHOBIA', 'ACROPHOBIA', 'TRYPOPHOBIA', 'NYCTOPHOBIA'],
+          category: "Phobias"
+        },
+        {
+          words: ['DEFICIT', 'SURPLUS', 'GDP', 'TARIFF'],
+          category: "Economic Terms"
+        },
+        
+        // Game 39
+        {
+          words: ['ALLEGORY', 'COMEDY', 'EPIC', 'MYTH'],
+          category: "Genres of Literature"
+        },
+        {
+          words: ['REACT', 'VUE', 'ANGULAR', 'SPRING'],
+          category: "Programming Frameworks"
+        },
+        {
+          words: ['ECONOMICS', 'CHEMISTRY', 'MEDICINE', 'LITERATURE'],
+          category: "Nobel Prize Categories"
+        },
+        {
+          words: ['MOZZARELLA', 'BRIE', 'PARMESAN', 'FETA'],
+          category: "Types of Cheese"
+        },
+        
+        // Game 40
+        {
+          words: ['GIRL WITH A PEARL EARRING', 'GUERNICA', 'THE PERSISTENCE OF MEMORY', 'AMERICAN GOTHIC'],
+          category: "Famous Paintings"
+        },
+        {
+          words: ['MERLOT', 'PINOT', 'ZINFANDEL', 'MALBEC'],
+          category: "Wine Varieties"
+        },
+        {
+          words: ['FARFALLE', 'PENNE', 'SPAGHETTI', 'MACARONI'],
+          category: "Types of Pasta"
+        },
+        {
+          words: ['JIVE', 'TANGO', 'BALLET', 'WALTZ'],
+          category: "Dances"
         }
       ]
     };
