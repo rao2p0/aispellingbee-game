@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/api";
 
 import GamesCarousel from "@/components/game/games-carousel";
-
+import GameLayout from "@/components/global/game-layout";
 
 export default function Game() {
   const queryClient = useQueryClient();
@@ -223,6 +223,7 @@ export default function Game() {
     );
   }
 
+  // Note: We don't need to use the GameLayout component here since we already have the carousel implemented
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center px-6 pt-[calc(4rem+env(safe-area-inset-top))] pb-6">
       <motion.div

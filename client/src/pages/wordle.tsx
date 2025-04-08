@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Grid from "@/components/game/wordle/grid";
 import Keyboard from "@/components/game/wordle/keyboard";
 import HowToPlayDialog from "@/components/game/wordle/how-to-play-dialog";
+import GameLayout from "@/components/global/game-layout";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
@@ -258,51 +259,53 @@ export default function Wordle() {
   };
 
   return (
-    <div className="container max-w-lg mx-auto px-4 pb-8">
-      <div className="flex justify-between items-center mb-4 mt-6">
-        <div className="w-10"> {/* Empty div for space balance */}
-        </div>
-        <h1 className="text-3xl font-bold text-center">Wordle</h1>
-        <HowToPlayDialog />
-      </div>
-      
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary"></div>
-        </div>
-      ) : (
-        <>
-          <div className={`mb-8 ${shake ? 'animate-shake' : ''}`}>
-            <Grid 
-              guesses={guesses} 
-              currentGuess={currentGuess} 
-              targetWord={targetWord}
-              maxGuesses={MAX_GUESSES}
-            />
+    <GameLayout>
+      <div className="container max-w-lg mx-auto px-4 pb-8">
+        <div className="flex justify-between items-center mb-4 mt-6">
+          <div className="w-10"> {/* Empty div for space balance */}
           </div>
-          
-          <Keyboard 
-            onKeyPress={handleKeyPress} 
-            keyboardStatus={keyboardStatus}
-          />
+          <h1 className="text-3xl font-bold text-center">Wordle</h1>
+          <HowToPlayDialog />
+        </div>
+        
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary"></div>
+          </div>
+        ) : (
+          <>
+            <div className={`mb-8 ${shake ? 'animate-shake' : ''}`}>
+              <Grid 
+                guesses={guesses} 
+                currentGuess={currentGuess} 
+                targetWord={targetWord}
+                maxGuesses={MAX_GUESSES}
+              />
+            </div>
+            
+            <Keyboard 
+              onKeyPress={handleKeyPress} 
+              keyboardStatus={keyboardStatus}
+            />
 
-          {gameStatus === "won" && (
-            <div className="mt-6 text-center">
-              <h2 className="text-xl font-bold text-green-600 dark:text-green-500">Congratulations!</h2>
-              <p>You found the word in {guesses.length} {guesses.length === 1 ? 'try' : 'tries'}!</p>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
-            </div>
-          )}
-          
-          {gameStatus === "lost" && (
-            <div className="mt-6 text-center">
-              <h2 className="text-xl font-bold text-red-600 dark:text-red-500">Game Over</h2>
-              <p>The word was <span className="font-bold">{targetWord}</span></p>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            {gameStatus === "won" && (
+              <div className="mt-6 text-center">
+                <h2 className="text-xl font-bold text-green-600 dark:text-green-500">Congratulations!</h2>
+                <p>You found the word in {guesses.length} {guesses.length === 1 ? 'try' : 'tries'}!</p>
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
+              </div>
+            )}
+            
+            {gameStatus === "lost" && (
+              <div className="mt-6 text-center">
+                <h2 className="text-xl font-bold text-red-600 dark:text-red-500">Game Over</h2>
+                <p>The word was <span className="font-bold">{targetWord}</span></p>
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Come back tomorrow for a new word!</p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </GameLayout>
   );
 }

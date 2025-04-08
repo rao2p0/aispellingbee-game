@@ -9,6 +9,7 @@ import WordDisplay from '@/components/game/hangman/WordDisplay';
 import Keyboard from '@/components/game/hangman/Keyboard';
 import GameStatus from '@/components/game/hangman/GameStatus';
 import DifficultySelector from '@/components/game/hangman/DifficultySelector';
+import GameLayout from '@/components/global/game-layout';
 import { hangmanApi, Difficulty, HangmanWord } from '@/lib/hangmanApi';
 
 export default function Hangman() {
@@ -90,81 +91,83 @@ export default function Hangman() {
   const isGameOver = gameStatus === 'won' || gameStatus === 'lost';
   
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Hangman</h1>
-        <div className="flex space-x-2">
-          <HowToPlayButton />
-          <Button onClick={startNewGame}>
-            New Game
-          </Button>
+    <GameLayout>
+      <div className="container mx-auto py-8 px-4 max-w-4xl">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">Hangman</h1>
+          <div className="flex space-x-2">
+            <HowToPlayButton />
+            <Button onClick={startNewGame}>
+              New Game
+            </Button>
+          </div>
         </div>
-      </div>
-      
-      <Card className="mb-6">
-        <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Left column - Hangman figure */}
-            <div className="flex justify-center">
-              {isLoading ? (
-                <LoadingSpinner size="lg" />
-              ) : (
-                <HangmanFigure 
+        
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Left column - Hangman figure */}
+              <div className="flex justify-center">
+                {isLoading ? (
+                  <LoadingSpinner size="lg" />
+                ) : (
+                  <HangmanFigure 
+                    incorrectGuesses={incorrectGuesses}
+                    maxIncorrectGuesses={MAX_INCORRECT_GUESSES}
+                  />
+                )}
+              </div>
+              
+              {/* Right column - Game info */}
+              <div className="flex flex-col space-y-6 items-center">
+                {/* Difficulty selector */}
+                <DifficultySelector 
+                  onSelect={setDifficulty}
+                  selectedDifficulty={difficulty}
+                  disabled={isLoading || gameStatus === 'playing'}
+                />
+                
+                {/* Game status */}
+                <GameStatus 
                   incorrectGuesses={incorrectGuesses}
                   maxIncorrectGuesses={MAX_INCORRECT_GUESSES}
+                  guessedLetters={guessedLetters}
+                  gameWon={gameStatus === 'won'}
+                  gameLost={gameStatus === 'lost'}
                 />
-              )}
+              </div>
             </div>
-            
-            {/* Right column - Game info */}
-            <div className="flex flex-col space-y-6 items-center">
-              {/* Difficulty selector */}
-              <DifficultySelector 
-                onSelect={setDifficulty}
-                selectedDifficulty={difficulty}
-                disabled={isLoading || gameStatus === 'playing'}
-              />
-              
-              {/* Game status */}
-              <GameStatus 
-                incorrectGuesses={incorrectGuesses}
-                maxIncorrectGuesses={MAX_INCORRECT_GUESSES}
+          </CardContent>
+        </Card>
+        
+        {/* Word display */}
+        <Card className="mb-6">
+          <CardContent className="p-6 flex justify-center">
+            {isLoading ? (
+              <LoadingSpinner size="md" />
+            ) : word ? (
+              <WordDisplay 
+                word={word}
                 guessedLetters={guessedLetters}
-                gameWon={gameStatus === 'won'}
-                gameLost={gameStatus === 'lost'}
+                gameOver={isGameOver}
               />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Word display */}
-      <Card className="mb-6">
-        <CardContent className="p-6 flex justify-center">
-          {isLoading ? (
-            <LoadingSpinner size="md" />
-          ) : word ? (
-            <WordDisplay 
-              word={word}
+            ) : (
+              <div className="text-gray-400">Loading word...</div>
+            )}
+          </CardContent>
+        </Card>
+        
+        {/* Keyboard */}
+        <Card>
+          <CardContent className="p-6 flex justify-center">
+            <Keyboard 
+              onLetterClick={handleLetterGuess}
               guessedLetters={guessedLetters}
-              gameOver={isGameOver}
+              disabled={isLoading || isGameOver}
             />
-          ) : (
-            <div className="text-gray-400">Loading word...</div>
-          )}
-        </CardContent>
-      </Card>
-      
-      {/* Keyboard */}
-      <Card>
-        <CardContent className="p-6 flex justify-center">
-          <Keyboard 
-            onLetterClick={handleLetterGuess}
-            guessedLetters={guessedLetters}
-            disabled={isLoading || isGameOver}
-          />
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </GameLayout>
   );
 }

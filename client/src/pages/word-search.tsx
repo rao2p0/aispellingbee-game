@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import GameLayout from "@/components/global/game-layout";
 
 // Import directly using relative paths to avoid import errors
 import WordSearchGrid from "../components/game/word-search/grid";
@@ -303,83 +304,85 @@ export default function WordSearch() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto px-4 pb-8">
-      <div className="flex justify-between items-center mb-4 mt-6">
-        <Button 
-          onClick={startNewGame}
-          variant="default"
-          className="bg-primary hover:bg-primary/90"
-        >
-          New game
-        </Button>
-        
-        <h1 className="text-3xl font-bold text-center">Word Search</h1>
-        
-        <div className="flex items-center gap-2">
-          <WordSearchTimer time={formatTime(timeElapsed)} />
-          <HowToPlayDialog />
-        </div>
-      </div>
-      
-      <WordSearchControls 
-        difficulty={difficulty}
-        difficultyOptions={DIFFICULTY_LEVELS}
-        onChangeDifficulty={changeDifficulty}
-      />
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <div className="col-span-1 md:col-span-2">
-          {grid.length > 0 && (
-            <WordSearchGrid 
-              grid={grid}
-              onWordFound={(word: string, coordinates: Coordinate[]) => {
-                // Check if word is in the word positions
-                const wordPosition = wordPositions.find((wp: WordPosition) => wp.word === word && !wp.found);
-                if (wordPosition) {
-                  // Mark word as found
-                  const newWordPositions = [...wordPositions];
-                  const index = newWordPositions.findIndex((wp: WordPosition) => wp.word === word);
-                  newWordPositions[index] = { ...newWordPositions[index], found: true };
-                  setWordPositions(newWordPositions);
-                  setFoundWords([...foundWords, word]);
-                  
-                  // Show success toast
-                  toast({
-                    title: "Word Found!",
-                    description: `You found "${word}"`,
-                    variant: "default",
-                  });
-                }
-              }}
-            />
-          )}
-        </div>
-        
-        <div className="col-span-1">
-          {wordPositions.length > 0 && (
-            <WordList 
-              wordPositions={wordPositions}
-              foundWords={foundWords}
-            />
-          )}
-        </div>
-      </div>
-      
-      {gameComplete && (
-        <div className="mt-6 text-center p-4 bg-green-100 dark:bg-green-900 rounded-md">
-          <h2 className="text-xl font-bold text-green-700 dark:text-green-300">Congratulations!</h2>
-          <p className="mt-2">
-            You found all {wordPositions.length} words in {formatTime(timeElapsed)}!
-          </p>
-          <Button
+    <GameLayout>
+      <div className="container max-w-4xl mx-auto px-4 pb-8">
+        <div className="flex justify-between items-center mb-4 mt-6">
+          <Button 
             onClick={startNewGame}
             variant="default"
-            className="mt-4 bg-primary hover:bg-primary/90"
+            className="bg-primary hover:bg-primary/90"
           >
-            Play Again
+            New game
           </Button>
+          
+          <h1 className="text-3xl font-bold text-center">Word Search</h1>
+          
+          <div className="flex items-center gap-2">
+            <WordSearchTimer time={formatTime(timeElapsed)} />
+            <HowToPlayDialog />
+          </div>
         </div>
-      )}
-    </div>
+        
+        <WordSearchControls 
+          difficulty={difficulty}
+          difficultyOptions={DIFFICULTY_LEVELS}
+          onChangeDifficulty={changeDifficulty}
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="col-span-1 md:col-span-2">
+            {grid.length > 0 && (
+              <WordSearchGrid 
+                grid={grid}
+                onWordFound={(word: string, coordinates: Coordinate[]) => {
+                  // Check if word is in the word positions
+                  const wordPosition = wordPositions.find((wp: WordPosition) => wp.word === word && !wp.found);
+                  if (wordPosition) {
+                    // Mark word as found
+                    const newWordPositions = [...wordPositions];
+                    const index = newWordPositions.findIndex((wp: WordPosition) => wp.word === word);
+                    newWordPositions[index] = { ...newWordPositions[index], found: true };
+                    setWordPositions(newWordPositions);
+                    setFoundWords([...foundWords, word]);
+                    
+                    // Show success toast
+                    toast({
+                      title: "Word Found!",
+                      description: `You found "${word}"`,
+                      variant: "default",
+                    });
+                  }
+                }}
+              />
+            )}
+          </div>
+          
+          <div className="col-span-1">
+            {wordPositions.length > 0 && (
+              <WordList 
+                wordPositions={wordPositions}
+                foundWords={foundWords}
+              />
+            )}
+          </div>
+        </div>
+        
+        {gameComplete && (
+          <div className="mt-6 text-center p-4 bg-green-100 dark:bg-green-900 rounded-md">
+            <h2 className="text-xl font-bold text-green-700 dark:text-green-300">Congratulations!</h2>
+            <p className="mt-2">
+              You found all {wordPositions.length} words in {formatTime(timeElapsed)}!
+            </p>
+            <Button
+              onClick={startNewGame}
+              variant="default"
+              className="mt-4 bg-primary hover:bg-primary/90"
+            >
+              Play Again
+            </Button>
+          </div>
+        )}
+      </div>
+    </GameLayout>
   );
 }

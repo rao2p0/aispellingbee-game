@@ -6,6 +6,7 @@ import GameControls from "@/components/game/connections/game-controls";
 import Timer from "@/components/game/connections/timer";
 import DifficultySelector from "@/components/game/connections/difficulty-selector";
 import HowToPlayDialog from "@/components/game/connections/how-to-play-dialog";
+import GameLayout from "@/components/global/game-layout";
 import { connectionsApi, type GameData } from "@/lib/connectionsApi";
 
 export default function Connections() {
@@ -151,69 +152,71 @@ export default function Connections() {
   };
 
   return (
-    <div className="container max-w-xl mx-auto px-4 pt-6 pb-12">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Connections</h1>
-        <div className="flex items-center gap-2">
-          <Timer 
-            isRunning={isTimerRunning} 
-            onTimeUpdate={setTimeElapsed}
-          />
-          <HowToPlayDialog />
+    <GameLayout>
+      <div className="container max-w-xl mx-auto px-4 pt-6 pb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">Connections</h1>
+          <div className="flex items-center gap-2">
+            <Timer 
+              isRunning={isTimerRunning} 
+              onTimeUpdate={setTimeElapsed}
+            />
+            <HowToPlayDialog />
+          </div>
         </div>
-      </div>
-      
-      <div className="flex justify-between items-center gap-3 mb-4">
-        <DifficultySelector 
-          difficulty={difficulty}
-          onChangeDifficulty={handleChangeDifficulty}
-          disabled={isLoading || (!isGameOver && solvedGroups.length > 0)}
-        />
-        <Button 
-          onClick={initializeGame}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 w-1/3"
-          disabled={isLoading}
-        >
-          New Game
-        </Button>
-      </div>
+        
+        <div className="flex justify-between items-center gap-3 mb-4">
+          <DifficultySelector 
+            difficulty={difficulty}
+            onChangeDifficulty={handleChangeDifficulty}
+            disabled={isLoading || (!isGameOver && solvedGroups.length > 0)}
+          />
+          <Button 
+            onClick={initializeGame}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 w-1/3"
+            disabled={isLoading}
+          >
+            New Game
+          </Button>
+        </div>
 
-      {isLoading ? (
-        <div className="py-12 text-center">Loading game data...</div>
-      ) : (
-        <>
-          <GameControls
-            onSubmit={handleSubmit}
-            onDeselect={() => setSelectedWords([])}
-            onNewGame={initializeGame}
-            selectedWords={selectedWords}
-            mistakesRemaining={mistakesRemaining}
-            isGameOver={isGameOver}
-            isSubmitting={isSubmitting}
-          />
-          
-          <WordGrid
-            words={words}
-            selectedWords={selectedWords}
-            solvedGroups={solvedGroups}
-            onSelectWord={handleSelectWord}
-            disabled={isGameOver || isSubmitting}
-          />
-        </>
-      )}
-      
-      {isGameOver && (
-        <div className="mt-6 text-center p-4 bg-primary/10 rounded-md">
-          <h2 className="text-xl font-bold">
-            {solvedGroups.length === 4 ? "Congratulations!" : "Game Over"}
-          </h2>
-          <p className="mt-2">
-            {solvedGroups.length === 4 
-              ? `You found all connections in ${formatTime(timeElapsed)}!` 
-              : `You found ${solvedGroups.length} out of 4 groups.`}
-          </p>
-        </div>
-      )}
-    </div>
+        {isLoading ? (
+          <div className="py-12 text-center">Loading game data...</div>
+        ) : (
+          <>
+            <GameControls
+              onSubmit={handleSubmit}
+              onDeselect={() => setSelectedWords([])}
+              onNewGame={initializeGame}
+              selectedWords={selectedWords}
+              mistakesRemaining={mistakesRemaining}
+              isGameOver={isGameOver}
+              isSubmitting={isSubmitting}
+            />
+            
+            <WordGrid
+              words={words}
+              selectedWords={selectedWords}
+              solvedGroups={solvedGroups}
+              onSelectWord={handleSelectWord}
+              disabled={isGameOver || isSubmitting}
+            />
+          </>
+        )}
+        
+        {isGameOver && (
+          <div className="mt-6 text-center p-4 bg-primary/10 rounded-md">
+            <h2 className="text-xl font-bold">
+              {solvedGroups.length === 4 ? "Congratulations!" : "Game Over"}
+            </h2>
+            <p className="mt-2">
+              {solvedGroups.length === 4 
+                ? `You found all connections in ${formatTime(timeElapsed)}!` 
+                : `You found ${solvedGroups.length} out of 4 groups.`}
+            </p>
+          </div>
+        )}
+      </div>
+    </GameLayout>
   );
 }
