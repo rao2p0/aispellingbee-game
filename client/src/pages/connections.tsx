@@ -5,7 +5,6 @@ import WordGrid from "@/components/game/connections/word-grid";
 import GameControls from "@/components/game/connections/game-controls";
 import Timer from "@/components/game/connections/timer";
 import DifficultySelector from "@/components/game/connections/difficulty-selector";
-import HowToPlayDialog from "@/components/game/connections/how-to-play-dialog";
 import GameLayout from "@/components/global/game-layout";
 import { connectionsApi, type GameData } from "@/lib/connectionsApi";
 
@@ -161,7 +160,7 @@ export default function Connections() {
               isRunning={isTimerRunning} 
               onTimeUpdate={setTimeElapsed}
             />
-            <HowToPlayDialog />
+            {/* Help button removed - now available in the header */}
           </div>
         </div>
         

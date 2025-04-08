@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/game/LoadingSpinner';
-import { HowToPlayButton } from '@/components/game/how-to-play-button';
 import HangmanFigure from '@/components/game/hangman/HangmanFigure';
 import WordDisplay from '@/components/game/hangman/WordDisplay';
 import Keyboard from '@/components/game/hangman/Keyboard';
@@ -96,7 +95,7 @@ export default function Hangman() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Hangman</h1>
           <div className="flex space-x-2">
-            <HowToPlayButton />
+            {/* Help button removed - now available in the header */}
             <Button onClick={startNewGame}>
               New Game
             </Button>
