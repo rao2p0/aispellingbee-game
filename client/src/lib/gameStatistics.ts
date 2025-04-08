@@ -1,4 +1,5 @@
-import { z } from "zod";
+// Advanced statistics module for Word Games application
+// Supports statistics tracking across multiple game types
 
 // Common statistics interface for all games
 export interface GameStats {
@@ -15,7 +16,7 @@ export interface GameStats {
 export type GameType = 'spellbee' | 'wordle' | 'wordsearch' | 'connections' | 'hangman' | 'wordladder';
 
 // Keys for storing game-specific stats
-const STATS_KEY = 'spell-bee-stats';
+const SPELL_BEE_STATS_KEY = 'spell-bee-stats';
 const WORDLE_STATS_KEY = 'wordle-stats';
 const WORD_SEARCH_STATS_KEY = 'word-search-stats';
 const CONNECTIONS_STATS_KEY = 'connections-stats';
@@ -52,7 +53,7 @@ function getStorageKeyForGame(gameType: GameType = 'spellbee'): string {
       return WORD_LADDER_STATS_KEY;
     case 'spellbee':
     default:
-      return STATS_KEY;
+      return SPELL_BEE_STATS_KEY;
   }
 }
 
