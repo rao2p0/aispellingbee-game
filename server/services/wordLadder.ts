@@ -20,121 +20,607 @@ const PREDEFINED_PUZZLES: WordLadderPuzzle[] = [
   // Easy puzzles - typically 3-4 letter words with obvious paths
   {
     id: 1,
-    startWord: 'cat',
-    targetWord: 'dog',
+    startWord: 'root',
+    targetWord: 'boot',
     difficulty: Difficulty.EASY,
-    minSteps: 3,
-    hint: 'Try changing one letter at a time. CAT → COT → DOT → DOG is one possible path.'
+    minSteps: 1,
+    hint: 'Change just the first letter.'
   },
   {
     id: 2,
-    startWord: 'cold',
-    targetWord: 'warm',
+    startWord: 'mint',
+    targetWord: 'pint',
     difficulty: Difficulty.EASY,
-    minSteps: 4,
-    hint: 'Try COLD → CORD → CARD → WARD → WARM'
+    minSteps: 1,
+    hint: 'Change just the first letter.'
   },
   {
     id: 3,
-    startWord: 'fly',
-    targetWord: 'ant',
+    startWord: 'wine',
+    targetWord: 'fine',
     difficulty: Difficulty.EASY,
-    minSteps: 3,
-    hint: 'Consider FLY → FAY → FAT → ANT'
+    minSteps: 1,
+    hint: 'Change just the first letter.'
   },
   {
     id: 4,
-    startWord: 'four',
-    targetWord: 'five',
+    startWord: 'find',
+    targetWord: 'mind',
     difficulty: Difficulty.EASY,
-    minSteps: 4,
-    hint: 'Try FOUR → FOUL → FOIL → FAIL → FIVE'
+    minSteps: 1,
+    hint: 'Change just the first letter.'
   },
   {
     id: 5,
-    startWord: 'sick',
-    targetWord: 'well',
+    startWord: 'pool',
+    targetWord: 'pole',
+    difficulty: Difficulty.EASY,
+    minSteps: 2,
+    hint: 'Try changing just one letter at a time.'
+  },
+  {
+    id: 6,
+    startWord: 'fool',
+    targetWord: 'boot',
+    difficulty: Difficulty.EASY,
+    minSteps: 2,
+    hint: 'Think about changing the first letter, then the last.'
+  },
+  {
+    id: 7,
+    startWord: 'bend',
+    targetWord: 'tent',
+    difficulty: Difficulty.EASY,
+    minSteps: 2,
+    hint: 'Try changing the first letter, then the third.'
+  },
+  {
+    id: 8,
+    startWord: 'land',
+    targetWord: 'sank',
+    difficulty: Difficulty.EASY,
+    minSteps: 2,
+    hint: 'Change the first letter, then the last.'
+  },
+  {
+    id: 9,
+    startWord: 'roll',
+    targetWord: 'cool',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try going through POLL and POOL.'
+  },
+  {
+    id: 10,
+    startWord: 'moan',
+    targetWord: 'soot',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try going through MOON and SOON.'
+  },
+  {
+    id: 11,
+    startWord: 'tent',
+    targetWord: 'bond',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try TENT → BENT → BEND → BOND'
+  },
+  {
+    id: 12,
+    startWord: 'boat',
+    targetWord: 'soon',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Consider the path BOAT → BOOT → SOOT → SOON'
+  },
+  {
+    id: 13,
+    startWord: 'bald',
+    targetWord: 'boat',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try BALD → BOLD → BOLT → BOAT'
+  },
+  {
+    id: 14,
+    startWord: 'sand',
+    targetWord: 'pine',
     difficulty: Difficulty.EASY,
     minSteps: 4,
-    hint: 'Consider SICK → SILK → SILL → SELL → WELL'
+    hint: 'Consider SAND → LAND → LANE → LINE → PINE'
+  },
+  {
+    id: 15,
+    startWord: 'roll',
+    targetWord: 'pale',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try ROLL → POLL → POLE → PALE'
+  },
+  {
+    id: 16,
+    startWord: 'pine',
+    targetWord: 'land',
+    difficulty: Difficulty.EASY,
+    minSteps: 3,
+    hint: 'Try PINE → LINE → LANE → LAND'
+  },
+  {
+    id: 17,
+    startWord: 'pool',
+    targetWord: 'pump',
+    difficulty: Difficulty.EASY,
+    minSteps: 4,
+    hint: 'Consider POOL → POLL → PULL → PULP → PUMP'
+  },
+  {
+    id: 18,
+    startWord: 'love',
+    targetWord: 'pull',
+    difficulty: Difficulty.EASY,
+    minSteps: 5,
+    hint: 'Try LOVE → MOVE → MOLE → POLE → POLL → PULL'
+  },
+  {
+    id: 19,
+    startWord: 'pale',
+    targetWord: 'male',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
+  },
+  {
+    id: 20,
+    startWord: 'bent',
+    targetWord: 'bend',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the last letter.'
+  },
+  {
+    id: 21,
+    startWord: 'damp',
+    targetWord: 'camp',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
+  },
+  {
+    id: 22,
+    startWord: 'pink',
+    targetWord: 'sink',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
+  },
+  {
+    id: 23,
+    startWord: 'cool',
+    targetWord: 'fool',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
+  },
+  {
+    id: 24,
+    startWord: 'foot',
+    targetWord: 'soot',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
+  },
+  {
+    id: 25,
+    startWord: 'bold',
+    targetWord: 'cold',
+    difficulty: Difficulty.EASY,
+    minSteps: 1,
+    hint: 'Change just the first letter.'
   },
   
   // Medium puzzles - 4-5 letter words with less obvious paths
   {
-    id: 6,
-    startWord: 'hide',
-    targetWord: 'seek',
+    id: 26,
+    startWord: 'line',
+    targetWord: 'fond',
     difficulty: Difficulty.MEDIUM,
-    minSteps: 5,
-    hint: 'Try words like SIDE, SITE, SITS, SETS'
+    minSteps: 3,
+    hint: 'Try thinking about: LINE → FINE → FIND → FOND'
   },
   {
-    id: 7,
-    startWord: 'white',
-    targetWord: 'black',
+    id: 27,
+    startWord: 'bold',
+    targetWord: 'bent',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 3,
+    hint: 'Consider the path through BOND and BEND.'
+  },
+  {
+    id: 28,
+    startWord: 'wine',
+    targetWord: 'rant',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 4,
+    hint: 'Try going through PINE, PINT, and PANT.'
+  },
+  {
+    id: 29,
+    startWord: 'sink',
+    targetWord: 'rant',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 3,
+    hint: 'Consider the path SINK → SANK → RANK → RANT'
+  },
+  {
+    id: 30,
+    startWord: 'live',
+    targetWord: 'sank',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 4,
+    hint: 'Try going through LINE, LANE, and SANE.'
+  },
+  {
+    id: 31,
+    startWord: 'pink',
+    targetWord: 'cake',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Consider the path through SINK, SANK, SANE, and CANE.'
+  },
+  {
+    id: 32,
+    startWord: 'sane',
+    targetWord: 'fond',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Try going through LANE, LINE, FINE, and FIND.'
+  },
+  {
+    id: 33,
+    startWord: 'pale',
+    targetWord: 'mole',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 2,
+    hint: 'Try going through MALE.'
+  },
+  {
+    id: 34,
+    startWord: 'cool',
+    targetWord: 'soot',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 3,
+    hint: 'Consider the path COOL → FOOL → FOOT → SOOT'
+  },
+  {
+    id: 35,
+    startWord: 'bond',
+    targetWord: 'line',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 4,
+    hint: 'Try going through FOND, FIND, and FINE.'
+  },
+  {
+    id: 36,
+    startWord: 'tent',
+    targetWord: 'fond',
     difficulty: Difficulty.MEDIUM,
     minSteps: 6,
-    hint: 'Think of changing one letter at a time - possibly through WHILE, WHALE, SHALE, SHAKE, SLACK'
+    hint: 'Try TENT → BENT → BEND → BOND → FOND'
   },
   {
-    id: 8,
-    startWord: 'happy',
-    targetWord: 'angry',
+    id: 37,
+    startWord: 'bold',
+    targetWord: 'line',
     difficulty: Difficulty.MEDIUM,
     minSteps: 5,
-    hint: 'Consider paths through words like HARPY, HARDY'
+    hint: 'Consider BOLD → BOND → FOND → FIND → FINE → LINE'
   },
   {
-    id: 9,
-    startWord: 'bread',
-    targetWord: 'toast',
+    id: 38,
+    startWord: 'sank',
+    targetWord: 'find',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Try SANK → SINK → PINK → PINE → FINE → FIND'
+  },
+  {
+    id: 39,
+    startWord: 'nest',
+    targetWord: 'bond',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Consider NEST → TEST → TENT → BENT → BEND → BOND'
+  },
+  {
+    id: 40,
+    startWord: 'pole',
+    targetWord: 'bond',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 8,
+    hint: 'Try POLE → POLL → POOL → FOOL → FOOT → BOOT → BOLT → BOLD → BOND'
+  },
+  {
+    id: 41,
+    startWord: 'boat',
+    targetWord: 'mint',
     difficulty: Difficulty.MEDIUM,
     minSteps: 7,
-    hint: 'One possible path involves TREAD, TREAT'
+    hint: 'Consider BOAT → BOLT → BOLD → BOND → FOND → FIND → MIND → MINT'
   },
   {
-    id: 10,
-    startWord: 'money',
-    targetWord: 'coins',
+    id: 42,
+    startWord: 'bent',
+    targetWord: 'live',
     difficulty: Difficulty.MEDIUM,
-    minSteps: 6
+    minSteps: 7,
+    hint: 'Try BENT → BEND → BOND → FOND → FIND → FINE → LINE → LIVE'
+  },
+  {
+    id: 43,
+    startWord: 'fine',
+    targetWord: 'bent',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Consider FINE → FIND → FOND → BOND → BEND → BENT'
+  },
+  {
+    id: 44,
+    startWord: 'nest',
+    targetWord: 'fond',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 6,
+    hint: 'Try NEST → TEST → TENT → BENT → BEND → BOND → FOND'
+  },
+  {
+    id: 45,
+    startWord: 'cake',
+    targetWord: 'pant',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 6,
+    hint: 'Consider CAKE → CANE → LANE → LINE → PINE → PINT → PANT'
+  },
+  {
+    id: 46,
+    startWord: 'male',
+    targetWord: 'fine',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 6,
+    hint: 'Try MALE → MOLE → MOVE → LOVE → LIVE → LINE → FINE'
+  },
+  {
+    id: 47,
+    startWord: 'wind',
+    targetWord: 'boat',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 6,
+    hint: 'Consider WIND → FIND → FOND → BOND → BOLD → BOLT → BOAT'
+  },
+  {
+    id: 48,
+    startWord: 'damp',
+    targetWord: 'cool',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 7,
+    hint: 'Try DAMP → DUMP → PUMP → PULP → PULL → POLL → POOL → COOL'
+  },
+  {
+    id: 49,
+    startWord: 'pulp',
+    targetWord: 'bold',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 8,
+    hint: 'Consider PULP → PULL → POLL → POOL → FOOL → FOOT → BOOT → BOLT → BOLD'
+  },
+  {
+    id: 50,
+    startWord: 'dump',
+    targetWord: 'lion',
+    difficulty: Difficulty.MEDIUM,
+    minSteps: 5,
+    hint: 'Try DUMP → DAMP → LAMP → LIMP → LIMN → LION'
   },
   
   // Hard puzzles - 5-6 letter words with complex paths
   {
-    id: 11,
-    startWord: 'listen',
-    targetWord: 'sounds',
+    id: 51,
+    startWord: 'roll',
+    targetWord: 'cord',
     difficulty: Difficulty.HARD,
-    minSteps: 9
+    minSteps: 9,
+    hint: 'Try a path through POLL, POOL, FOOL, FOOT, BOOT, BOLT, BOLD, COLD'
   },
   {
-    id: 12,
-    startWord: 'friend',
-    targetWord: 'enemy',
+    id: 52,
+    startWord: 'soon',
+    targetWord: 'mint',
     difficulty: Difficulty.HARD,
-    minSteps: 8
+    minSteps: 9,
+    hint: 'Consider a path with: SOOT, BOOT, BOLT, BOLD, BOND, FOND, FIND, MIND'
   },
   {
-    id: 13,
-    startWord: 'flower',
-    targetWord: 'garden',
+    id: 53,
+    startWord: 'live',
+    targetWord: 'boat',
     difficulty: Difficulty.HARD,
-    minSteps: 10
+    minSteps: 8,
+    hint: 'Try LINE, FINE, FIND, FOND, BOND, BOLD, BOLT'
   },
   {
-    id: 14,
-    startWord: 'planet',
-    targetWord: 'galaxy',
+    id: 54,
+    startWord: 'foot',
+    targetWord: 'warm',
     difficulty: Difficulty.HARD,
-    minSteps: 9
+    minSteps: 8,
+    hint: 'Consider BOOT, BOLT, BOLD, COLD, CORD, CARD, WARD'
   },
   {
-    id: 15,
-    startWord: 'dream',
-    targetWord: 'sleep',
+    id: 55,
+    startWord: 'soot',
+    targetWord: 'damp',
     difficulty: Difficulty.HARD,
-    minSteps: 7
+    minSteps: 9,
+    hint: 'Try FOOT, FOOL, POOL, POLL, PULL, PULP, PUMP, DUMP'
+  },
+  {
+    id: 56,
+    startWord: 'rank',
+    targetWord: 'male',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Try a path through SANK, SANE, LANE, LINE, LIVE, LOVE, MOVE, MOLE'
+  },
+  {
+    id: 57,
+    startWord: 'male',
+    targetWord: 'sand',
+    difficulty: Difficulty.HARD,
+    minSteps: 8,
+    hint: 'Consider MOLE, MOVE, LOVE, LIVE, LINE, LANE, SANE'
+  },
+  {
+    id: 58,
+    startWord: 'pint',
+    targetWord: 'pale',
+    difficulty: Difficulty.HARD,
+    minSteps: 8,
+    hint: 'Try PINE, LINE, LIVE, LOVE, MOVE, MOLE, POLE'
+  },
+  {
+    id: 59,
+    startWord: 'lion',
+    targetWord: 'pump',
+    difficulty: Difficulty.HARD,
+    minSteps: 6,
+    hint: 'Consider LIMN, LIMP, LAMP, DAMP, DUMP'
+  },
+  {
+    id: 60,
+    startWord: 'fine',
+    targetWord: 'warm',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Try a path including FIND, FOND, BOND, BOLD, COLD, CORD, CARD, WARD'
+  },
+  {
+    id: 61,
+    startWord: 'pole',
+    targetWord: 'wind',
+    difficulty: Difficulty.HARD,
+    minSteps: 7,
+    hint: 'Consider POLE → MOLE → MOVE → LOVE → LIVE → LINE → WINE → WIND'
+  },
+  {
+    id: 62,
+    startWord: 'pole',
+    targetWord: 'camp',
+    difficulty: Difficulty.HARD,
+    minSteps: 7,
+    hint: 'Try POLE → POLL → PULL → PULP → PUMP → DUMP → DAMP → CAMP'
+  },
+  {
+    id: 63,
+    startWord: 'mean',
+    targetWord: 'bald',
+    difficulty: Difficulty.HARD,
+    minSteps: 8,
+    hint: 'Consider MEAN → MOAN → MOON → SOON → SOOT → BOOT → BOLT → BOLD → BALD'
+  },
+  {
+    id: 64,
+    startWord: 'move',
+    targetWord: 'moon',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Try MOVE → MOLE → POLE → POLL → POOL → FOOL → FOOT → SOOT → SOON → MOON'
+  },
+  {
+    id: 65,
+    startWord: 'soot',
+    targetWord: 'lane',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Consider SOOT → BOOT → BOLT → BOLD → BOND → FOND → FIND → FINE → LINE → LANE'
+  },
+  {
+    id: 66,
+    startWord: 'pool',
+    targetWord: 'cord',
+    difficulty: Difficulty.HARD,
+    minSteps: 7,
+    hint: 'Try POOL → FOOL → FOOT → BOOT → BOLT → BOLD → COLD → CORD'
+  },
+  {
+    id: 67,
+    startWord: 'foot',
+    targetWord: 'pint',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Consider FOOT → BOOT → BOLT → BOLD → BOND → FOND → FIND → MIND → MINT → PINT'
+  },
+  {
+    id: 68,
+    startWord: 'sink',
+    targetWord: 'boot',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Try SINK → PINK → PINE → FINE → FIND → FOND → BOND → BOLD → BOLT → BOOT'
+  },
+  {
+    id: 69,
+    startWord: 'pink',
+    targetWord: 'pool',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Consider PINK → PINE → LINE → LIVE → LOVE → MOVE → MOLE → POLE → POLL → POOL'
+  },
+  {
+    id: 70,
+    startWord: 'wind',
+    targetWord: 'mole',
+    difficulty: Difficulty.HARD,
+    minSteps: 6,
+    hint: 'Try WIND → WINE → LINE → LIVE → LOVE → MOVE → MOLE'
+  },
+  {
+    id: 71,
+    startWord: 'love',
+    targetWord: 'soot',
+    difficulty: Difficulty.HARD,
+    minSteps: 8,
+    hint: 'Consider LOVE → MOVE → MOLE → POLE → POLL → POOL → FOOL → FOOT → SOOT'
+  },
+  {
+    id: 72,
+    startWord: 'camp',
+    targetWord: 'pale',
+    difficulty: Difficulty.HARD,
+    minSteps: 8,
+    hint: 'Try CAMP → DAMP → DUMP → PUMP → PULP → PULL → POLL → POLE → PALE'
+  },
+  {
+    id: 73,
+    startWord: 'rant',
+    targetWord: 'pole',
+    difficulty: Difficulty.HARD,
+    minSteps: 9,
+    hint: 'Consider RANT → PANT → PINT → PINE → LINE → LIVE → LOVE → MOVE → MOLE → POLE'
+  },
+  {
+    id: 74,
+    startWord: 'meat',
+    targetWord: 'root',
+    difficulty: Difficulty.HARD,
+    minSteps: 6,
+    hint: 'Try MEAT → MEAN → MOAN → MOON → SOON → SOOT → ROOT'
+  },
+  {
+    id: 75,
+    startWord: 'next',
+    targetWord: 'soon',
+    difficulty: Difficulty.HARD,
+    minSteps: 6,
+    hint: 'Consider NEXT → NEAT → MEAT → MEAN → MOAN → MOON → SOON'
   }
 ];
 
