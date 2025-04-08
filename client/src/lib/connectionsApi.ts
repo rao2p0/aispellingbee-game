@@ -212,6 +212,366 @@ export const connectionsApi = {
         {
           words: ['NECKLACE', 'RING', 'BRACELET', 'EARRING'],
           category: "Jewelry"
+        },
+        
+        // Game 21
+        {
+          words: ['VANILLA', 'CHOCOLATE', 'STRAWBERRY', 'MINT'],
+          category: "Ice Cream Flavors"
+        },
+        {
+          words: ['SCARF', 'GLOVES', 'BOOTS', 'SWEATER'],
+          category: "Winter Clothing"
+        },
+        {
+          words: ['FORK', 'PAN', 'OVEN', 'BLENDER'],
+          category: "In the Kitchen"
+        },
+        {
+          words: ['EMAIL', 'PHONE', 'LETTER', 'TEXT'],
+          category: "Modes of Communication"
+        },
+        
+        // Game 22
+        {
+          words: ['JAVASCRIPT', 'SWIFT', 'KOTLIN', 'C#'],
+          category: "Programming Languages"
+        },
+        {
+          words: ['INSTAGRAM', 'TWITTER', 'FACEBOOK', 'TIKTOK'],
+          category: "Social Media Platforms"
+        },
+        {
+          words: ['NETFLIX', 'HULU', 'PRIME', 'DISNEY+'],
+          category: "Streaming Services"
+        },
+        {
+          words: ['SAMSUNG', 'APPLE', 'GOOGLE', 'ONEPLUS'],
+          category: "Smartphone Brands"
+        },
+        
+        // Game 23
+        {
+          words: ['ZEBRA', 'ELEPHANT', 'GIRAFFE', 'PANDA'],
+          category: "Zoo Animals"
+        },
+        {
+          words: ['PLANE', 'KITE', 'HELICOPTER', 'BALLOON'],
+          category: "Things That Fly"
+        },
+        {
+          words: ['WOLF', 'LEOPARD', 'HAWK', 'CROCODILE'],
+          category: "Carnivores"
+        },
+        {
+          words: ['FROG', 'TOAD', 'SALAMANDER', 'NEWT'],
+          category: "Amphibians"
+        },
+        
+        // Game 24
+        {
+          words: ['FRANCE', 'ITALY', 'GERMANY', 'SPAIN'],
+          category: "Countries in Europe"
+        },
+        {
+          words: ['TEXAS', 'FLORIDA', 'OHIO', 'NEVADA'],
+          category: "US States"
+        },
+        {
+          words: ['TOKYO', 'LONDON', 'OTTAWA', 'CANBERRA'],
+          category: "Capital Cities"
+        },
+        {
+          words: ['HAWAII', 'MALDIVES', 'SEYCHELLES', 'BALI'],
+          category: "Islands"
+        },
+        
+        // Game 25
+        {
+          words: ['JAZZ', 'ROCK', 'POP', 'COUNTRY'],
+          category: "Musical Genres"
+        },
+        {
+          words: ['SPOTIFY', 'TIDAL', 'PANDORA', 'DEEZER'],
+          category: "Music Streaming Services"
+        },
+        {
+          words: ['NOTE', 'STAFF', 'CLEF', 'REST'],
+          category: "Music Notation"
+        },
+        {
+          words: ['ALLEGRO', 'FORTE', 'TEMPO', 'CRESCENDO'],
+          category: "Musical Terms"
+        },
+        
+        // Game 26
+        {
+          words: ['HAWK', 'FALCON', 'EAGLE', 'OWL'],
+          category: "Birds of Prey"
+        },
+        {
+          words: ['SNAKE', 'LIZARD', 'TORTOISE', 'ALLIGATOR'],
+          category: "Reptiles"
+        },
+        {
+          words: ['ABYSS', 'TWILIGHT', 'SUNLIGHT', 'MIDNIGHT'],
+          category: "Ocean Zones"
+        },
+        {
+          words: ['IGNEOUS', 'SEDIMENTARY', 'METAMORPHIC', 'BASALT'],
+          category: "Types of Rocks"
+        },
+        
+        // Game 27
+        {
+          words: ['DENTIST', 'SURGEON', 'PEDIATRICIAN', 'DERMATOLOGIST'],
+          category: "Types of Doctors"
+        },
+        {
+          words: ['SCALPEL', 'THERMOMETER', 'STETHOSCOPE', 'SYRINGE'],
+          category: "Medical Tools"
+        },
+        {
+          words: ['ASTHMA', 'DIABETES', 'MIGRAINE', 'FLU'],
+          category: "Medical Conditions"
+        },
+        {
+          words: ['ICU', 'ER', 'WARD', 'OR'],
+          category: "Hospital Rooms"
+        },
+        
+        // Game 28
+        {
+          words: ['CEREAL', 'WAFFLES', 'OATMEAL', 'TOAST'],
+          category: "Breakfast Foods"
+        },
+        {
+          words: ['BROCCOLI', 'CARROT', 'SPINACH', 'CAULIFLOWER'],
+          category: "Vegetables"
+        },
+        {
+          words: ['ALMOND', 'PEANUT', 'CASHEW', 'WALNUT'],
+          category: "Nuts"
+        },
+        {
+          words: ['RICE', 'WHEAT', 'BARLEY', 'OATS'],
+          category: "Grains"
+        },
+        
+        // Game 29
+        {
+          words: ['COPACABANA', 'WAIKIKI', 'BONDI', 'CANCUN'],
+          category: "Beaches"
+        },
+        {
+          words: ['FUJI', 'KILIMANJARO', 'DENALI', 'ELBRUS'],
+          category: "Mountains"
+        },
+        {
+          words: ['NILE', 'AMAZON', 'DANUBE', 'YANGTZE'],
+          category: "Rivers"
+        },
+        {
+          words: ['TAHOE', 'SUPERIOR', 'VICTORIA', 'BAIKAL'],
+          category: "Lakes"
+        },
+        
+        // Game 30
+        {
+          words: ['BREAD', 'MUFFIN', 'CROISSANT', 'BAGEL'],
+          category: "Baked Goods"
+        },
+        {
+          words: ['FRYING', 'BOILING', 'ROASTING', 'GRILLING'],
+          category: "Cooking Methods"
+        },
+        {
+          words: ['MICROWAVE', 'TOASTER', 'FRIDGE', 'STOVE'],
+          category: "Kitchen Appliances"
+        },
+        {
+          words: ['KETCHUP', 'MUSTARD', 'MAYO', 'RELISH'],
+          category: "Condiments"
+        },
+        
+        // Game 31
+        {
+          words: ['CHRISTMAS', 'HALLOWEEN', 'EASTER', 'THANKSGIVING'],
+          category: "Holidays"
+        },
+        {
+          words: ['GARLAND', 'LIGHTS', 'WREATH', 'ORNAMENT'],
+          category: "Holiday Decorations"
+        },
+        {
+          words: ['TOY', 'BOOK', 'PERFUME', 'JEWELRY'],
+          category: "Gifts"
+        },
+        {
+          words: ['BALLOON', 'STREAMER', 'CONFETTI', 'CAKE'],
+          category: "Party Supplies"
+        },
+        
+        // Game 32
+        {
+          words: ['MATH', 'HISTORY', 'SCIENCE', 'ART'],
+          category: "School Subjects"
+        },
+        {
+          words: ['PENCIL', 'RULER', 'ERASER', 'NOTEBOOK'],
+          category: "School Supplies"
+        },
+        {
+          words: ['JANITOR', 'TEACHER', 'COUNSELOR', 'PRINCIPAL'],
+          category: "Classroom Jobs"
+        },
+        {
+          words: ['PUBLIC', 'PRIVATE', 'BOARDING', 'CHARTER'],
+          category: "Types of Schools"
+        },
+        
+        // Game 33
+        {
+          words: ['RUBY', 'SAPPHIRE', 'TOPAZ', 'AMETHYST'],
+          category: "Jewels"
+        },
+        {
+          words: ['COPPER', 'SILVER', 'GOLD', 'IRON'],
+          category: "Metals"
+        },
+        {
+          words: ['EARTHQUAKE', 'TORNADO', 'TSUNAMI', 'AVALANCHE'],
+          category: "Natural Disasters"
+        },
+        {
+          words: ['FOG', 'HAIL', 'THUNDER', 'LIGHTNING'],
+          category: "Weather Types"
+        },
+        
+        // Game 34
+        {
+          words: ['PILOT', 'LAWYER', 'NURSE', 'ENGINEER'],
+          category: "Occupations"
+        },
+        {
+          words: ['WRENCH', 'LAPTOP', 'CAMERA', 'CALCULATOR'],
+          category: "Tools Used by Workers"
+        },
+        {
+          words: ['HOSPITAL', 'OFFICE', 'STUDIO', 'COURTROOM'],
+          category: "Workplaces"
+        },
+        {
+          words: ['SCRUBS', 'SUIT', 'ROBE', 'HELMET'],
+          category: "Uniforms"
+        },
+        
+        // Game 35
+        {
+          words: ['SUN', 'MOON', 'CLOUD', 'STAR'],
+          category: "In the Sky"
+        },
+        {
+          words: ['COMET', 'ASTEROID', 'METEOR', 'GALAXY'],
+          category: "Space Objects"
+        },
+        {
+          words: ['APOLLO', 'ARTEMIS', 'VOYAGER', 'CURIOSITY'],
+          category: "NASA Missions"
+        },
+        {
+          words: ['HUBBLE', 'WEBB', 'KEPLER', 'SPITZER'],
+          category: "Telescopes"
+        },
+        
+        // Game 36
+        {
+          words: ['RISK', 'SETTLERS', 'LIFE', 'UNO'],
+          category: "Board Games"
+        },
+        {
+          words: ['POKER', 'BRIDGE', 'SOLITAIRE', 'BLACKJACK'],
+          category: "Card Games"
+        },
+        {
+          words: ['XBOX', 'SWITCH', 'PLAYSTATION', 'ATARI'],
+          category: "Video Game Consoles"
+        },
+        {
+          words: ['PAC-MAN', 'TETRIS', 'GALAGA', 'FROGGER'],
+          category: "Arcade Games"
+        },
+        
+        // Game 37
+        {
+          words: ['JOY', 'FEAR', 'SURPRISE', 'DISGUST'],
+          category: "Emotions"
+        },
+        {
+          words: ['SMILE', 'FROWN', 'WINK', 'GLARE'],
+          category: "Facial Expressions"
+        },
+        {
+          words: ['NOD', 'SHRUG', 'CROSSED ARMS', 'SLOUCH'],
+          category: "Body Language"
+        },
+        {
+          words: ['EYE CONTACT', 'TONE', 'PROXIMITY', 'POSTURE'],
+          category: "Social Cues"
+        },
+        
+        // Game 38
+        {
+          words: ['FRANC', 'PESO', 'KRONA', 'RUPEE'],
+          category: "Currencies"
+        },
+        {
+          words: ['PENNY', 'NICKEL', 'DIME', 'QUARTER'],
+          category: "Coins"
+        },
+        {
+          words: ['BANK', 'CREDIT UNION', 'LENDER', 'BROKER'],
+          category: "Financial Institutions"
+        },
+        {
+          words: ['INVOICE', 'RECEIPT', 'BILL', 'STATEMENT'],
+          category: "Financial Documents"
+        },
+        
+        // Game 39
+        {
+          words: ['DSLR', 'POLAROID', 'GOPRO', 'MIRRORLESS'],
+          category: "Cameras"
+        },
+        {
+          words: ['APERTURE', 'EXPOSURE', 'ISO', 'FOCUS'],
+          category: "Photography Terms"
+        },
+        {
+          words: ['LIGHTROOM', 'PHOTOSHOP', 'SNAPSEED', 'VSCO'],
+          category: "Editing Software"
+        },
+        {
+          words: ['PORTRAIT', 'LANDSCAPE', 'MACRO', 'STREET'],
+          category: "Photo Genres"
+        },
+        
+        // Game 40
+        {
+          words: ['FANTASY', 'MYSTERY', 'ROMANCE', 'ADVENTURE'],
+          category: "Story Genres"
+        },
+        {
+          words: ['SETTING', 'PLOT', 'CHARACTER', 'CONFLICT'],
+          category: "Story Elements"
+        },
+        {
+          words: ['ROWLING', 'CHRISTIE', 'KING', 'DAHL'],
+          category: "Authors"
+        },
+        {
+          words: ['NOVEL', 'NOVELLA', 'SHORT STORY', 'GRAPHIC NOVEL'],
+          category: "Story Formats"
         }
       ],
       hard: [

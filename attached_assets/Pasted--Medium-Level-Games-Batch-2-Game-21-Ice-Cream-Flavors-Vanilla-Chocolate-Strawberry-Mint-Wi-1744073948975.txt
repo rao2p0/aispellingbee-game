@@ -1,0 +1,200 @@
+⚖️ Medium Level Games (Batch 2)
+Game 21
+
+Ice Cream Flavors: Vanilla, Chocolate, Strawberry, Mint
+
+Winter Clothing: Scarf, Gloves, Boots, Sweater
+
+In the Kitchen: Fork, Pan, Oven, Blender
+
+Modes of Communication: Email, Phone, Letter, Text
+
+Game 22
+
+Programming Languages: JavaScript, Swift, Kotlin, C#
+
+Social Media Platforms: Instagram, Twitter, Facebook, TikTok
+
+Streaming Services: Netflix, Hulu, Prime, Disney+
+
+Smartphone Brands: Samsung, Apple, Google, OnePlus
+
+Game 23
+
+Zoo Animals: Zebra, Elephant, Giraffe, Panda
+
+Things That Fly: Plane, Kite, Helicopter, Balloon
+
+Carnivores: Wolf, Leopard, Hawk, Crocodile
+
+Amphibians: Frog, Toad, Salamander, Newt
+
+Game 24
+
+Countries in Europe: France, Italy, Germany, Spain
+
+US States: Texas, Florida, Ohio, Nevada
+
+Capital Cities: Tokyo, London, Ottawa, Canberra
+
+Islands: Hawaii, Maldives, Seychelles, Bali
+
+Game 25
+
+Musical Genres: Jazz, Rock, Pop, Country
+
+Music Streaming Services: Spotify, Tidal, Pandora, Deezer
+
+Music Notation: Note, Staff, Clef, Rest
+
+Musical Terms: Allegro, Forte, Tempo, Crescendo
+
+Game 26
+
+Birds of Prey: Hawk, Falcon, Eagle, Owl
+
+Reptiles: Snake, Lizard, Tortoise, Alligator
+
+Ocean Zones: Abyss, Twilight, Sunlight, Midnight
+
+Types of Rocks: Igneous, Sedimentary, Metamorphic, Basalt
+
+Game 27
+
+Types of Doctors: Dentist, Surgeon, Pediatrician, Dermatologist
+
+Medical Tools: Scalpel, Thermometer, Stethoscope, Syringe
+
+Medical Conditions: Asthma, Diabetes, Migraine, Flu
+
+Hospital Rooms: ICU, ER, Ward, OR
+
+Game 28
+
+Breakfast Foods: Cereal, Waffles, Oatmeal, Toast
+
+Vegetables: Broccoli, Carrot, Spinach, Cauliflower
+
+Nuts: Almond, Peanut, Cashew, Walnut
+
+Grains: Rice, Wheat, Barley, Oats
+
+Game 29
+
+Beaches: Copacabana, Waikiki, Bondi, Cancun
+
+Mountains: Fuji, Kilimanjaro, Denali, Elbrus
+
+Rivers: Nile, Amazon, Danube, Yangtze
+
+Lakes: Tahoe, Superior, Victoria, Baikal
+
+Game 30
+
+Baked Goods: Bread, Muffin, Croissant, Bagel
+
+Cooking Methods: Frying, Boiling, Roasting, Grilling
+
+Kitchen Appliances: Microwave, Toaster, Fridge, Stove
+
+Condiments: Ketchup, Mustard, Mayo, Relish
+
+Game 31
+
+Holidays: Christmas, Halloween, Easter, Thanksgiving
+
+Holiday Decorations: Garland, Lights, Wreath, Ornament
+
+Gifts: Toy, Book, Perfume, Jewelry
+
+Party Supplies: Balloon, Streamer, Confetti, Cake
+
+Game 32
+
+School Subjects: Math, History, Science, Art
+
+School Supplies: Pencil, Ruler, Eraser, Notebook
+
+Classroom Jobs: Janitor, Teacher, Counselor, Principal
+
+Types of Schools: Public, Private, Boarding, Charter
+
+Game 33
+
+Jewels: Ruby, Sapphire, Topaz, Amethyst
+
+Metals: Copper, Silver, Gold, Iron
+
+Natural Disasters: Earthquake, Tornado, Tsunami, Avalanche
+
+Weather Types: Fog, Hail, Thunder, Lightning
+
+Game 34
+
+Occupations: Pilot, Lawyer, Nurse, Engineer
+
+Tools Used by Workers: Wrench, Laptop, Camera, Calculator
+
+Workplaces: Hospital, Office, Studio, Courtroom
+
+Uniforms: Scrubs, Suit, Robe, Helmet
+
+Game 35
+
+In the Sky: Sun, Moon, Cloud, Star
+
+Space Objects: Comet, Asteroid, Meteor, Galaxy
+
+NASA Missions: Apollo, Artemis, Voyager, Curiosity
+
+Telescopes: Hubble, Webb, Kepler, Spitzer
+
+Game 36
+
+Board Games: Risk, Settlers, Life, Uno
+
+Card Games: Poker, Bridge, Solitaire, Blackjack
+
+Video Game Consoles: Xbox, Switch, PlayStation, Atari
+
+Arcade Games: Pac-Man, Tetris, Galaga, Frogger
+
+Game 37
+
+Emotions: Joy, Fear, Surprise, Disgust
+
+Facial Expressions: Smile, Frown, Wink, Glare
+
+Body Language: Nod, Shrug, Crossed Arms, Slouch
+
+Social Cues: Eye Contact, Tone, Proximity, Posture
+
+Game 38
+
+Currencies: Franc, Peso, Krona, Rupee
+
+Coins: Penny, Nickel, Dime, Quarter
+
+Financial Institutions: Bank, Credit Union, Lender, Broker
+
+Financial Documents: Invoice, Receipt, Bill, Statement
+
+Game 39
+
+Cameras: DSLR, Polaroid, GoPro, Mirrorless
+
+Photography Terms: Aperture, Exposure, ISO, Focus
+
+Editing Software: Lightroom, Photoshop, Snapseed, VSCO
+
+Photo Genres: Portrait, Landscape, Macro, Street
+
+Game 40
+
+Story Genres: Fantasy, Mystery, Romance, Adventure
+
+Story Elements: Setting, Plot, Character, Conflict
+
+Authors: Rowling, Christie, King, Dahl
+
+Story Formats: Novel, Novella, Short Story, Graphic Novel
