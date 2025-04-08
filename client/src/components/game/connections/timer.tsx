@@ -36,7 +36,10 @@ export default function Timer({ isRunning, onTimeUpdate }: TimerProps) {
     
     // Reset when game starts
     setSeconds(0);
-    if (onTimeUpdate) onTimeUpdate(0);
+    // Using setTimeout to avoid the setState-during-render warning
+    setTimeout(() => {
+      if (onTimeUpdate) onTimeUpdate(0);
+    }, 0);
   }, [isRunning, onTimeUpdate]);
 
   const formatTime = () => {

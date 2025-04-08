@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import WordGrid from "@/components/game/connections/word-grid";
 import GameControls from "@/components/game/connections/game-controls";
 import Timer from "@/components/game/connections/timer";
@@ -161,12 +162,21 @@ export default function Connections() {
           <HowToPlayDialog />
         </div>
       </div>
-
-      <DifficultySelector 
-        difficulty={difficulty}
-        onChangeDifficulty={handleChangeDifficulty}
-        disabled={isLoading || (!isGameOver && solvedGroups.length > 0)}
-      />
+      
+      <div className="flex justify-between items-center gap-3 mb-4">
+        <DifficultySelector 
+          difficulty={difficulty}
+          onChangeDifficulty={handleChangeDifficulty}
+          disabled={isLoading || (!isGameOver && solvedGroups.length > 0)}
+        />
+        <Button 
+          onClick={initializeGame}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 w-1/3"
+          disabled={isLoading}
+        >
+          New Game
+        </Button>
+      </div>
 
       {isLoading ? (
         <div className="py-12 text-center">Loading game data...</div>
